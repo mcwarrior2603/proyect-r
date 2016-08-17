@@ -25,7 +25,7 @@ public class SQLConnection {
         if(conexion == null){
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName + 
+                conexion = DriverManager.getConnection("jdbc:mysql://" + server + "/" + dbName + 
                         "?user=" + user + "&password=" + pass);
                 System.out.println("Conexión correcta");
                 return true;
@@ -48,6 +48,20 @@ public class SQLConnection {
         } catch (SQLException ex) {
             Ventana.reportarError(ex);
         }
+    }
+    
+    public static ResultSet buscar(String sql){
+        ResultSet query;
+        if(!abrirConexion())
+            return null;
+        try {
+            Statement st = conexion.createStatement();
+            query = st.executeQuery(sql);
+            return query;
+        } catch (SQLException ex) {
+            Ventana.reportarError(ex);
+        }                        
+        return null;
     }
     
     

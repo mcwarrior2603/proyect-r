@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -30,6 +31,7 @@ public class PanelLateral extends PanelInterfaz{
     private JScrollPane listaProductos;
     private JTable tablaVenta = new JTable();
     private ArrayList <Producto> productos = new ArrayList();
+    private JPanel panelTotal = new JPanel();
     private JLabel total = new JLabel("$0.0");
     
     @Override
@@ -57,21 +59,29 @@ public class PanelLateral extends PanelInterfaz{
         puntoDeVenta.setLayout(new BorderLayout(5, 5));
         puntoDeVenta.setBackground(Color.GREEN);
         
+        //Coloqué el JLabel en un panel para poder separarlo del borde del panel
         total.setFont(new Font("Arial", Font.BOLD, 50));
         total.setHorizontalAlignment(JLabel.RIGHT);  
         total.setAlignmentY(TOP_ALIGNMENT);
         total.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         total.setOpaque(true);
-        total.setBackground(Color.WHITE);        
+        total.setBackground(Color.WHITE);    
+        
+        panelTotal.setOpaque(false);
+        panelTotal.setBorder(new EmptyBorder(5,5,5,5));
+        panelTotal.setLayout(new BorderLayout());
+        panelTotal.add(total, "Center");        
                 
         tablaVenta.setModel(new ModelProductos(productos));
         listaProductos.setViewportView(tablaVenta);        
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
         tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 4));
+        listaProductos.setBorder(new EmptyBorder(5,5,5,5));
+        listaProductos.setOpaque(false);
         
         
         puntoDeVenta.add(listaProductos, "Center");
-        puntoDeVenta.add(total, "South");                                
+        puntoDeVenta.add(panelTotal, "South");                                
         
     }
     

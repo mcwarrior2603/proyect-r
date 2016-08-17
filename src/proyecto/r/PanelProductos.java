@@ -5,10 +5,16 @@
  */
 package proyecto.r;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -20,12 +26,30 @@ public class PanelProductos extends PanelInterfaz{
     
     Border borde = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2, true), 
             "Productos", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 30));
+        
+    private JPanel contenedorProductos = new JPanel();
+    private JScrollPane scrollProductos;
+    
+    private static int numeroColumnas = 100;
     
     @Override
     public void configurar(InterfazPrincipal gui){
         super.configurar(gui);
         setBorder(borde);
         setOpaque(false);
+        setLayout(new BorderLayout());
+        
+        contenedorProductos.setLayout(new GridLayout(10, numeroColumnas, 10, 10));
+        
+        String texto = "...........";
+        
+        for(int i = 0 ; i < (10 * numeroColumnas) ; i++){
+            contenedorProductos.add(new JButton(texto));
+        }
+         
+        scrollProductos = new JScrollPane(contenedorProductos);                
+        
+        add(scrollProductos);                     
     }
     
 }

@@ -50,5 +50,19 @@ public class SQLConnection {
         }
     }
     
+    public static ResultSet buscar(String sql){
+        ResultSet query;
+        if(!abrirConexion())
+            return null;
+        try {
+            Statement st = conexion.createStatement();
+            query = st.executeQuery(sql);
+            return query;
+        } catch (SQLException ex) {
+            Ventana.reportarError(ex);
+        }                        
+        return null;
+    }
+    
     
 }

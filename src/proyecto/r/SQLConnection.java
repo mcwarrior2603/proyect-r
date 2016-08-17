@@ -25,7 +25,7 @@ public class SQLConnection {
         if(conexion == null){
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName + 
+                conexion = DriverManager.getConnection("jdbc:mysql://" + server + "/" + dbName + 
                         "?user=" + user + "&password=" + pass);
                 System.out.println("Conexión correcta");
                 return true;

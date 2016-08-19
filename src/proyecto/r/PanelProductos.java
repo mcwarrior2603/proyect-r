@@ -11,6 +11,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -31,7 +36,9 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
-    private static int numeroFilas = 100;
+    private static int numeroFilas = 20;
+    
+    private static ArrayList <Producto> productosRegistrados = new ArrayList();
     
     @Override
     public void configurar(InterfazPrincipal gui){
@@ -40,11 +47,16 @@ public class PanelProductos extends PanelInterfaz{
         setOpaque(false);
         setLayout(new BorderLayout());
         
-        contenedorProductos.setLayout(new GridLayout((int)(numeroFilas / 5), 10, 10, 10));
+        cargarProductos();        
+        
+        contenedorProductos.setLayout(new GridLayout(numeroFilas, 5, 10, 10));
         contenedorProductos.setOpaque(false);
         
-        for(int i = 0 ; i < numeroFilas ; i++){
-            contenedorProductos.add(new SeleccionProducto(new Producto(1, "Papas con quesinachos a la mexicana" + i, 1, -1, "papa.jpg")));
+        for(int i = 0 ; i < 100 ; i++){
+            if(i < productosRegistrados.size())
+                contenedorProductos.add(new SeleccionProducto(productosRegistrados.get(i)));
+            else
+                contenedorProductos.add(new SeleccionProducto(null));
         }
          
         scrollProductos = new JScrollPane(contenedorProductos, 
@@ -58,6 +70,25 @@ public class PanelProductos extends PanelInterfaz{
         
         gui.productosVenta.add(new Producto(1, "Papas", 1f, -1, "papa.jpg"));
         gui.productosVenta.get(0).cantidad++;        
+    }
+    
+    private static void cargarProductos(){
+        ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS");
+        
+        if(query == null)
+            return;
+        try {
+            while(query.next()){
+                productosRegistrados.add(new Producto(
+                        query.getInt("ID_PRODUCTO"),
+                        query.getString("NOMBRE"),
+                        query.getFloat("PRECIO"),
+                        query.getInt("ID_CATEGORIA"),
+                        query.getString("IMAGEN")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

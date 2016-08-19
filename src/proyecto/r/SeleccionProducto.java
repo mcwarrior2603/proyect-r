@@ -38,18 +38,24 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     private final JPanel panelDisminuir = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private final JPanel panelEliminar = new JPanel(new FlowLayout(FlowLayout.CENTER));
     
-    private final Dimension x = new Dimension(100,100);
+    private final Dimension maximoTamaxo = new Dimension(200, 200);
     private final Producto productoActivo;
     
     private final Border bordeDefault = BorderFactory.createRaisedBevelBorder();
     
     public SeleccionProducto(Producto param){
     
+        this.productoActivo = param;    
+        
+        if(productoActivo == null){
+            setOpaque(false);
+            return;            
+        }
+        
         setLayout(new BorderLayout(5, 5));
         setBorder(bordeDefault);
         setBackground(new Color(0xFAD12E));
-        
-        this.productoActivo = param;
+        setMaximumSize(maximoTamaxo);                            
         
         precio.setText("$" + productoActivo.precio);        
         precio.setFont(new Font("Arial", Font.BOLD, 17));        
@@ -65,7 +71,7 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         panelImagen.setOpaque(false);
         botones.setOpaque(false);
         
-        setSize(x);
+        setSize(maximoTamaxo);
         add(panelPrecio, "North");
         add(panelImagen, "Center");
         add(botones, "South");

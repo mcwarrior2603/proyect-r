@@ -7,6 +7,7 @@ package proyecto.r;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -25,13 +26,15 @@ import javax.swing.table.TableModel;
  * @author MCwar
  */
 public class PanelLateral extends PanelInterfaz{
-
-    private JLabel logo = new JLabel();
-    private JPanel puntoDeVenta = new JPanel();
+        
     private JScrollPane listaProductos;
-    private JTable tablaVenta = new JTable();    
-    private JPanel panelTotal = new JPanel();
+    private JTable tablaVenta = new JTable();        
     private JLabel total = new JLabel("$0.0");
+    private JLabel logo = new JLabel();
+    
+    private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel puntoDeVenta = new JPanel();
+    private JPanel panelTotal = new JPanel();
         
     private ArrayList <Producto> productos;
         
@@ -44,13 +47,16 @@ public class PanelLateral extends PanelInterfaz{
         configurarLogo();
         configurarPuntoDeVenta();                
         
-        add(logo, "North");
+        panelLogo.add(logo);
+        panelLogo.setOpaque(false);
+        
+        add(panelLogo, "North");
         add(puntoDeVenta, "Center");
                 
     }
     
     private void configurarLogo(){
-        logo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo.png").getImage()
+        logo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }

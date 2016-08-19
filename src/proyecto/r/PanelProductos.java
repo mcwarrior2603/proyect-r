@@ -46,7 +46,7 @@ public class PanelProductos extends PanelInterfaz{
         String texto = "...........";
         
         for(int i = 0 ; i < (10 * numeroFilas) ; i++){
-            contenedorProductos.add(new JButton(texto));
+            contenedorProductos.add(new SeleccionProducto(new Producto(1, "Papa", 1, -1, "papa.jpg")));
         }
          
         scrollProductos = new JScrollPane(contenedorProductos, 

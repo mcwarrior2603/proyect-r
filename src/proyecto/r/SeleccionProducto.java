@@ -42,8 +42,7 @@ public class SeleccionProducto extends JPanel {
         
         
         imagen = " ";
-        
-        
+                
     }
     
     private void configurarLogo(){

@@ -56,7 +56,10 @@ public class PanelProductos extends PanelInterfaz{
         scrollProductos.setOpaque(false);
         scrollProductos.setBorder(new EmptyBorder(1, 1, 1, 1));
         
-        add(scrollProductos);                     
+        add(scrollProductos);     
+        
+        gui.productosVenta.add(new Producto(1, "Papas", 1f, -1, "papa.jpg"));
+        gui.productosVenta.get(0).cantidad++;        
     }
     
 }

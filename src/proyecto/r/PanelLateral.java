@@ -29,18 +29,20 @@ public class PanelLateral extends PanelInterfaz{
     private JLabel logo = new JLabel();
     private JPanel puntoDeVenta = new JPanel();
     private JScrollPane listaProductos;
-    private JTable tablaVenta = new JTable();
-    private ArrayList <Producto> productos = new ArrayList();
+    private JTable tablaVenta = new JTable();    
     private JPanel panelTotal = new JPanel();
     private JLabel total = new JLabel("$0.0");
-    
-    @Override
-    public void configurar(InterfazPrincipal gui){
+        
+    private ArrayList <Producto> productos;
+        
+    public void configurar(InterfazPrincipal gui, ArrayList <Producto> productos){
         super.configurar(gui);
         setLayout(new BorderLayout(5, 5));
                 
+        this.productos = productos;
+        
         configurarLogo();
-        configurarPuntoDeVenta();
+        configurarPuntoDeVenta();                
         
         add(logo, "North");
         add(puntoDeVenta, "Center");
@@ -77,15 +79,14 @@ public class PanelLateral extends PanelInterfaz{
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
         tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 4));
         listaProductos.setBorder(new EmptyBorder(5,5,5,5));
-        listaProductos.setOpaque(false);
-        
+        listaProductos.setOpaque(false);        
         
         puntoDeVenta.add(listaProductos, "Center");
         puntoDeVenta.add(panelTotal, "South");                                
         
     }
     
-    private void actualizar(){
+    public void actualizar(){
         float sumaTotal = 0;
         for(int i = 0 ; i < productos.size() ; i++){
             sumaTotal += (productos.get(i).precio * productos.get(i).cantidad);                        

@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -36,7 +37,8 @@ public class InterfazPrincipal extends Ventana{
     private PanelMenus panelMenus = new PanelMenus();    
     private PanelLateral panelLateral = new PanelLateral();   
     private PanelProductos panelProductos = new PanelProductos(); 
-        
+    
+    public ArrayList <Producto> productosVenta = new ArrayList();
             
     private Dimension tamaxoVentana = new Dimension(300, 300);
     
@@ -58,7 +60,7 @@ public class InterfazPrincipal extends Ventana{
         panelPrincipal.setBackground(new Color(0xfffc00));
         
         panelMenus.configurar(this);
-        panelLateral.configurar(this);
+        panelLateral.configurar(this, productosVenta);
         panelProductos.configurar(this);
         
         panelPrincipal.add(panelProductos, BorderLayout.CENTER);
@@ -69,6 +71,8 @@ public class InterfazPrincipal extends Ventana{
         panelPrincipal.updateUI();
         panelLateral.updateUI();
                         
+        
+        panelLateral.actualizar();
     }        
     
 }

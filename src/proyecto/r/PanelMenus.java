@@ -20,7 +20,7 @@ import javax.swing.event.MenuListener;
  *
  * @author MCwar
  */
-public class PanelMenus extends PanelInterfaz implements MenuListener{        
+public class PanelMenus extends PanelInterfaz{        
     
     private Font letraMenus = new Font("Arial", Font.PLAIN, 15);
     
@@ -54,12 +54,7 @@ public class PanelMenus extends PanelInterfaz implements MenuListener{
         menuArchivo.setFont(letraMenus);
         menuReportes.setFont(letraMenus);
         menuUsuarios.setFont(letraMenus);
-        menuAyuda.setFont(letraMenus);
-        
-        menuArchivo.addMenuListener(this);
-        menuReportes.addMenuListener(this);
-        menuUsuarios.addMenuListener(this);
-        menuAyuda.addMenuListener(this);
+        menuAyuda.setFont(letraMenus);                
         
         add(barraDeMenu);
         
@@ -82,21 +77,5 @@ public class PanelMenus extends PanelInterfaz implements MenuListener{
         menuUsuarios.add("Añadir");
         menuUsuarios.add("Modificar");
         menuUsuarios.add("Eliminar");
-    }  
-
-    @Override
-    public void menuSelected(MenuEvent e) {        
-        System.out.println("Selected");
-    }
-
-    @Override
-    public void menuDeselected(MenuEvent e) {
-        System.out.println("Deselected");
-    }
-
-    @Override
-    public void menuCanceled(MenuEvent e) {
-        System.out.println("Canceled");
-    }
-    
+    }     
 }

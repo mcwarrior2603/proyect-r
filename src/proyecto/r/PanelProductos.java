@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 /**
@@ -30,7 +31,7 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
-    private static int numeroColumnas = 100;
+    private static int numeroFilas = 100;
     
     @Override
     public void configurar(InterfazPrincipal gui){
@@ -39,15 +40,21 @@ public class PanelProductos extends PanelInterfaz{
         setOpaque(false);
         setLayout(new BorderLayout());
         
-        contenedorProductos.setLayout(new GridLayout(10, numeroColumnas, 10, 10));
+        contenedorProductos.setLayout(new GridLayout(numeroFilas, 10, 10, 10));
+        contenedorProductos.setOpaque(false);
         
         String texto = "...........";
         
-        for(int i = 0 ; i < (10 * numeroColumnas) ; i++){
+        for(int i = 0 ; i < (10 * numeroFilas) ; i++){
             contenedorProductos.add(new JButton(texto));
         }
          
-        scrollProductos = new JScrollPane(contenedorProductos);                
+        scrollProductos = new JScrollPane(contenedorProductos, 
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollProductos.getViewport().setOpaque(false);
+        scrollProductos.setOpaque(false);
+        scrollProductos.setBorder(new EmptyBorder(1, 1, 1, 1));
         
         add(scrollProductos);                     
     }

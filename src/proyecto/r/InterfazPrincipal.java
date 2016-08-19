@@ -73,6 +73,8 @@ public class InterfazPrincipal extends Ventana{
                         
         
         panelLateral.actualizar();
+        
+        panelPrincipal.updateUI();
     }        
     
 }

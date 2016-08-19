@@ -40,17 +40,15 @@ public class PanelProductos extends PanelInterfaz{
         setOpaque(false);
         setLayout(new BorderLayout());
         
-        contenedorProductos.setLayout(new GridLayout(numeroFilas, 10, 10, 10));
+        contenedorProductos.setLayout(new GridLayout((int)(numeroFilas / 5), 10, 10, 10));
         contenedorProductos.setOpaque(false);
         
-        String texto = "...........";
-        
-        for(int i = 0 ; i < (10 * numeroFilas) ; i++){
-            contenedorProductos.add(new SeleccionProducto(new Producto(1, "Papa", 1, -1, "papa.jpg")));
+        for(int i = 0 ; i < numeroFilas ; i++){
+            contenedorProductos.add(new SeleccionProducto(new Producto(1, "Papas con quesinachos a la mexicana" + i, 1, -1, "papa.jpg")));
         }
          
         scrollProductos = new JScrollPane(contenedorProductos, 
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollProductos.getViewport().setOpaque(false);
         scrollProductos.setOpaque(false);

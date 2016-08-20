@@ -56,6 +56,9 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         setBorder(bordeDefault);
         setBackground(new Color(0xFAD12E));
         setMaximumSize(maximoTamaxo);                            
+        setToolTipText(productoActivo.nombre);
+        
+        precio.setToolTipText("Holis");
         
         precio.setText("$" + productoActivo.precio);        
         precio.setFont(new Font("Arial", Font.BOLD, 17));        

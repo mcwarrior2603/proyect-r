@@ -15,7 +15,7 @@ public class ProyectoR {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new UsuarioFormulario(UsuarioFormulario.MODIFICAR);        
+        new InterfazPrincipal();
     }
     
 }

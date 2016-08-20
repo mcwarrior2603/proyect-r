@@ -7,6 +7,10 @@ package proyecto.r;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -16,6 +20,19 @@ import javax.swing.JOptionPane;
  */
 public class Ventana extends JFrame implements WindowListener{
 
+    public static String obtenerMaster(){
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("archivos/master.txt"));
+            return reader.readLine();
+        } catch (FileNotFoundException ex) {
+            reportarError(ex);
+        } catch (IOException ex) {
+            reportarError(ex);
+        } 
+        
+        return "";
+    }
+    
     public static void reportarError(Exception e){
         String error = "¡Ha ocurrido un error :(\n\nTe recomiendo tomar una foto para\n" + 
                 "facilitar la correción del fallo\n\n"

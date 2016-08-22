@@ -59,7 +59,7 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     }
     
     private void configurarLogo(){
-        producto.setIcon(new ImageIcon(new ImageIcon("Productos/" + ).getImage()
+        producto.setIcon(new ImageIcon(new ImageIcon("Productos/" ).getImage()
                 .getScaledInstance( 50, 50, Image.SCALE_DEFAULT)));    
         
     }

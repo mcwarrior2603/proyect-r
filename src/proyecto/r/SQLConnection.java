@@ -64,5 +64,39 @@ public class SQLConnection {
         return null;
     }
     
+    public static boolean actualizar(String sql, int cambiosEsperados){
+        if(!abrirConexion())
+            return false;
+        try {
+            Statement st = conexion.createStatement();
+            conexion.setAutoCommit(false);
+            
+            int rowCount = st.executeUpdate(sql);
+            
+            if(rowCount == cambiosEsperados){
+                conexion.commit();
+                return true;
+            } else{
+                conexion.rollback();
+                return false;
+            }
+            
+        } catch (SQLException ex) {
+            Ventana.reportarError(ex);
+            try {
+                conexion.rollback();
+            } catch (SQLException ex1) {
+                
+            }
+            return false;
+        }
+        
+    }
+    
+    public static boolean actualizar(String sql){
+        return actualizar(sql, 1);
+    }
+
+    
     
 }

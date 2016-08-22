@@ -10,14 +10,14 @@ package proyecto.r;
  * @author MCwar
  */
 public class Producto {
-    int idProducto;
-    String nombre;
-    float precio;
-    int idCategoria;    
-    String imagen;
-    int cantidad;
+    private int idProducto;
+    public String nombre;
+    public float precio;
+    public int idCategoria;    
+    public String imagen;
+    public int cantidad;
     
-    public Producto(int idProducto, String nombre, int precio, int idCategoria, String imagen){
+    public Producto(int idProducto, String nombre, float precio, int idCategoria, String imagen){
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.precio = precio;

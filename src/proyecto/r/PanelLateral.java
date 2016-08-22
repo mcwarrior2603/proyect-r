@@ -7,6 +7,7 @@ package proyecto.r;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -25,30 +26,37 @@ import javax.swing.table.TableModel;
  * @author MCwar
  */
 public class PanelLateral extends PanelInterfaz{
-
-    private JLabel logo = new JLabel();
-    private JPanel puntoDeVenta = new JPanel();
+        
     private JScrollPane listaProductos;
-    private JTable tablaVenta = new JTable();
-    private ArrayList <Producto> productos = new ArrayList();
-    private JPanel panelTotal = new JPanel();
+    private JTable tablaVenta = new JTable();        
     private JLabel total = new JLabel("$0.0");
+    private JLabel logo = new JLabel();
     
-    @Override
-    public void configurar(InterfazPrincipal gui){
+    private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel puntoDeVenta = new JPanel();
+    private JPanel panelTotal = new JPanel();
+        
+    private ArrayList <Producto> productos;
+        
+    public void configurar(InterfazPrincipal gui, ArrayList <Producto> productos){
         super.configurar(gui);
         setLayout(new BorderLayout(5, 5));
                 
-        configurarLogo();
-        configurarPuntoDeVenta();
+        this.productos = productos;
         
-        add(logo, "North");
+        configurarLogo();
+        configurarPuntoDeVenta();                
+        
+        panelLogo.add(logo);
+        panelLogo.setOpaque(false);
+        
+        add(panelLogo, "North");
         add(puntoDeVenta, "Center");
                 
     }
     
     private void configurarLogo(){
-        logo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo.png").getImage()
+        logo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }
@@ -77,15 +85,14 @@ public class PanelLateral extends PanelInterfaz{
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
         tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 4));
         listaProductos.setBorder(new EmptyBorder(5,5,5,5));
-        listaProductos.setOpaque(false);
-        
+        listaProductos.setOpaque(false);        
         
         puntoDeVenta.add(listaProductos, "Center");
         puntoDeVenta.add(panelTotal, "South");                                
         
     }
     
-    private void actualizar(){
+    public void actualizar(){
         float sumaTotal = 0;
         for(int i = 0 ; i < productos.size() ; i++){
             sumaTotal += (productos.get(i).precio * productos.get(i).cantidad);                        

@@ -5,11 +5,17 @@
  */
 package proyecto.r;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author MCwar
  */
 public class Producto {
+
+    static void setIcon(ImageIcon imageIcon) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     private int idProducto;
     public String nombre;
     public float precio;

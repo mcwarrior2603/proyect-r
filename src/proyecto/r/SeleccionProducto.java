@@ -111,23 +111,15 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-         //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-         //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-        //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mouseExited(MouseEvent e) {}
     
 }

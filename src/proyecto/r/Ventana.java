@@ -5,6 +5,7 @@
  */
 package proyecto.r;
 
+import java.awt.Font;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -20,6 +21,8 @@ import javax.swing.JOptionPane;
  */
 public class Ventana extends JFrame implements WindowListener{
 
+    protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
+    
     public static String obtenerMaster(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader("archivos/master.txt"));

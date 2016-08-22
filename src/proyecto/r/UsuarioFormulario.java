@@ -81,7 +81,7 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
                         
         contenedorGeneral = (JPanel) getContentPane();
         
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 20));              
+        labelTitulo.setFont(fontTitulo);              
         
         comboPermisos.addItem("Cajero");
         comboPermisos.addItem("Administrador");        
@@ -135,11 +135,11 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
     }
 
     private void configurarComponentes(int uso){
-        if(uso == 0){
+        if(uso == AXADIR){
             buttonEliminar.setEnabled(false);            
-        }else if(uso == 1){
+        }else if(uso == MODIFICAR){
             fieldConfirmar.setEnabled(false);            
-        }else if(uso == 2){
+        }else if(uso == ELIMINAR){
             fieldContraseña.setEnabled(false);
             fieldConfirmar.setEnabled(false);
             comboPermisos.setEnabled(false);

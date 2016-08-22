@@ -91,12 +91,12 @@ public class SeleccionProducto extends JPanel implements MouseListener{
                 
     }
     
-<<<<<<< HEAD
+
     private void configurarLogo(){
-        producto.setIcon(new ImageIcon(new ImageIcon("Productos/" ).getImage()
+        Producto.setIcon(new ImageIcon(new ImageIcon("Productos/" ).getImage()
                 .getScaledInstance( 50, 50, Image.SCALE_DEFAULT)));    
-        
-=======
+    }   
+
     private void configurarImagenes(){
         imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" + productoActivo.imagen).getImage()
                 .getScaledInstance( 100, 100, Image.SCALE_DEFAULT))); 
@@ -104,7 +104,7 @@ public class SeleccionProducto extends JPanel implements MouseListener{
                 getScaledInstance(25, 25, Image.SCALE_DEFAULT)));
         botonDisminuir.setIcon(new ImageIcon(new ImageIcon("multimedia/minus.png").getImage().
                 getScaledInstance(25, 25, Image.SCALE_DEFAULT)));
->>>>>>> a98ab432568f5134f6d09bad61668e8f56730dec
+
     }
 
     @Override

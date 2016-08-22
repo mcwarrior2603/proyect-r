@@ -97,7 +97,7 @@ public class Login extends Ventana implements ActionListener {
                     setVisible(false);
 
                     new InterfazPrincipal(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),
-                            query.getString("NOMBRE"), query.getInt("NIVEL_DE_ACCESO")));                    
+                            query.getInt("NIVEL_DE_ACCESO")));                    
 
                     dispose();                    
                 }else{

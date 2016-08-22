@@ -42,7 +42,11 @@ public class InterfazPrincipal extends Ventana{
             
     private Dimension tamaxoVentana = new Dimension(300, 300);
     
-    public InterfazPrincipal(){                
+    public Usuario usuarioActivo;
+    
+    public InterfazPrincipal(Usuario usuarioActivo){                
+        
+        this.usuarioActivo = usuarioActivo;
         
         try {
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -53,7 +57,7 @@ public class InterfazPrincipal extends Ventana{
         addWindowListener(this);             
         setExtendedState(MAXIMIZED_BOTH);        
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setVisible(true);                                    
+        setVisible(true);                                            
         
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.setLayout(new BorderLayout(15, 15));
@@ -65,16 +69,11 @@ public class InterfazPrincipal extends Ventana{
         
         panelPrincipal.add(panelProductos, BorderLayout.CENTER);
         panelPrincipal.add(panelLateral, BorderLayout.WEST);
-        panelPrincipal.add(panelMenus, BorderLayout.NORTH);
-        
-//        setResizable(false);
-        panelPrincipal.updateUI();
-        panelLateral.updateUI();
-                        
+        panelPrincipal.add(panelMenus, BorderLayout.NORTH);                                        
         
         panelLateral.actualizar();
         
-    //    panelPrincipal.updateUI();
+        panelPrincipal.updateUI();
 
     }        
     

@@ -91,6 +91,11 @@ public class SeleccionProducto extends JPanel implements MouseListener{
                 
     }
     
+    private void configurarLogo(){
+        imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" ).getImage()
+                .getScaledInstance( 50, 50, Image.SCALE_DEFAULT)));    
+    }
+    
     private void configurarImagenes(){
         imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" + productoActivo.imagen).getImage()
                 .getScaledInstance( 100, 100, Image.SCALE_DEFAULT))); 

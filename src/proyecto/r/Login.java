@@ -15,6 +15,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javafx.scene.control.PasswordField;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 /**
  *
  * @author USUARIO FINAL
@@ -24,7 +29,7 @@ public class Login extends Ventana implements ActionListener {
     private final JPanel PanelVentana;
     
     private final Label Usuario = new Label();
-    private final Label Password = new Label();
+    private final JPasswordField Contraseña = new JPasswordField();
     private final TextField UsuarioText = new TextField();
     private final TextField PasswordText = new TextField();
     private final JButton BotonCerrar = new JButton();
@@ -47,19 +52,19 @@ public class Login extends Ventana implements ActionListener {
         BotonCerrar.addActionListener(this);
         
         Usuario.setText("Usuario :");
-        Password.setText("Password :");
+        Contraseña.setText("Password :");
         BotonCerrar.setText("Cerrar");
         BotonEntrar.setText("Entrar");
         
         PanelVentana.add(Usuario);
-        PanelVentana.add(Password);
+        PanelVentana.add(Contraseña);
         PanelVentana.add(BotonCerrar);
         PanelVentana.add(BotonEntrar);
         PanelVentana.add(UsuarioText);
         PanelVentana.add(PasswordText);
         
         Usuario.setBounds(15, 20, 100, 30);
-        Password.setBounds(15, 60, 100, 30);
+        Contraseña.setBounds(15, 60, 100, 30);
         UsuarioText.setBounds(120, 20, 200, 30);
         PasswordText.setBounds(120, 60, 200, 30);
         BotonEntrar.setBounds(140, 115, 100, 30);
@@ -80,6 +85,33 @@ public class Login extends Ventana implements ActionListener {
         }
     }
     private void Check(){
+        if(UsuarioText.getText().isEmpty() || UsuarioText.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Asegurese de haber ingresado\nun usuario y contraseña.", "Información faltane", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        ResultSet query = SQLConnection.buscar("SELECT * FROM USERS WHERE NOMBRE_USUARIO = '" + UsuarioText.getText() + "'");
+        try {                        
+            if(query.next())
+                if(BCrypt.checkpw(PasswordText.getText(), query.getString("CONTRASEÑA"))){
+                    setVisible(false);
+//                    new InterfazPrincipal(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),
+//                            query.getString("NOMBRE"), query.getInt("NIVEL_DE_ACCESO")));                    
+                    dispose();                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
+                }
+            else{
+                JOptionPane.showMessageDialog(null, "Usuario inexistente");
+            }
+            
+        } catch (SQLException ex) {
+            reportarError(ex);
+        }
+        
+        SQLConnection.cerrarConexion();
+        
         
     }
+
 }

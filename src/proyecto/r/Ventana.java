@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 public class Ventana extends JFrame implements WindowListener{
 
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
+    public static final float defaultAFloat = -1f;
     
     public static String obtenerMaster(){
         try {
@@ -59,6 +60,15 @@ public class Ventana extends JFrame implements WindowListener{
     public void windowClosing(WindowEvent e) {
         if(isVisible())
             confirmarCerrado();        
+    }
+    
+    public static float aFloat(String f, String significado){
+        try{
+            return Float.parseFloat(f);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, f + " no es un valor correcto para " + significado);
+            return -1f;
+        }        
     }
     
     @Override

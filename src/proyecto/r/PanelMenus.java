@@ -32,16 +32,20 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private JMenu menuArchivo = new JMenu("Archivo");
     private JMenu menuReportes = new JMenu("Reportes");
     private JMenu menuUsuarios = new JMenu("Usuario");
+    private JMenu menuProductos = new JMenu("Productos");
     private JMenu menuAyuda = new JMenu("Ayuda");
 
     private JMenuItem cancelarVenta = new JMenuItem("Cancelar venta");
     private JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
     private JMenuItem salir = new JMenuItem("Salir");
-    private JMenuItem ventasDeHoy = new JMenuItem("Ventas de hoy");
-    private JMenuItem ventas = new JMenuItem("Ventas");
-    private JMenuItem añadir = new JMenuItem("Añadir");
-    private JMenuItem modificar = new JMenuItem("Modificar");
-    private JMenuItem eliminar = new JMenuItem("Eliminar");
+    private JMenuItem reporteVentas = new JMenuItem("Reporte por ventas");
+    private JMenuItem reporteProductos = new JMenuItem("Reporte por productos");
+    private JMenuItem añadirUsuario = new JMenuItem("Añadir");
+    private JMenuItem modificarUsuario = new JMenuItem("Modificar");
+    private JMenuItem eliminarUsuario = new JMenuItem("Eliminar");
+    private JMenuItem añadirProducto = new JMenuItem("Añadir");
+    private JMenuItem modificarProducto = new JMenuItem("Modificar");
+    private JMenuItem eliminarProducto = new JMenuItem("Eliminar");
     private JMenuItem ayuda = new JMenuItem("Ayuda");
     private JMenuItem acercaDe = new JMenuItem("Acerca de...");
     
@@ -63,11 +67,13 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         barraDeMenu.add(menuArchivo);        
         barraDeMenu.add(menuReportes);
         barraDeMenu.add(menuUsuarios);
-        barraDeMenu.add(menuAyuda);
+        barraDeMenu.add(menuProductos);
+        barraDeMenu.add(menuAyuda);        
         
         menuArchivo.setFont(letraMenus);
         menuReportes.setFont(letraMenus);
         menuUsuarios.setFont(letraMenus);
+        menuProductos.setFont(letraMenus);
         menuAyuda.setFont(letraMenus);                
         
         add(barraDeMenu);
@@ -87,22 +93,32 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     }
     
     private void configurarMenuReportes(){
-        menuReportes.add(ventasDeHoy);
-        menuReportes.add(ventas);        
+        menuReportes.add(reporteVentas);
+        menuReportes.add(reporteProductos);        
         
-        ventasDeHoy.addActionListener(this);
-        ventas.addActionListener(this);
+        reporteVentas.addActionListener(this);
+        reporteProductos.addActionListener(this);
     }
     
     private void configurarMenuUsuarios(){
-        menuUsuarios.add(añadir);
-        menuUsuarios.add(modificar);
-        menuUsuarios.add(eliminar);
+        menuUsuarios.add(añadirUsuario);
+        menuUsuarios.add(modificarUsuario);
+        menuUsuarios.add(eliminarUsuario);
         
-        añadir.addActionListener(this);
-        modificar.addActionListener(this);
-        eliminar.addActionListener(this);
+        añadirUsuario.addActionListener(this);
+        modificarUsuario.addActionListener(this);
+        eliminarUsuario.addActionListener(this);
     }     
+    
+    private void configurarMenuProductos(){
+        menuProductos.add(añadirProducto);
+        menuProductos.add(modificarProducto);
+        menuProductos.add(eliminarProducto);
+        
+        añadirProducto.addActionListener(this);
+        modificarProducto.addActionListener(this);
+        eliminarProducto.addActionListener(this);
+    }
     
     private void configurarMenuAyuda(){
         menuAyuda.add(ayuda);
@@ -122,6 +138,18 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             gui.dispose();
         }else if(e.getSource() == salir){
             gui.confirmarCerrado();
-        }            
+        }else if(e.getSource() == añadirUsuario){
+            new UsuarioFormulario(UsuarioFormulario.AXADIR);            
+        }else if(e.getSource() == modificarUsuario){
+            new UsuarioFormulario(UsuarioFormulario.MODIFICAR);
+        }else if(e.getSource() == eliminarUsuario){
+            new UsuarioFormulario(UsuarioFormulario.ELIMINAR);
+        }else if(e.getSource() == añadirProducto){
+            new ProductoFormulario(ProductoFormulario.AXADIR);
+        }else if(e.getSource() == modificarProducto){
+            new ProductoFormulario(ProductoFormulario.MODIFICAR);            
+        }else if(e.getSource() == eliminarProducto){
+            new ProductoFormulario(ProductoFormulario.ELIMINAR);
+        }
     }
 }

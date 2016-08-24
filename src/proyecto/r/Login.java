@@ -29,9 +29,9 @@ public class Login extends Ventana implements ActionListener {
     private final JPanel PanelVentana;
     
     private final Label Usuario = new Label();
-    private final JPasswordField Contraseña = new JPasswordField();
+    private final JPasswordField contraseña = new JPasswordField();
     private final TextField UsuarioText = new TextField();
-    private final TextField PasswordText = new TextField();
+    //private final TextField PasswordText = new TextField();
     private final JButton BotonCerrar = new JButton();
     private final JButton BotonEntrar = new JButton();
     
@@ -52,26 +52,26 @@ public class Login extends Ventana implements ActionListener {
         BotonCerrar.addActionListener(this);
         
         Usuario.setText("Usuario :");
-        Contraseña.setText("Password :");
+        contraseña.setText("Password :");
         BotonCerrar.setText("Cerrar");
         BotonEntrar.setText("Entrar");
         
         PanelVentana.add(Usuario);
-        PanelVentana.add(Contraseña);
+        PanelVentana.add(contraseña);
         PanelVentana.add(BotonCerrar);
         PanelVentana.add(BotonEntrar);
         PanelVentana.add(UsuarioText);
-        PanelVentana.add(PasswordText);
+        //PanelVentana.add(PasswordText);
         
         Usuario.setBounds(15, 20, 100, 30);
-        Contraseña.setBounds(15, 60, 100, 30);
+        contraseña.setBounds(15, 60, 100, 30);
         UsuarioText.setBounds(120, 20, 200, 30);
-        PasswordText.setBounds(120, 60, 200, 30);
+        //PasswordText.setBounds(120, 60, 200, 30);
         BotonEntrar.setBounds(140, 115, 100, 30);
         BotonCerrar.setBounds(245, 115, 100, 30);
         
         UsuarioText.setEnabled(true);
-        PasswordText.setEnabled(true);  
+        contraseña.setEnabled(true);  
         
     
     }
@@ -93,7 +93,7 @@ public class Login extends Ventana implements ActionListener {
         ResultSet query = SQLConnection.buscar("SELECT * FROM USERS WHERE NOMBRE_USUARIO = '" + UsuarioText.getText() + "'");
         try {                        
             if(query.next())
-                if(BCrypt.checkpw(PasswordText.getText(), query.getString("CONTRASEÑA"))){
+                if(BCrypt.checkpw(contraseña.getText(), query.getString("CONTRASEÑA"))){
                     setVisible(false);
 
                     new InterfazPrincipal(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),

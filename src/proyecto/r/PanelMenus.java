@@ -35,19 +35,19 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private JMenu menuProductos = new JMenu("Productos");
     private JMenu menuAyuda = new JMenu("Ayuda");
 
-    private JMenuItem cancelarVenta = new JMenuItem("Cancelar venta");
-    private JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
-    private JMenuItem salir = new JMenuItem("Salir");
-    private JMenuItem reporteVentas = new JMenuItem("Reporte por ventas");
-    private JMenuItem reporteProductos = new JMenuItem("Reporte por productos");
-    private JMenuItem añadirUsuario = new JMenuItem("Añadir");
-    private JMenuItem modificarUsuario = new JMenuItem("Modificar");
-    private JMenuItem eliminarUsuario = new JMenuItem("Eliminar");
-    private JMenuItem añadirProducto = new JMenuItem("Añadir");
-    private JMenuItem modificarProducto = new JMenuItem("Modificar");
-    private JMenuItem eliminarProducto = new JMenuItem("Eliminar");
-    private JMenuItem ayuda = new JMenuItem("Ayuda");
-    private JMenuItem acercaDe = new JMenuItem("Acerca de...");
+    private final JMenuItem cancelarVenta = new JMenuItem("Cancelar venta");
+    private final JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
+    private final JMenuItem salir = new JMenuItem("Salir");
+    private final JMenuItem reporteVentas = new JMenuItem("Reporte por ventas");
+    private final JMenuItem reporteProductos = new JMenuItem("Reporte por productos");
+    private final JMenuItem añadirUsuario = new JMenuItem("Añadir");
+    private final JMenuItem modificarUsuario = new JMenuItem("Modificar");
+    private final JMenuItem eliminarUsuario = new JMenuItem("Eliminar");
+    private final JMenuItem añadirProducto = new JMenuItem("Añadir");
+    private final JMenuItem modificarProducto = new JMenuItem("Modificar");
+    private final JMenuItem eliminarProducto = new JMenuItem("Eliminar");
+    private final JMenuItem ayuda = new JMenuItem("Ayuda");
+    private final JMenuItem acercaDe = new JMenuItem("Acerca de...");
     
     @Override
     public void configurar(InterfazPrincipal gui){
@@ -63,6 +63,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         configurarMenuArchivo();
         configurarMenuReportes();
         configurarMenuUsuarios();
+        configurarMenuProductos();
         
         barraDeMenu.add(menuArchivo);        
         barraDeMenu.add(menuReportes);

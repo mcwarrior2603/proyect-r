@@ -5,6 +5,7 @@
  */
 package proyecto.r;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.TextField;
 import java.awt.event.WindowEvent;
@@ -18,87 +19,50 @@ import javax.swing.JPanel;
  *
  * @author USUARIO FINAL
  */
-public class ReporteVentas extends Ventana implements WindowListener {
+public class ReporteVentas extends Ventana{
     
-    private final Dimension ventana = new Dimension(400,200);
+    private final Dimension ventana = new Dimension(700,500);
     private final JLabel titulo = new JLabel();
     private final JLabel alcance = new JLabel();
     private final TextField fechaInicio = new TextField();
     private final TextField fechaTerminal = new TextField();
     private final JButton generador = new JButton();
-    private JPanel todo = new JPanel();
-    //private JPanel encabezado = new JPanel();
-   // private JPanel pie = new JPanel();
+    private JPanel todo = new JPanel();    
+    
     
     
     public ReporteVentas(){
         
+        setResizable(false);
         addWindowListener(this);
         setLayout(null);
         setPreferredSize(ventana);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setResizable(false);
-        setVisible(true);
-        setLocationRelativeTo(null);
-        pack();
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);        
+        pack();        
+        setLocationRelativeTo(null);                        
+        setVisible(true);        
         
         todo = (JPanel) getContentPane();
         
-        todo.add(titulo);
-        todo.add(generador);
+        todo.setLayout(null);                        
         
         titulo.setText("Ventas");
         alcance.setText("al");
         generador.setText("Generar Repeorte");
         
-       // todo.add(encabezado, "North");
-        //todo.add(pie, "South");
+        fechaInicio.setBounds( 445, 50, 100, 30);
+        fechaTerminal.setBounds(585, 50, 100, 30);
         
-       // pie.add(generador, "West");
+        alcance.setBounds(560, 50, 100, 30);
+        generador.setBounds(30, 500, 150, 30);
+        titulo.setBounds(20, 10, 100, 30);                        
         
-       // encabezado.add(titulo);
-       // encabezado.add(alcance);
-       // encabezado.add(fechaInicio);
-       // encabezado.add(fechaTerminal);
+        titulo.setFont(fontTitulo);
         
-        fechaInicio.setBounds(30, 30,100,20);
-        fechaTerminal.setBounds(50, 30,100,20);
-        fechaInicio.setEnabled(true);
-        fechaTerminal.setEnabled(true);
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-    //To change body of generated methods, choose Tools | Templates.
+        todo.add(titulo);
+        todo.add(generador);
+        todo.add(fechaInicio);
+        todo.add(fechaTerminal);
+        todo.add(alcance);
     }
 }

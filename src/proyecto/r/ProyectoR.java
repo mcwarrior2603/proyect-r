@@ -15,7 +15,10 @@ public class ProyectoR {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       new ReporteVentas();
+//       new InterfazPrincipal(null);
+        new ReporteVentas();
+//        new Login();
+    
     }
     
 }

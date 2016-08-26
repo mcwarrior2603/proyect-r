@@ -268,6 +268,8 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
     public void focusLost(FocusEvent e) {
         if(e.getSource() == fieldNombre){
             ResultSet query = SQLConnection.buscar("SELECT * FROM USUARIOS WHERE NOMBRE_USUARIO = '" + fieldNombre.getText() + "'");
+            if(query == null)
+                return;            
             try {
                 if(query.next()){
                     if(uso == AXADIR)

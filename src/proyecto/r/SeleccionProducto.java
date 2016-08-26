@@ -41,11 +41,13 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     private final Dimension maximoTamaxo = new Dimension(200, 200);
     private final Producto productoActivo;
     
-    private final Border bordeDefault = BorderFactory.createRaisedBevelBorder();
+    private final Border bordeDefault = BorderFactory.createRaisedBevelBorder();    
+    private final InterfazPrincipal gui;
     
-    public SeleccionProducto(Producto param){
+    public SeleccionProducto(Producto param, InterfazPrincipal gui){
     
         this.productoActivo = param;    
+        this.gui = gui;
         
         if(productoActivo == null){
             setOpaque(false);
@@ -110,11 +112,11 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getSource() == this)
-            System.out.println("panel");
+            gui.añadirProducto(productoActivo);
         if(e.getSource() == botonDisminuir)
-            System.out.println("Disminuir");
+            gui.disminuirProducto(productoActivo);
         if(e.getSource() == botonEliminar)
-            System.out.println("Eliminar");
+            gui.eliminarProducto(productoActivo);
     }
 
     @Override

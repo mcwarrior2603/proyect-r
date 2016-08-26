@@ -12,11 +12,8 @@ import javax.swing.ImageIcon;
  * @author MCwar
  */
 public class Producto {
-
-    static void setIcon(ImageIcon imageIcon) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    private int idProducto;
+    
+    public int idProducto;
     public String nombre;
     public float precio;
     public int idCategoria;    
@@ -31,5 +28,14 @@ public class Producto {
         this.imagen = imagen;
         
         cantidad = 0;
+    }
+    
+    public Producto(Producto copia){
+        this.idProducto = copia.idProducto;
+        this.nombre = copia.nombre;
+        this.precio = copia.precio;
+        this.idCategoria = copia.idCategoria;
+        this.imagen = copia.imagen;
+        this.cantidad = 0;
     }
 }

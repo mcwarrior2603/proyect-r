@@ -7,8 +7,10 @@ package proyecto.r;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
@@ -17,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -28,15 +31,19 @@ import javax.swing.table.TableModel;
 public class PanelLateral extends PanelInterfaz{
         
     private JScrollPane listaProductos;
-    private JTable tablaVenta = new JTable();        
+    public JTable tablaVenta = new JTable();        
     private JLabel total = new JLabel("$0.0");
     private JLabel logo = new JLabel();
     
     private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel puntoDeVenta = new JPanel();
+    private JPanel panelLista = new JPanel();
     private JPanel panelTotal = new JPanel();
-        
+    
+    private static final Font letraTabla = new Font("Arial", Font.PLAIN, 15);
+    
     private ArrayList <Producto> productos;
+        
         
     public void configurar(InterfazPrincipal gui, ArrayList <Producto> productos){
         super.configurar(gui);
@@ -61,8 +68,7 @@ public class PanelLateral extends PanelInterfaz{
         
     }
     
-    private void configurarPuntoDeVenta(){
-        listaProductos = new JScrollPane();        
+    private void configurarPuntoDeVenta(){               
         
         puntoDeVenta.setLayout(new BorderLayout(5, 5));
         puntoDeVenta.setBackground(Color.GREEN);
@@ -79,18 +85,29 @@ public class PanelLateral extends PanelInterfaz{
         panelTotal.setBorder(new EmptyBorder(5,5,5,5));
         panelTotal.setLayout(new BorderLayout());
         panelTotal.add(total, "Center");        
-                
-        tablaVenta.setModel(new ModelProductos(productos));
-        listaProductos.setViewportView(tablaVenta);        
+                                               
+        tablaVenta.setModel(new ModelProductos(productos));                
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
         tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 4));
-        listaProductos.setBorder(new EmptyBorder(5,5,5,5));
-        listaProductos.setOpaque(false);        
+        tablaVenta.setFont(letraTabla);
+        tablaVenta.setRowHeight(30);        
+        tablaVenta.setShowVerticalLines(false);
+        tablaVenta.setShowHorizontalLines(false);        
+        tablaVenta.setBackground(Color.WHITE);
         
-        puntoDeVenta.add(listaProductos, "Center");
+        listaProductos = new JScrollPane(tablaVenta); 
+        
+        listaProductos.setBorder(new EmptyBorder(5,5,5,5));                        
+        listaProductos.getViewport().setOpaque(false);
+        listaProductos.setBackground(Color.WHITE);                
+        
+        panelLista.setLayout(new BorderLayout());
+        panelLista.add(listaProductos);
+        
+        puntoDeVenta.add(panelLista, "Center");
         puntoDeVenta.add(panelTotal, "South");                                
         
-    }
+    }        
     
     public void actualizar(){
         float sumaTotal = 0;
@@ -98,20 +115,22 @@ public class PanelLateral extends PanelInterfaz{
             sumaTotal += (productos.get(i).precio * productos.get(i).cantidad);                        
         }
         
-        total.setText("$" + sumaTotal);        
-    }
+        total.setText("$" + sumaTotal); 
+        
+        updateUI();
+    }        
     
     class ModelProductos implements TableModel{
 
         ArrayList <Producto> productos;        
         
         public ModelProductos(ArrayList <Producto> productos){
-            this.productos = productos;
+            this.productos = productos;            
         }
         
         @Override
-        public int getRowCount() {
-            return productos.size();
+        public int getRowCount() {            
+            return productos.size();           
         }
 
         @Override

@@ -176,7 +176,7 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
     }
     
     private void actualizar(){
-        float precio = aFloat(fieldPrecio.getText(), "precio");
+        float precio = aFloat(fieldPrecio.getText().trim(), "precio");
         
         if(!valido)
             return;
@@ -199,7 +199,7 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
     }
     
     private void añadir(){                                
-        float precio = aFloat(fieldPrecio.getText(), "precio");
+        float precio = aFloat(fieldPrecio.getText().trim(), "precio");
         
         if(!valido)        
             return;

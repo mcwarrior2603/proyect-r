@@ -54,9 +54,9 @@ public class PanelProductos extends PanelInterfaz{
         
         for(int i = 0 ; i < 100 ; i++){
             if(i < productosRegistrados.size())
-                contenedorProductos.add(new SeleccionProducto(productosRegistrados.get(i)));
+                contenedorProductos.add(new SeleccionProducto(productosRegistrados.get(i), gui));
             else
-                contenedorProductos.add(new SeleccionProducto(null));
+                contenedorProductos.add(new SeleccionProducto(null, null));
         }
          
         scrollProductos = new JScrollPane(contenedorProductos, 
@@ -66,10 +66,7 @@ public class PanelProductos extends PanelInterfaz{
         scrollProductos.setOpaque(false);
         scrollProductos.setBorder(new EmptyBorder(1, 1, 1, 1));
         
-        add(scrollProductos);     
-        
-        gui.productosVenta.add(new Producto(1, "Papas", 1f, -1, "papa.jpg"));
-        gui.productosVenta.get(0).cantidad++;        
+        add(scrollProductos);                     
     }
     
     private static void cargarProductos(){
@@ -87,7 +84,7 @@ public class PanelProductos extends PanelInterfaz{
                         query.getString("IMAGEN")));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PanelProductos.class.getName()).log(Level.SEVERE, null, ex);
+            Ventana.reportarError(ex);
         }
     }
     

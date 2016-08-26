@@ -34,9 +34,9 @@ public class InterfazPrincipal extends Ventana{
     private JLabel logo = new JLabel();
     
     private JPanel panelPrincipal;
-    private PanelMenus panelMenus = new PanelMenus();    
-    private PanelLateral panelLateral = new PanelLateral();   
-    private PanelProductos panelProductos = new PanelProductos(); 
+    public PanelMenus panelMenus = new PanelMenus();    
+    public PanelLateral panelLateral = new PanelLateral();   
+    public PanelProductos panelProductos = new PanelProductos(); 
     
     public ArrayList <Producto> productosVenta = new ArrayList();
             
@@ -75,6 +75,55 @@ public class InterfazPrincipal extends Ventana{
         
         panelPrincipal.updateUI();
 
-    }        
+    }    
+    
+    private int buscarProducto(Producto ing){
+        int i;      
+        for(i = 0 ; i < productosVenta.size() ; i++){
+            if(productosVenta.get(i).idProducto == ing.idProducto)
+                break;
+        }        
+        return i;
+    }
+    
+    public void añadirProducto(Producto ing){
+        int index = buscarProducto(ing);                
+        
+        if(index != productosVenta.size()){
+            productosVenta.get(index).cantidad++;
+        }else{
+            productosVenta.add(new Producto(ing));
+            productosVenta.get(productosVenta.size() - 1).cantidad++;            
+            panelLateral.tablaVenta.setSize(
+                panelLateral.tablaVenta.getWidth(),
+                panelLateral.tablaVenta.getHeight() + 30);
+        }                     
+        
+        panelLateral.actualizar();                
+    }
+    
+    public void disminuirProducto(Producto ing){
+        int index = buscarProducto(ing);               
+        
+        if(index != productosVenta.size()){
+            productosVenta.get(index).cantidad--;        
+            if(productosVenta.get(index).cantidad == 0){
+                productosVenta.remove(index);
+            }                     
+            
+            panelLateral.actualizar();            
+        }                                
+    }
+    
+    public void eliminarProducto(Producto ing){
+        int index = buscarProducto(ing);                
+        
+        if(index != productosVenta.size()){
+            productosVenta.remove(index);  
+            panelLateral.actualizar();            
+        }
+        
+        
+    }
     
 }

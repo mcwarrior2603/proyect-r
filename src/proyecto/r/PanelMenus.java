@@ -133,6 +133,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == cancelarVenta){
             gui.productosVenta.clear();
+            gui.panelLateral.actualizar();
         }else if(e.getSource() == cerrarSesion){
             new Login();
             gui.setVisible(false);
@@ -151,6 +152,8 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             new ProductoFormulario(ProductoFormulario.MODIFICAR);            
         }else if(e.getSource() == eliminarProducto){
             new ProductoFormulario(ProductoFormulario.ELIMINAR);
+        }else if(e.getSource() == reporteVentas){
+            new ReporteVentas();
         }
     }
 }

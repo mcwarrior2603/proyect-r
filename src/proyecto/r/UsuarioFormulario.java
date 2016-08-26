@@ -277,7 +277,7 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
                     else
                         busquedaCorrecta();
                 }else{
-                    if(uso != AXADIR)
+                    if(uso == AXADIR)
                         busquedaCorrecta();
                     else
                         busquedaIncorrecta();

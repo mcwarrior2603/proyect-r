@@ -16,10 +16,10 @@ import java.util.logging.Logger;
 public class SQLConnection {
     
     private volatile static Connection conexion;
-    private volatile static String server = "sql3.freemysqlhosting.net:3306";
-    private volatile static String dbName = "sql3131722";
-    private volatile static String user = "sql3131722";
-    private volatile static String pass = "EjJGjgJDhf";
+    private volatile static String server = "localhost:3306";
+    private volatile static String dbName = "presto";
+    private volatile static String user = "presto";
+    private volatile static String pass = "fenixoftPresto";
     
     public static boolean abrirConexion(){
         if(conexion == null){

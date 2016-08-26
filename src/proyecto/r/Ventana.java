@@ -71,6 +71,29 @@ public class Ventana extends JFrame implements WindowListener{
         }        
     }
     
+    public static boolean checkFecha(String fecha){
+        int axo;
+        int mes;
+        int dia;
+        
+        try{
+            axo = Integer.parseInt(fecha.substring(0, 3));
+            mes = Integer.parseInt(fecha.substring(5, 6));
+            dia = Integer.parseInt(fecha.substring(7, 8));
+            
+            if(fecha.length() != 10)
+                return false;
+            if(mes < 1 || mes > 12)
+                return false;
+            if(dia < 1 || dia > 31)
+                return false;
+            
+            return true;
+        } catch(NumberFormatException e){
+            return false;    
+        }                
+    }
+    
     @Override
     public void windowOpened(WindowEvent e) {}    
     @Override

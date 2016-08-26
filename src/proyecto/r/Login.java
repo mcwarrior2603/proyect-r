@@ -29,7 +29,8 @@ public class Login extends Ventana implements ActionListener {
     private final JPanel PanelVentana;
     
     private final Label Usuario = new Label();
-    private final JPasswordField contraseña = new JPasswordField();
+    private final Label contraseña = new Label();
+    private final JPasswordField password = new JPasswordField();
     private final TextField UsuarioText = new TextField();
     //private final TextField PasswordText = new TextField();
     private final JButton BotonCerrar = new JButton();
@@ -61,10 +62,12 @@ public class Login extends Ventana implements ActionListener {
         PanelVentana.add(BotonCerrar);
         PanelVentana.add(BotonEntrar);
         PanelVentana.add(UsuarioText);
+        PanelVentana.add(password);
         //PanelVentana.add(PasswordText);
         
         Usuario.setBounds(15, 20, 100, 30);
-        contraseña.setBounds(15, 60, 100, 30);
+        contraseña.setBounds( 15, 60, 100, 30);
+        password.setBounds( 120, 60, 200, 30);
         UsuarioText.setBounds(120, 20, 200, 30);
         //PasswordText.setBounds(120, 60, 200, 30);
         BotonEntrar.setBounds(140, 115, 100, 30);

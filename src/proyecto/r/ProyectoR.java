@@ -17,7 +17,7 @@ public class ProyectoR {
     public static void main(String[] args) {
 //       new InterfazPrincipal(null);
         new ReporteVentas();
-//        new Login();
+  //new Login();
     
     }
     

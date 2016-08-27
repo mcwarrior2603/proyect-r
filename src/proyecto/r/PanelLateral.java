@@ -12,6 +12,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,7 +30,7 @@ import javax.swing.table.TableModel;
  *
  * @author MCwar
  */
-public class PanelLateral extends PanelInterfaz{
+public class PanelLateral extends PanelInterfaz implements MouseListener{
         
     private JScrollPane listaProductos;
     public JTable tablaVenta = new JTable();        
@@ -49,6 +51,8 @@ public class PanelLateral extends PanelInterfaz{
         super.configurar(gui);
         setLayout(new BorderLayout(5, 5));
                 
+        total.addMouseListener(this);
+        
         this.productos = productos;
         
         configurarLogo();
@@ -119,6 +123,25 @@ public class PanelLateral extends PanelInterfaz{
         
         updateUI();
     }        
+    
+    @Override
+    public void mouseClicked(MouseEvent e) {                
+        float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");        
+        System.out.println(total.getText().substring(1));
+        new Cobrar(fTotal, gui);
+        
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
+    
+    
     
     class ModelProductos implements TableModel{
 

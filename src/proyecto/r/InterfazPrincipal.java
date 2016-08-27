@@ -91,9 +91,10 @@ public class InterfazPrincipal extends Ventana{
         return i;
     }
     
-    public boolean guardarVenta(Venta aGuardar){                
+    public boolean guardarVenta(float total){                
                         
         Calendar fecha = Calendar.getInstance();                
+        int id;
         
         String sql = "INSERT INTO VENTAS(ID_USUARIO, FECHA, HORA, TOTAL)"
                 + "VALUES("
@@ -102,7 +103,7 @@ public class InterfazPrincipal extends Ventana{
                 + "/" + (fecha.get(Calendar.MONTH) + 1)
                 + "/" + fecha.get(Calendar.DAY_OF_MONTH) + "',"
                 + "'" + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE) + "',"
-                + aGuardar.total 
+                + total 
                 + ")";
         
         if(!SQLConnection.actualizar(sql))
@@ -111,7 +112,7 @@ public class InterfazPrincipal extends Ventana{
         ResultSet ultimoId = SQLConnection.buscar("SELECT * FROM VENTAS ORDER BY ID_VENTA DESC LIMIT 1");
         try {
             ultimoId.next();
-            aGuardar.id = ultimoId.getInt("ID_VENTA");
+            id = ultimoId.getInt("ID_VENTA");
         } catch (SQLException ex) {
             reportarError(ex);
             return false;
@@ -121,7 +122,7 @@ public class InterfazPrincipal extends Ventana{
             sql = "INSERT INTO PRODUCTOS_VENTAS(ID_PRODUCTO, ID_VENTA, CANTIDAD)"
                     + "VALUES("
                     + productosVenta.get(i).idProducto + ","
-                    + aGuardar.id + ","
+                    + id + ","
                     + productosVenta.get(i).cantidad + ")";
             
             if(!SQLConnection.actualizar(sql))

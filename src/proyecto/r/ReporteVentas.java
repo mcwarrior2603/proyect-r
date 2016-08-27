@@ -10,13 +10,17 @@ import java.awt.Dimension;
 import java.awt.TextField;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -33,7 +37,9 @@ public class ReporteVentas extends Ventana{
     private final JRadioButton diaActual = new JRadioButton();
     private final JRadioButton diaPeriodo = new JRadioButton();
     private final JTable datos = new JTable();
-    private DefaultTableModel model;
+    private JScrollPane scTsbla = new JScrollPane();
+    
+    private JPanel Tabla = new JPanel();
     private JPanel todo = new JPanel();    
     
     
@@ -53,11 +59,11 @@ public class ReporteVentas extends Ventana{
         
         todo.setLayout(null);                        
         
-        //datos.getColumnModel().addColumn(1).setPreferredWidth(100);
+        datos.setModel(new ModelVentas());
+        scTsbla.setViewportView(datos);
+    
+        add(datos);
         
-        model = (DefaultTableModel) datos.getModel();
-        model.addRow(new Object[]{"","","",""});
-        model.setNumRows(2);
         
         
         titulo.setText("Ventas");
@@ -90,4 +96,87 @@ public class ReporteVentas extends Ventana{
         
     }
 
+}
+
+class ModelVentas implements TableModel{
+
+    
+    ArrayList <String> productos = new ArrayList();
+    
+    ArrayList <Integer> cantidad = new ArrayList();
+    
+    public ModelVentas(){
+        
+        productos.add("papas");
+        productos.add("Galletas");
+        
+        cantidad.add(1);
+        cantidad.add(3);
+        
+    }
+    
+    @Override
+    public int getRowCount() {
+        
+        return productos.size();
+        
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 2;
+        
+    }
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        if(columnIndex == 0){
+            return "Productos";
+        }if(columnIndex == 1){
+            return "Cantidad";
+        }
+        return "";
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+         if(columnIndex == 0){
+            return String.class;
+        } if(columnIndex == 1){
+            return String.class;
+        }
+        
+        return Object.class;
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+         if(columnIndex == 0){
+            return productos.get(rowIndex);
+        } if(columnIndex == 1){
+            return cantidad.get(rowIndex);
+        }
+        return "";
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        
+    }
+
+    @Override
+    public void addTableModelListener(TableModelListener l) {
+        
+    }
+
+    @Override
+    public void removeTableModelListener(TableModelListener l) {
+        
+    }
+    
 }

@@ -29,8 +29,8 @@ public class Login extends Ventana implements ActionListener {
     private final JPanel PanelVentana;
     
     private final Label Usuario = new Label();
-    private final Label contraseña = new Label();
-    private final JPasswordField password = new JPasswordField();
+    private final Label labelContraseña = new Label();
+    private final JPasswordField fieldPassword = new JPasswordField();
     private final TextField UsuarioText = new TextField();
     //private final TextField PasswordText = new TextField();
     private final JButton BotonCerrar = new JButton();
@@ -53,28 +53,28 @@ public class Login extends Ventana implements ActionListener {
         BotonCerrar.addActionListener(this);
         
         Usuario.setText("Usuario :");
-        contraseña.setText("Password :");
+        labelContraseña.setText("Password :");
         BotonCerrar.setText("Cerrar");
         BotonEntrar.setText("Entrar");
         
         PanelVentana.add(Usuario);
-        PanelVentana.add(contraseña);
+        PanelVentana.add(labelContraseña);
         PanelVentana.add(BotonCerrar);
         PanelVentana.add(BotonEntrar);
         PanelVentana.add(UsuarioText);
-        PanelVentana.add(password);
+        PanelVentana.add(fieldPassword);
         //PanelVentana.add(PasswordText);
         
         Usuario.setBounds(15, 20, 100, 30);
-        contraseña.setBounds( 15, 60, 100, 30);
-        password.setBounds( 120, 60, 200, 30);
+        labelContraseña.setBounds( 15, 60, 100, 30);
+        fieldPassword.setBounds( 120, 60, 200, 30);
         UsuarioText.setBounds(120, 20, 200, 30);
         //PasswordText.setBounds(120, 60, 200, 30);
         BotonEntrar.setBounds(140, 115, 100, 30);
         BotonCerrar.setBounds(245, 115, 100, 30);
         
         UsuarioText.setEnabled(true);
-        contraseña.setEnabled(true);  
+        labelContraseña.setEnabled(true);  
         
     
     }
@@ -93,10 +93,10 @@ public class Login extends Ventana implements ActionListener {
             return;
         }
         
-        ResultSet query = SQLConnection.buscar("SELECT * FROM USERS WHERE NOMBRE_USUARIO = '" + UsuarioText.getText() + "'");
+        ResultSet query = SQLConnection.buscar("SELECT * FROM USUARIOS WHERE NOMBRE_USUARIO = '" + UsuarioText.getText() + "'");
         try {                        
             if(query.next())
-                if(BCrypt.checkpw(contraseña.getText(), query.getString("CONTRASEÑA"))){
+                if(BCrypt.checkpw(fieldPassword.getText(), query.getString("CONTRASEÑA"))){
                     setVisible(false);
 
                     new InterfazPrincipal(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),
@@ -112,10 +112,7 @@ public class Login extends Ventana implements ActionListener {
             
         } catch (SQLException ex) {
             reportarError(ex);
-        }
-        
-        SQLConnection.cerrarConexion();
-        
+        }                        
         
     }
 

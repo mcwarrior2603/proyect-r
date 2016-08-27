@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -25,8 +26,6 @@ import javax.swing.JTextField;
 public class Cobrar extends Ventana implements ActionListener{
     
     private static final Dimension dimensionVentana = new Dimension(300, 200);
-    
-    private Venta ventaActiva;
     
     private final JLabel labelTotal = new JLabel("Total");
     private final JLabel labelPago = new JLabel("Su pago");
@@ -41,10 +40,11 @@ public class Cobrar extends Ventana implements ActionListener{
     
     private JPanel panelPrincipal;
     private InterfazPrincipal gui;
+    private float total;
     
-    public Cobrar(Venta ventaActiva, InterfazPrincipal gui){
+    public Cobrar(float total, InterfazPrincipal gui){
         
-        this.ventaActiva = ventaActiva;
+        this.total = total;
         this.gui = gui;        
         
         setUndecorated(true);
@@ -85,8 +85,8 @@ public class Cobrar extends Ventana implements ActionListener{
         fieldCambio.setBounds(95, 110, 150, 40);
         buttonCancelar.setBounds(85, 160, 100, 30);
         buttonGuardar.setBounds(190, 160, 100, 30);
-        
-        fieldTotal.setText(String.valueOf(ventaActiva.total));        
+                
+        fieldTotal.setText(String.valueOf(total));
         fieldPago.setText("0.0");
         actualizar();
         
@@ -101,7 +101,16 @@ public class Cobrar extends Ventana implements ActionListener{
             dispose();
             setVisible(false);
         }else if(e.getSource() == buttonGuardar){
-            gui.guardarVenta(ventaActiva);
+            if(gui.guardarVenta(total)){
+                JOptionPane.showMessageDialog(null, "Venta correcta");
+                setVisible(false);
+                dispose();
+                gui.limpiarVenta();
+            }else{
+                JOptionPane.showMessageDialog(null, "Venta correcta");
+                setVisible(false);
+                dispose();
+            }
         }
     }
     

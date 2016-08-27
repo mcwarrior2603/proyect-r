@@ -113,19 +113,19 @@ public class ListaDeVentas extends Ventana implements ActionListener{
             if(rbuttonHoy.isSelected()){
                 tableVentas.setModel(new ModelVentas(hoy(), hoy()));
             }else{
-                if(!checkFecha(fieldFechaInicio.getText().trim())){
+                if(!checkFecha(fieldFechaInicio.getText())){
                     JOptionPane.showMessageDialog(null, "Fecha de inicio incorrecta.\n"
                             + "El formato correcto es AAAA/MM/DD");
                     return;
                 }
-                if(!checkFecha(fieldFechaFin.getText().trim())){
+                if(!checkFecha(fieldFechaFin.getText())){
                     JOptionPane.showMessageDialog(null, "Fecha de fin incorrecta.\n"
                             + "El formato correcto es AAAA/MM/DD");
                     return;
                 }
                 tableVentas.setModel(new ModelVentas(
-                        fieldFechaInicio.getText().trim(), 
-                        fieldFechaFin.getText().trim()));
+                        fieldFechaInicio.getText(), 
+                        fieldFechaFin.getText()));
             }
         }            
     }

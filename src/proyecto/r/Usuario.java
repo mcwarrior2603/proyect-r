@@ -11,7 +11,7 @@ package proyecto.r;
  */
 public class Usuario {
     
-    private int id;
+    public int id;
     public String nombre;
     public int nivelDeAcceso;
     

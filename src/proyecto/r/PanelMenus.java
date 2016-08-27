@@ -132,8 +132,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == cancelarVenta){
-            gui.productosVenta.clear();
-            gui.panelLateral.actualizar();
+            gui.limpiarVenta();
         }else if(e.getSource() == cerrarSesion){
             new Login();
             gui.setVisible(false);

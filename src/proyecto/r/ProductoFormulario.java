@@ -176,11 +176,11 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
     }
     
     private void actualizar(){
-        float precio = aFloat(fieldPrecio.getText().trim(), "precio");
+        float precio = aFloat(fieldPrecio.getText(), "precio");
         
         if(!valido)
             return;
-        if(precio == defaultAFloat)
+        if(precio == DEFAULT_AFLOAT)
             return;
         
         String sql = "UPDATE PRODUCTOS SET " + 
@@ -199,11 +199,11 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
     }
     
     private void añadir(){                                
-        float precio = aFloat(fieldPrecio.getText().trim(), "precio");
+        float precio = aFloat(fieldPrecio.getText(), "precio");
         
         if(!valido)        
             return;
-        if(precio == defaultAFloat)
+        if(precio == DEFAULT_AFLOAT)
             return;
         
         String sql = "INSERT INTO PRODUCTOS(ID_CATEGORIA,NOMBRE,PRECIO,IMAGEN)";        

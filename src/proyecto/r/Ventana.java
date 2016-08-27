@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 public class Ventana extends JFrame implements WindowListener{
 
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
-    public static final float defaultAFloat = -1f;
+    public static final float DEFAULT_AFLOAT = -1.7932f;
     
     public static String obtenerMaster(){
         try {
@@ -64,7 +64,7 @@ public class Ventana extends JFrame implements WindowListener{
     
     public static float aFloat(String f, String significado){
         try{
-            return Float.parseFloat(f);
+            return Float.parseFloat(f.trim());
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, f + " no es un valor correcto para " + significado);
             return -1f;
@@ -72,6 +72,9 @@ public class Ventana extends JFrame implements WindowListener{
     }
     
     public static boolean checkFecha(String fecha){
+        
+        fecha = fecha.trim();
+        
         int axo;
         int mes;
         int dia;

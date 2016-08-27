@@ -30,6 +30,16 @@ public class Producto {
         cantidad = 0;
     }
     
+    public Producto(int idProducto, String nombre, float precio, int idCategoria, String imagen, int cantidad){
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.idCategoria = idCategoria;
+        this.imagen = imagen;
+                        
+        this.cantidad = cantidad;
+    }
+    
     public Producto(Producto copia){
         this.idProducto = copia.idProducto;
         this.nombre = copia.nombre;

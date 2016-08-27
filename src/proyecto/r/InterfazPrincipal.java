@@ -10,7 +10,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -18,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -84,6 +89,51 @@ public class InterfazPrincipal extends Ventana{
                 break;
         }        
         return i;
+    }
+    
+    public boolean guardarVenta(Venta aGuardar){                
+                        
+        Calendar fecha = Calendar.getInstance();                
+        
+        String sql = "INSERT INTO VENTAS(ID_USUARIO, FECHA, HORA, TOTAL)"
+                + "VALUES("
+                + usuarioActivo.id + ","
+                + "'" + fecha.get(Calendar.YEAR)
+                + "/" + (fecha.get(Calendar.MONTH) + 1)
+                + "/" + fecha.get(Calendar.DAY_OF_MONTH) + "',"
+                + "'" + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE) + "',"
+                + aGuardar.total 
+                + ")";
+        
+        if(!SQLConnection.actualizar(sql))
+            return false;
+        
+        ResultSet ultimoId = SQLConnection.buscar("SELECT * FROM VENTAS ORDER BY ID_VENTA DESC LIMIT 1");
+        try {
+            ultimoId.next();
+            aGuardar.id = ultimoId.getInt("ID_VENTA");
+        } catch (SQLException ex) {
+            reportarError(ex);
+            return false;
+        }        
+        
+        for(int i = 0 ; i < productosVenta.size() ; i++){
+            sql = "INSERT INTO PRODUCTOS_VENTAS(ID_PRODUCTO, ID_VENTA, CANTIDAD)"
+                    + "VALUES("
+                    + productosVenta.get(i).idProducto + ","
+                    + aGuardar.id + ","
+                    + productosVenta.get(i).cantidad + ")";
+            
+            if(!SQLConnection.actualizar(sql))
+                return false;
+        }
+            
+        return true;
+    }
+    
+    public void limpiarVenta(){
+        productosVenta.clear();
+        panelLateral.actualizar();
     }
     
     public void añadirProducto(Producto ing){

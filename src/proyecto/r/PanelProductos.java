@@ -69,7 +69,7 @@ public class PanelProductos extends PanelInterfaz{
         add(scrollProductos);                     
     }
     
-    private static void cargarProductos(){
+    public void cargarProductos(){
         ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS");
         
         if(query == null)

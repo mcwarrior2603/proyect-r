@@ -152,7 +152,9 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         }else if(e.getSource() == eliminarProducto){
             new ProductoFormulario(ProductoFormulario.ELIMINAR);
         }else if(e.getSource() == reporteVentas){
-            new ReporteVentas();
+            new ListaDeVentas();
+        }else if(e.getSource() == reporteProductos){
+            new ReporteVentasProductos();
         }
     }
 }

@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -23,6 +25,17 @@ public class Ventana extends JFrame implements WindowListener{
 
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
     public static final float DEFAULT_AFLOAT = -1.7932f;
+    
+    public static String hoy(){
+        Calendar fecha = Calendar.getInstance();
+        String ret = "";
+        
+        ret += fecha.get(Calendar.YEAR) + "/";
+        ret += (fecha.get(Calendar.MONTH) + 1) + "/";
+        ret += fecha.get(Calendar.DAY_OF_MONTH);
+        
+        return ret;        
+    }
     
     public static String obtenerMaster(){
         try {
@@ -40,7 +53,8 @@ public class Ventana extends JFrame implements WindowListener{
     public static void reportarError(Exception e){
         String error = "¡Ha ocurrido un error :(\n\nTe recomiendo tomar una foto para\n" + 
                 "facilitar la correción del fallo\n\n"
-                + e.toString() + "\n\n";
+                + e.toString() + "\n\n";                        
+        
         for(int i = 0 ; i < e.getStackTrace().length ; i++){
             error += e.getStackTrace()[i] + "\n";
         }
@@ -106,12 +120,8 @@ public class Ventana extends JFrame implements WindowListener{
     @Override
     public void windowDeiconified(WindowEvent e) {}
     @Override
-    public void windowActivated(WindowEvent e) {
-        System.out.println("2");
-    }
+    public void windowActivated(WindowEvent e) {}
     @Override
-    public void windowDeactivated(WindowEvent e) {
-        System.out.println("1");
-    }
+    public void windowDeactivated(WindowEvent e) {}
     
 }

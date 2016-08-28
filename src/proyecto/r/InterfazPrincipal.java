@@ -101,6 +101,10 @@ public class InterfazPrincipal extends Ventana{
         }
     }
     
+    public void cargarProductos(){
+        panelProductos.cargarProductos();
+    }
+    
     public boolean guardarVenta(float total){                
                         
         Calendar fecha = Calendar.getInstance();                
@@ -109,9 +113,7 @@ public class InterfazPrincipal extends Ventana{
         String sql = "INSERT INTO VENTAS(ID_USUARIO, FECHA, HORA, TOTAL)"
                 + "VALUES("
                 + usuarioActivo.id + ","
-                + "'" + fecha.get(Calendar.YEAR)
-                + "/" + (fecha.get(Calendar.MONTH) + 1)
-                + "/" + fecha.get(Calendar.DAY_OF_MONTH) + "',"
+                + "'" + hoy() + "', "
                 + "'" + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE) + "',"
                 + total 
                 + ")";

@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.PasswordField;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -51,6 +53,7 @@ public class Login extends Ventana implements ActionListener {
         
         BotonEntrar.addActionListener(this);
         BotonCerrar.addActionListener(this);
+        fieldPassword.addActionListener(this);
         
         Usuario.setText("Usuario :");
         labelContraseña.setText("Password :");
@@ -74,14 +77,14 @@ public class Login extends Ventana implements ActionListener {
         BotonCerrar.setBounds(245, 115, 100, 30);
         
         UsuarioText.setEnabled(true);
-        labelContraseña.setEnabled(true);  
+        labelContraseña.setEnabled(true);                  
         
     
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {     
-        if(e.getSource() == BotonEntrar){            
+        if(e.getSource() == BotonEntrar || e.getSource() == fieldPassword){            
             Check();
         }else if(e.getSource() == BotonCerrar){
             confirmarCerrado();

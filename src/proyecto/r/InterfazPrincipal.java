@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class InterfazPrincipal extends Ventana{
             
     private Dimension tamaxoVentana = new Dimension(300, 300);
     
+    public boolean cobrando = false;
     public Usuario usuarioActivo;
     
     public InterfazPrincipal(Usuario usuarioActivo){                
@@ -80,7 +82,7 @@ public class InterfazPrincipal extends Ventana{
         
         panelPrincipal.updateUI();
 
-    }    
+    }            
     
     private int buscarProducto(Producto ing){
         int i;      
@@ -89,6 +91,14 @@ public class InterfazPrincipal extends Ventana{
                 break;
         }        
         return i;
+    }
+    
+    @Override
+    public void windowClosing(WindowEvent e){
+        if(isVisible()){
+            if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
+                System.exit(0);
+        }
     }
     
     public boolean guardarVenta(float total){                

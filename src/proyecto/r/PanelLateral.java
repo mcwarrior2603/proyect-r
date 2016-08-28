@@ -125,10 +125,13 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
     }        
     
     @Override
-    public void mouseClicked(MouseEvent e) {                
-        float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");        
-        System.out.println(total.getText().substring(1));
-        new Cobrar(fTotal, gui);
+    public void mouseClicked(MouseEvent e) {  
+        if(!gui.cobrando){
+            float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");        
+            System.out.println(total.getText().substring(1));
+            new Cobrar(fTotal, gui);
+            gui.cobrando = true;
+        }
         
     }
     

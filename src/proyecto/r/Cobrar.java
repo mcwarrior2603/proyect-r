@@ -6,14 +6,18 @@
 package proyecto.r;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +29,7 @@ import javax.swing.JTextField;
  */
 public class Cobrar extends Ventana implements ActionListener{
     
-    private static final Dimension dimensionVentana = new Dimension(300, 200);
+    private static final Dimension dimensionVentana = new Dimension(500, 300);
     
     private final JLabel labelTotal = new JLabel("Total");
     private final JLabel labelPago = new JLabel("Su pago");
@@ -38,9 +42,28 @@ public class Cobrar extends Ventana implements ActionListener{
     private final JButton buttonGuardar = new JButton("Guardar");
     private final JButton buttonCancelar = new JButton("Cancelar");
     
+    private final JButton cero = new JButton("0");
+    private final JButton primero = new JButton("1");
+    private final JButton segundo = new JButton("2");
+    private final JButton tercero = new JButton("3");
+    private final JButton cuarto = new JButton("4");
+    private final JButton quinto = new JButton("5");
+    private final JButton sexto = new JButton("6");
+    private final JButton septimo = new JButton("7");
+    private final JButton octavo = new JButton("8");
+    private final JButton noveno = new JButton("9");        
+    
+    private final JButton punto = new JButton(".");
+    private final JButton borrar = new JButton("C");
+    
     private JPanel panelPrincipal;
     private InterfazPrincipal gui;
     private float total;
+    private boolean isPuntoActivo = false;
+    private float decimales = 1;
+    private BigDecimal numeroActual = BigDecimal.ZERO;        
+    
+    private boolean visible = true;
     
     public Cobrar(float total, InterfazPrincipal gui){
         
@@ -60,9 +83,21 @@ public class Cobrar extends Ventana implements ActionListener{
         panelPrincipal.setBackground(Color.WHITE);
         panelPrincipal.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         
-        addWindowListener(this);
+        addWindowListener(this);                
         buttonCancelar.addActionListener(this);
         buttonGuardar.addActionListener(this);        
+        cero.addActionListener(this);
+        primero.addActionListener(this);
+        segundo.addActionListener(this);
+        tercero.addActionListener(this);
+        cuarto.addActionListener(this);
+        quinto.addActionListener(this);
+        sexto.addActionListener(this);
+        septimo.addActionListener(this);
+        octavo.addActionListener(this);
+        noveno.addActionListener(this);
+        borrar.addActionListener(this);
+        punto.addActionListener(this);        
         
         configurarComponentes();
         
@@ -74,6 +109,20 @@ public class Cobrar extends Ventana implements ActionListener{
         panelPrincipal.add(fieldCambio);                
         panelPrincipal.add(buttonCancelar);
         panelPrincipal.add(buttonGuardar);
+        panelPrincipal.add(cero);
+        panelPrincipal.add(primero);
+        panelPrincipal.add(segundo);
+        panelPrincipal.add(tercero);
+        panelPrincipal.add(cuarto);
+        panelPrincipal.add(quinto);
+        panelPrincipal.add(sexto);
+        panelPrincipal.add(septimo);
+        panelPrincipal.add(octavo);
+        panelPrincipal.add(noveno);
+        
+        panelPrincipal.add(punto);
+        panelPrincipal.add(borrar);                                
+        
     }
     
     private void configurarComponentes(){
@@ -83,12 +132,25 @@ public class Cobrar extends Ventana implements ActionListener{
         fieldPago.setBounds(95, 65, 150, 40);
         labelCambio.setBounds(15, 115, 75, 30);
         fieldCambio.setBounds(95, 110, 150, 40);
-        buttonCancelar.setBounds(85, 160, 100, 30);
-        buttonGuardar.setBounds(190, 160, 100, 30);
+        buttonCancelar.setBounds(35, 160, 100, 30);
+        buttonGuardar.setBounds(140, 160, 100, 30);
+        
+        primero.setBounds(270, 20, 50, 50);
+        segundo.setBounds(340, 20, 50, 50);
+        tercero.setBounds( 410, 20, 50, 50);
+        cuarto.setBounds( 270, 90, 50, 50);
+        quinto.setBounds( 340, 90, 50, 50);
+        sexto.setBounds( 410, 90, 50, 50);
+        septimo.setBounds( 270, 160, 50, 50);
+        octavo.setBounds( 340, 160, 50, 50);
+        noveno.setBounds(410, 160, 50, 50);
+        cero.setBounds(270, 230, 50, 50);
+        borrar.setBounds(340, 230, 50, 50);
+        punto.setBounds(410, 230, 50, 50);
                 
         fieldTotal.setText(String.valueOf(total));
         fieldPago.setText("0.0");
-        actualizar();
+        actualizarPago(numeroActual.toString());
         
         fieldTotal.setEditable(false);
         fieldPago.setEditable(false);
@@ -97,30 +159,79 @@ public class Cobrar extends Ventana implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        int valor = 0;
+        
         if(e.getSource() == buttonCancelar){
             dispose();
             setVisible(false);
+            gui.cobrando = false;
         }else if(e.getSource() == buttonGuardar){
             if(gui.guardarVenta(total)){
                 JOptionPane.showMessageDialog(null, "Venta correcta");
                 setVisible(false);
                 dispose();
-                gui.limpiarVenta();
+                gui.limpiarVenta();           
+                gui.cobrando = false;
             }else{
                 JOptionPane.showMessageDialog(null, "Venta correcta");
                 setVisible(false);
                 dispose();
-            }
+                gui.cobrando = false;
+            }            
+        }else if(e.getSource() == punto){
+            isPuntoActivo = true;
+            decimales /= 10;
+            return;
+        }else if(e.getSource() == borrar){
+            numeroActual = BigDecimal.ZERO;
+            isPuntoActivo = false;
+            decimales = 1; 
+            actualizar();
+        }        
+        
+        if(e.getSource() == cero){            
+            valor = 0;         
+        }else if(e.getSource() == primero){
+            valor = 1;
+        }else if(e.getSource() == segundo){
+            valor = 2;            
+        }else if(e.getSource() == tercero){
+            valor = 3;
+        }else if(e.getSource() == cuarto ){
+            valor = 4;            
+        }else if(e.getSource() == quinto){
+            valor = 5;            
+        }else if(e.getSource() == sexto){
+            valor = 6;
+        }else if(e.getSource() == septimo){
+            valor = 7;
+        }else if(e.getSource() == octavo){
+            valor = 8;
+        }else if(e.getSource() == noveno){
+            valor = 9;
+        }           
+        
+        if(isPuntoActivo){
+            numeroActual = (numeroActual.add(BigDecimal.valueOf(decimales * valor)));
+            decimales /= 10;
+        }else{
+            numeroActual = (numeroActual.movePointRight(1).add(BigDecimal.valueOf(valor)));
         }
+        
+        actualizarPago(numeroActual.toString());        
     }
     
     @Override
-    public void windowClosing(WindowEvent e) {
+    public void windowClosing(WindowEvent e) {           
         if(isVisible()){
             dispose();
             setVisible(false);
-        }
-        
+        }                
+    }
+    
+    public void actualizarPago(String g){
+        fieldPago.setText(g);
+        actualizar();
     }
     
     public void actualizar(){

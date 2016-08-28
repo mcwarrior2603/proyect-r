@@ -106,8 +106,12 @@ public class Ventana extends JFrame implements WindowListener{
     @Override
     public void windowDeiconified(WindowEvent e) {}
     @Override
-    public void windowActivated(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {
+        System.out.println("2");
+    }
     @Override
-    public void windowDeactivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {
+        System.out.println("1");
+    }
     
 }

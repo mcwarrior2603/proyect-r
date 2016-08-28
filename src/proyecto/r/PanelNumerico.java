@@ -5,18 +5,24 @@
  */
 package proyecto.r;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.math.BigDecimal;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
  * @author USUARIO FINAL
  */
-public class PanelNumerico extends JFrame implements WindowListener {
+public class PanelNumerico extends JFrame implements ActionListener{
     
     private final Dimension x = new Dimension(235,325);
     
@@ -29,23 +35,42 @@ public class PanelNumerico extends JFrame implements WindowListener {
     private final JButton sexto = new JButton("6");
     private final JButton septimo = new JButton("7");
     private final JButton octavo = new JButton("8");
-    private final JButton noveno = new JButton("9");
-    
+    private final JButton noveno = new JButton("9");        
     
     private final JButton punto = new JButton(".");
-    private final JButton vacio = new JButton("");
+    private final JButton borrar = new JButton("C");
     
-    public PanelNumerico(){
+    private Cobrar objetivo;
+    
+    private boolean isPuntoActivo = false;
+    private float decimales = 1;
+    private BigDecimal numeroActual = BigDecimal.ZERO;
+    
+    public PanelNumerico(Cobrar objetivo){
         
-        addWindowListener(this);
+        this.objetivo = objetivo;
+                
         setLayout(null);
         setPreferredSize(x);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setUndecorated(true);
         pack();
-        setVisible(true);
-        setLocationRelativeTo(null);
+        setVisible(true);    
+        ((JPanel)getContentPane()).setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
+        cero.addActionListener(this);
+        primero.addActionListener(this);
+        segundo.addActionListener(this);
+        tercero.addActionListener(this);
+        cuarto.addActionListener(this);
+        quinto.addActionListener(this);
+        sexto.addActionListener(this);
+        septimo.addActionListener(this);
+        octavo.addActionListener(this);
+        noveno.addActionListener(this);
+        borrar.addActionListener(this);
+        punto.addActionListener(this);
         
         add(cero);
         add(primero);
@@ -59,7 +84,7 @@ public class PanelNumerico extends JFrame implements WindowListener {
         add(noveno);
         
         add(punto);
-        add(vacio);
+        add(borrar);
         
         primero.setBounds( 20, 20, 50, 50);
         segundo.setBounds(90, 20, 50, 50);
@@ -71,42 +96,62 @@ public class PanelNumerico extends JFrame implements WindowListener {
         octavo.setBounds( 90, 160, 50, 50);
         noveno.setBounds(160, 160, 50, 50);
         cero.setBounds(20, 230, 50, 50);
-        vacio.setBounds(90, 230, 50, 50);
+        borrar.setBounds(90, 230, 50, 50);
         punto.setBounds(160, 230, 50, 50);
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-        
+    public void addFieldDeEfecto(Cobrar objetivo){
+        this.objetivo = objetivo;
     }
 
-    @Override
-    public void windowClosing(WindowEvent e) {
-        
+    private void actualizar(){
+        objetivo.actualizarPago(numeroActual.toString());
     }
-
+    
     @Override
-    public void windowClosed(WindowEvent e) {
+    public void actionPerformed(ActionEvent e) {
+        int valor = 0;
         
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
+        if(e.getSource() == punto){
+            isPuntoActivo = true;
+            decimales /= 10;
+            return;
+        }else if(e.getSource() == borrar){
+            numeroActual = BigDecimal.ZERO;
+            isPuntoActivo = false;
+            decimales = 1; 
+            actualizar();
+        }        
         
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
+        if(e.getSource() == cero){            
+            valor = 0;         
+        }else if(e.getSource() == primero){
+            valor = 1;
+        }else if(e.getSource() == segundo){
+            valor = 2;            
+        }else if(e.getSource() == tercero){
+            valor = 3;
+        }else if(e.getSource() == cuarto ){
+            valor = 4;            
+        }else if(e.getSource() == quinto){
+            valor = 5;            
+        }else if(e.getSource() == sexto){
+            valor = 6;
+        }else if(e.getSource() == septimo){
+            valor = 7;
+        }else if(e.getSource() == octavo){
+            valor = 8;
+        }else if(e.getSource() == noveno){
+            valor = 9;
+        }           
         
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
+        if(isPuntoActivo){
+            numeroActual = (numeroActual.add(BigDecimal.valueOf(decimales * valor)));
+            decimales /= 10;
+        }else{
+            numeroActual = (numeroActual.movePointRight(1).add(BigDecimal.valueOf(valor)));
+        }
         
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-        
-    }
+        actualizar();
+    }        
 }

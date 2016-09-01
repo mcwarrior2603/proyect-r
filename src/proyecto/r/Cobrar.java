@@ -8,6 +8,7 @@ package proyecto.r;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,8 @@ import javax.swing.JTextField;
  */
 public class Cobrar extends Ventana implements ActionListener{
     
-    private static final Dimension dimensionVentana = new Dimension(500, 300);
+    private static final Font texto = new Font("Arial", Font.BOLD, 30);
+    private static final Dimension dimensionVentana = new Dimension(600, 300);
     
     private final JLabel labelTotal = new JLabel("Total");
     private final JLabel labelPago = new JLabel("Su pago");
@@ -126,28 +128,47 @@ public class Cobrar extends Ventana implements ActionListener{
     }
     
     private void configurarComponentes(){
-        labelTotal.setBounds(15, 25, 75, 30);
-        fieldTotal.setBounds(95, 20, 150, 40);
-        labelPago.setBounds(15, 70, 75, 30);
-        fieldPago.setBounds(95, 65, 150, 40);
-        labelCambio.setBounds(15, 115, 75, 30);
-        fieldCambio.setBounds(95, 110, 150, 40);
-        buttonCancelar.setBounds(35, 160, 100, 30);
-        buttonGuardar.setBounds(140, 160, 100, 30);
+        labelTotal.setBounds(15, 25, 175, 30);
+        fieldTotal.setBounds(195, 20, 150, 40);
+        labelPago.setBounds(15, 70, 175, 30);
+        fieldPago.setBounds(195, 65, 150, 40);
+        labelCambio.setBounds(15, 115, 175, 30);
+        fieldCambio.setBounds(195, 110, 150, 40);
+        buttonCancelar.setBounds(135, 160, 100, 30);
+        buttonGuardar.setBounds(240, 160, 100, 30);
         
-        primero.setBounds(270, 20, 50, 50);
-        segundo.setBounds(340, 20, 50, 50);
-        tercero.setBounds( 410, 20, 50, 50);
-        cuarto.setBounds( 270, 90, 50, 50);
-        quinto.setBounds( 340, 90, 50, 50);
-        sexto.setBounds( 410, 90, 50, 50);
-        septimo.setBounds( 270, 160, 50, 50);
-        octavo.setBounds( 340, 160, 50, 50);
-        noveno.setBounds(410, 160, 50, 50);
-        cero.setBounds(270, 230, 50, 50);
-        borrar.setBounds(340, 230, 50, 50);
-        punto.setBounds(410, 230, 50, 50);
+        primero.setBounds(370, 20, 50, 50);
+        segundo.setBounds(440, 20, 50, 50);
+        tercero.setBounds(510, 20, 50, 50);
+        cuarto.setBounds(370, 90, 50, 50);
+        quinto.setBounds(440, 90, 50, 50);
+        sexto.setBounds(510, 90, 50, 50);
+        septimo.setBounds(370, 160, 50, 50);
+        octavo.setBounds(440, 160, 50, 50);
+        noveno.setBounds(510, 160, 50, 50);
+        cero.setBounds(370, 230, 50, 50);
+        borrar.setBounds(440, 230, 50, 50);
+        punto.setBounds(510, 230, 50, 50);
                 
+        primero.setFont(texto);
+        segundo.setFont(texto);
+        tercero.setFont(texto);
+        cuarto.setFont(texto);
+        quinto.setFont(texto);
+        sexto.setFont(texto);
+        septimo.setFont(texto);
+        octavo.setFont(texto);
+        noveno.setFont(texto);
+        cero.setFont(texto);
+        borrar.setFont(texto);
+        punto.setFont(texto);
+        labelCambio.setFont(texto);
+        labelPago.setFont(texto);
+        labelTotal.setFont(texto);
+        fieldCambio.setFont(texto);
+        fieldTotal.setFont(texto);
+        fieldPago.setFont(texto);
+        
         fieldTotal.setText(String.valueOf(total));
         fieldPago.setText("0.0");
         actualizarPago(numeroActual.toString());
@@ -222,10 +243,11 @@ public class Cobrar extends Ventana implements ActionListener{
     }
     
     @Override
-    public void windowClosing(WindowEvent e) {           
+    public void windowClosing(WindowEvent e) {            
         if(isVisible()){
             dispose();
             setVisible(false);
+            gui.cobrando = false;
         }                
     }
     

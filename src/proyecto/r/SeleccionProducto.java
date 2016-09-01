@@ -89,8 +89,7 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         botonDisminuir.addMouseListener(this);
         botonEliminar.addMouseListener(this);        
         
-        configurarImagenes();
-                
+        configurarImagenes();                        
     }
     
 
@@ -101,16 +100,16 @@ public class SeleccionProducto extends JPanel implements MouseListener{
 
     private void configurarImagenes(){
         imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" + productoActivo.imagen).getImage()
-                .getScaledInstance( 100, 100, Image.SCALE_DEFAULT))); 
+                .getScaledInstance( 250, 250, Image.SCALE_DEFAULT))); 
         botonEliminar.setIcon(new ImageIcon(new ImageIcon("multimedia/cancel.png").getImage().
-                getScaledInstance(25, 25, Image.SCALE_DEFAULT)));
+                getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
         botonDisminuir.setIcon(new ImageIcon(new ImageIcon("multimedia/minus.png").getImage().
-                getScaledInstance(25, 25, Image.SCALE_DEFAULT)));
+                getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
 
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {                        
         if(e.getSource() == this)
             gui.añadirProducto(productoActivo);
         if(e.getSource() == botonDisminuir)

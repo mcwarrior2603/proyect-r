@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -48,6 +49,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private final JMenuItem eliminarProducto = new JMenuItem("Eliminar");
     private final JMenuItem ayuda = new JMenuItem("Ayuda");
     private final JMenuItem acercaDe = new JMenuItem("Acerca de...");
+    private final JMenuItem contacto = new JMenuItem("Contacto");
     
     @Override
     public void configurar(InterfazPrincipal gui){
@@ -64,6 +66,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         configurarMenuReportes();
         configurarMenuUsuarios();
         configurarMenuProductos();
+        configurarMenuAyuda();
         
         barraDeMenu.add(menuArchivo);        
         barraDeMenu.add(menuReportes);
@@ -122,9 +125,12 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     }
     
     private void configurarMenuAyuda(){
+        menuAyuda.add(contacto);
+        menuAyuda.addSeparator();
         menuAyuda.add(ayuda);
-        menuAyuda.add(acercaDe);
+        menuAyuda.add(acercaDe);        
         
+        contacto.addActionListener(this);
         ayuda.addActionListener(this);
         acercaDe.addActionListener(this);
     }
@@ -146,15 +152,25 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         }else if(e.getSource() == eliminarUsuario){
             new UsuarioFormulario(UsuarioFormulario.ELIMINAR);
         }else if(e.getSource() == añadirProducto){
-            new ProductoFormulario(ProductoFormulario.AXADIR);
+            new ProductoFormulario(ProductoFormulario.AXADIR, gui);
         }else if(e.getSource() == modificarProducto){
-            new ProductoFormulario(ProductoFormulario.MODIFICAR);            
+            new ProductoFormulario(ProductoFormulario.MODIFICAR, gui);            
         }else if(e.getSource() == eliminarProducto){
-            new ProductoFormulario(ProductoFormulario.ELIMINAR);
+            new ProductoFormulario(ProductoFormulario.ELIMINAR, gui);
         }else if(e.getSource() == reporteVentas){
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
             new ListaDeVentas();
         }else if(e.getSource() == reporteProductos){
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
             new ReporteVentasProductos();
-        }
+        }else if(e.getSource() == contacto){
+            JOptionPane.showMessageDialog(null, "Para ayuda contactanos en mcwarrior.mendez@hotmail.com");
+        }               
     }
 }

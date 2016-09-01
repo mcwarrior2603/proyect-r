@@ -47,7 +47,11 @@ public class PanelProductos extends PanelInterfaz{
         setOpaque(false);
         setLayout(new BorderLayout());
         
-        cargarProductos();        
+        cargarProductos();                                                           
+    }
+    
+    private void actualizarPanel(){
+        contenedorProductos = new JPanel();
         
         contenedorProductos.setLayout(new GridLayout(numeroFilas, 5, 10, 10));
         contenedorProductos.setOpaque(false);
@@ -57,8 +61,8 @@ public class PanelProductos extends PanelInterfaz{
                 contenedorProductos.add(new SeleccionProducto(productosRegistrados.get(i), gui));
             else
                 contenedorProductos.add(new SeleccionProducto(null, null));
-        }
-         
+        }         
+        
         scrollProductos = new JScrollPane(contenedorProductos, 
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -66,11 +70,14 @@ public class PanelProductos extends PanelInterfaz{
         scrollProductos.setOpaque(false);
         scrollProductos.setBorder(new EmptyBorder(1, 1, 1, 1));
         
-        add(scrollProductos);                     
+        add(scrollProductos);  
+        updateUI();
     }
     
     public void cargarProductos(){
         ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS");
+        
+        productosRegistrados.clear();
         
         if(query == null)
             return;
@@ -85,7 +92,9 @@ public class PanelProductos extends PanelInterfaz{
             }
         } catch (SQLException ex) {
             Ventana.reportarError(ex);
-        }
+        }                
+        
+        actualizarPanel();
     }
     
 }

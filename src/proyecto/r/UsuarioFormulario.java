@@ -138,7 +138,7 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
         if(uso == AXADIR){
             buttonEliminar.setEnabled(false);            
         }else if(uso == MODIFICAR){
-            fieldConfirmar.setEnabled(false);            
+            
         }else if(uso == ELIMINAR){
             fieldContraseña.setEnabled(false);
             fieldConfirmar.setEnabled(false);
@@ -221,7 +221,7 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
     }
     
     private boolean añadirUsuario(){
-        String sql = "INSERT INTO USUARIOS(NOMBRE_USUARIO, CONTRASEÑA, NIVEL_DE_ACCESO)";
+        String sql = "INSERT INTO USUARIOS(NOMBRE_USUARIO, CONTRASEÑA, NIVEL_DE_ACCESO) ";
              
         sql += "VALUES(";
         sql += "'" + fieldNombre.getText() + "',";
@@ -244,11 +244,14 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
     
     private boolean modificarUsuario(){
         String sql = "UPDATE USUARIOS SET "
-                + "CONTRASEÑA = '" + BCrypt.hashpw(fieldContraseña.getText(), BCrypt.gensalt()) + "',"
-                + "NIVEL_DE_ACCESO = " + obtenerNivelAcceso();
+                + "CONTRASEÑA='" + BCrypt.hashpw(fieldContraseña.getText(), BCrypt.gensalt()) + "',"
+                + "NIVEL_DE_ACCESO=" + obtenerNivelAcceso() + " "
+                + "WHERE NOMBRE_USUARIO = '" + fieldNombre.getText() + "'";                
         
         if(SQLConnection.actualizar(sql)){
             JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
+            setVisible(false);
+            dispose();
             return true;
         }else{
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");

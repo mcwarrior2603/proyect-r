@@ -99,11 +99,7 @@ public class InterfazPrincipal extends Ventana{
             if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
                 System.exit(0);
         }
-    }
-    
-    public void cargarProductos(){
-        panelProductos.cargarProductos();
-    }
+    }        
     
     public boolean guardarVenta(float total){                
                         

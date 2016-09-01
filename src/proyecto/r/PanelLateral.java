@@ -42,6 +42,8 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
     private JPanel panelLista = new JPanel();
     private JPanel panelTotal = new JPanel();
     
+    private Cobrar ventaActual = null;
+    
     private static final Font letraTabla = new Font("Arial", Font.PLAIN, 15);
     
     private ArrayList <Producto> productos;
@@ -125,11 +127,25 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
     }        
     
     @Override
-    public void mouseClicked(MouseEvent e) {  
+    public void mouseClicked(MouseEvent e) {                  
         if(!gui.cobrando){
-            float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");        
-            System.out.println(total.getText().substring(1));
-            new Cobrar(fTotal, gui);
+            float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");                    
+            
+            if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
+                return;
+            
+            ventaActual = new Cobrar(fTotal, gui);            
+            gui.cobrando = true;
+        }else{
+            ventaActual.setVisible(false);
+            ventaActual.dispose();
+            
+            float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");                    
+            
+            if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
+                return;
+            
+            ventaActual = new Cobrar(fTotal, gui);            
             gui.cobrando = true;
         }
         

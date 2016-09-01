@@ -81,7 +81,12 @@ public class Login extends Ventana implements ActionListener {
         
     
     }
-
+    @Override
+    protected void confirmarCerrado(){
+        if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
+            System.exit(0);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {     
         if(e.getSource() == BotonEntrar || e.getSource() == fieldPassword){            
@@ -90,6 +95,7 @@ public class Login extends Ventana implements ActionListener {
             confirmarCerrado();
         }
     }
+    
     private void Check(){
         if(UsuarioText.getText().isEmpty() || UsuarioText.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Asegurese de haber ingresado\nun usuario y contraseña.", "Información faltane", JOptionPane.WARNING_MESSAGE);

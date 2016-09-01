@@ -60,12 +60,22 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
     private JRadioButton rbuttonProducto = new JRadioButton("Producto");
     private JRadioButton rbuttonCategoria = new JRadioButton("Categoria");
     
-    public ProductoFormulario(int uso){                
+    private final InterfazPrincipal gui;
+    
+    public ProductoFormulario(int uso, InterfazPrincipal gui){                
         
-        rbuttonCategoria.setEnabled(false);
-        fieldCategoria.setEnabled(false);
-        
+        this.gui = gui;
         this.uso = uso;
+        
+        if(gui.usuarioActivo.nivelDeAcceso > 1){
+            JOptionPane.showMessageDialog(null, "Permisos no suficientes.");
+            cerrar();
+            return;
+        }
+        
+        rbuttonProducto.setSelected(true);
+        rbuttonCategoria.setEnabled(false);
+        fieldCategoria.setEnabled(false);                
         
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setPreferredSize(dimensionVentana);
@@ -128,7 +138,7 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
                         
     }
     
-    private void configurarUso(){
+    private void configurarUso(){                
         if(uso == AXADIR){
             buttonEliminar.setEnabled(false);
             labelTitulo.setText(labelTitulo.getText() + " - Añadir");
@@ -158,17 +168,34 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
         }
     }
     
+    private boolean confirmarModificacion(){
+        if(gui.cobrando){
+            JOptionPane.showMessageDialog(null, "Hay una venta realizandose,\n"
+                    + "termínela para poder continuar.");
+            return false;
+        }
+        
+        if(JOptionPane.showConfirmDialog(null, "Cualquier modificación a los productos cancelará la "
+                + "venta actual\n¿Continuar?", "Confirmación", JOptionPane.YES_NO_OPTION) == 1){
+            return false;
+        }
+        
+        return true;
+    }
+    
     private void eliminar(){
         if(!valido)
+            return;
+        
+        if(!confirmarModificacion())
             return;
         
         String sql = "DELETE FROM PRODUCTOS " +
                 "WHERE NOMBRE='" + fieldNombre.getText() + "'";
         
         if(SQLConnection.actualizar(sql)){
-            JOptionPane.showMessageDialog(null, "Producto eliminado correctamente");
-            setVisible(false);
-            dispose();
+            JOptionPane.showMessageDialog(null, "Producto eliminado correctamente");            
+            cerrar();
         }else{
             JOptionPane.showMessageDialog(null, "No fue posible eliminar el producto");
         }
@@ -182,6 +209,8 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
             return;
         if(precio == DEFAULT_AFLOAT)
             return;
+        if(!confirmarModificacion())
+            return;
         
         String sql = "UPDATE PRODUCTOS SET " + 
                 "PRECIO=" + precio + "," +
@@ -190,9 +219,8 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
         sql += "WHERE NOMBRE='" + fieldNombre.getText() + "'";
         
         if(SQLConnection.actualizar(sql)){
-            JOptionPane.showMessageDialog(null, "Producto modificado correctamente");
-            setVisible(false);
-            dispose();
+            JOptionPane.showMessageDialog(null, "Producto modificado correctamente");            
+            cerrar();
         }else{
             JOptionPane.showMessageDialog(null, "No fue posible modificar el producto");
         }
@@ -205,6 +233,8 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
             return;
         if(precio == DEFAULT_AFLOAT)
             return;
+        if(!confirmarModificacion())
+            return;
         
         String sql = "INSERT INTO PRODUCTOS(ID_CATEGORIA,NOMBRE,PRECIO,IMAGEN)";        
         sql += "VALUES(" +
@@ -214,12 +244,19 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
                 "'" + fieldImagen.getText() + "')";        
         
         if(SQLConnection.actualizar(sql)){
-            JOptionPane.showMessageDialog(null, "Producto añadido correctamente");
-            setVisible(false);
-            dispose();
+            JOptionPane.showMessageDialog(null, "Producto añadido correctamente");            
+            cerrar();
         }else{
             JOptionPane.showMessageDialog(null, "No fue posible añadir el producto");
         }            
+    }
+    
+    private void cerrar(){
+        setVisible(false);
+        dispose();
+        gui.setVisible(false);
+        gui.dispose();
+        new InterfazPrincipal(gui.usuarioActivo);
     }
     
     private void busquedaCorrecta(){

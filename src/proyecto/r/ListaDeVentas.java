@@ -8,6 +8,8 @@ package proyecto.r;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ import javax.swing.table.TableModel;
  * @author MCwar
  */
 
-public class ListaDeVentas extends Ventana implements ActionListener{
+public class ListaDeVentas extends Ventana implements ActionListener, MouseListener{
     
     private static final Dimension dimensionVentana = new Dimension(600,400);        
     
@@ -62,6 +64,7 @@ public class ListaDeVentas extends Ventana implements ActionListener{
         
         addWindowListener(this);  
         buttonBuscar.addActionListener(this);
+        tableVentas.addMouseListener(this);
         
         labelTitulo.setFont(fontTitulo);
         bgFecha.add(rbuttonHoy);
@@ -118,6 +121,23 @@ public class ListaDeVentas extends Ventana implements ActionListener{
             }
         }            
     }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(e.getClickCount() != 2)
+            return;
+        
+        new VentaFormulario(((ModelVentas)tableVentas.getModel()).ventas.get(tableVentas.rowAtPoint(e.getPoint())));
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
     
 }
 

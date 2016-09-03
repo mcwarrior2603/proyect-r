@@ -33,7 +33,7 @@ import javax.swing.JTextField;
  *
  * @author MCwar
  */
-public class UsuarioFormulario extends Ventana implements ActionListener, FocusListener{
+public class VentanaUsuario extends Ventana implements ActionListener, FocusListener{
         
     public static final int AXADIR = 0;
     public static final int MODIFICAR = 1;
@@ -65,7 +65,7 @@ public class UsuarioFormulario extends Ventana implements ActionListener, FocusL
     
     private JComboBox comboPermisos = new JComboBox();        
     
-    public UsuarioFormulario(int uso){
+    public VentanaUsuario(int uso){
         
         this.master = Ventana.obtenerMaster();
         this.uso = uso;

@@ -12,14 +12,14 @@ import javax.swing.JPanel;
  *
  * @author MCwar
  */
-public class BuscarVentana extends Ventana{
+public class VentanaBuscar extends Ventana{
     
     private static Dimension dimensionVentana;
     
     private JPanel panelPrincipal;
-    private InterfazPrincipal gui;    
+    private VentanaMainGUI gui;    
     
-    public BuscarVentana(InterfazPrincipal gui){
+    public VentanaBuscar(VentanaMainGUI gui){
         
         this.gui = gui;
         

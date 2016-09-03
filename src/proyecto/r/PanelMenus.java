@@ -52,7 +52,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private final JMenuItem contacto = new JMenuItem("Contacto");
     
     @Override
-    public void configurar(InterfazPrincipal gui){
+    public void configurar(VentanaMainGUI gui){
         super.configurar(gui);                
         setLayout(new FlowLayout(FlowLayout.LEFT, 15, 2));
         
@@ -140,23 +140,23 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         if(e.getSource() == cancelarVenta){
             gui.limpiarVenta();
         }else if(e.getSource() == cerrarSesion){
-            new Login();
+            new VentanaLogin();
             gui.setVisible(false);
             gui.dispose();
         }else if(e.getSource() == salir){
             gui.confirmarCerrado();
         }else if(e.getSource() == añadirUsuario){
-            new UsuarioFormulario(UsuarioFormulario.AXADIR);            
+            new VentanaUsuario(VentanaUsuario.AXADIR);            
         }else if(e.getSource() == modificarUsuario){
-            new UsuarioFormulario(UsuarioFormulario.MODIFICAR);
+            new VentanaUsuario(VentanaUsuario.MODIFICAR);
         }else if(e.getSource() == eliminarUsuario){
-            new UsuarioFormulario(UsuarioFormulario.ELIMINAR);
+            new VentanaUsuario(VentanaUsuario.ELIMINAR);
         }else if(e.getSource() == añadirProducto){
-            new ProductoFormulario(ProductoFormulario.AXADIR, gui);
+            new VentanaProducto(VentanaProducto.AXADIR, gui);
         }else if(e.getSource() == modificarProducto){
-            new ProductoFormulario(ProductoFormulario.MODIFICAR, gui);            
+            new VentanaProducto(VentanaProducto.MODIFICAR, gui);            
         }else if(e.getSource() == eliminarProducto){
-            new ProductoFormulario(ProductoFormulario.ELIMINAR, gui);
+            new VentanaProducto(VentanaProducto.ELIMINAR, gui);
         }else if(e.getSource() == reporteVentas){
             if(gui.usuarioActivo.nivelDeAcceso > 1){                
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
@@ -168,7 +168,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new ReporteVentasProductos();
+            new VentanaVentasProductos();
         }else if(e.getSource() == contacto){
             JOptionPane.showMessageDialog(null, "Para ayuda contactanos en mcwarrior.mendez@hotmail.com");
         }               

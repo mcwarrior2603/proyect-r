@@ -127,7 +127,7 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
         if(e.getClickCount() != 2)
             return;
         
-        new VentaFormulario(((ModelVentas)tableVentas.getModel()).ventas.get(tableVentas.rowAtPoint(e.getPoint())));
+        new VentanaVenta(((ModelVentas)tableVentas.getModel()).ventas.get(tableVentas.rowAtPoint(e.getPoint())));
     }
     
     @Override

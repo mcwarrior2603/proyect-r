@@ -42,9 +42,9 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     private final Producto productoActivo;
     
     private final Border bordeDefault = BorderFactory.createRaisedBevelBorder();    
-    private final InterfazPrincipal gui;
+    private final VentanaMainGUI gui;
     
-    public SeleccionProducto(Producto param, InterfazPrincipal gui){
+    public SeleccionProducto(Producto param, VentanaMainGUI gui){
     
         this.productoActivo = param;    
         this.gui = gui;

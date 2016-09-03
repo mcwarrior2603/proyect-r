@@ -31,7 +31,7 @@ import javax.swing.table.TableModel;
  *
  * @author USUARIO FINAL
  */
-public class ReporteVentasProductos extends Ventana{
+public class VentanaVentasProductos extends Ventana{
     
     private final Dimension ventana = new Dimension(700,500);
     private final JLabel titulo = new JLabel();
@@ -53,7 +53,7 @@ public class ReporteVentasProductos extends Ventana{
     
     
     
-    public ReporteVentasProductos(){
+    public VentanaVentasProductos(){
         
         generador.setEnabled(false);
         

@@ -26,7 +26,7 @@ import javax.swing.JPasswordField;
  *
  * @author USUARIO FINAL
  */
-public class Login extends Ventana implements ActionListener {
+public class VentanaLogin extends Ventana implements ActionListener {
     private final Dimension DimensionVentana = new Dimension(400,200);
     private final JPanel PanelVentana;
     
@@ -38,7 +38,7 @@ public class Login extends Ventana implements ActionListener {
     private final JButton BotonCerrar = new JButton();
     private final JButton BotonEntrar = new JButton();
     
-    public Login(){
+    public VentanaLogin(){
         
         addWindowListener(this);
         setLayout(null);
@@ -108,7 +108,7 @@ public class Login extends Ventana implements ActionListener {
                 if(BCrypt.checkpw(fieldPassword.getText(), query.getString("CONTRASEÑA"))){
                     setVisible(false);
 
-                    new InterfazPrincipal(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),
+                    new VentanaMainGUI(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),
                             query.getInt("NIVEL_DE_ACCESO")));                    
 
                     dispose();                    

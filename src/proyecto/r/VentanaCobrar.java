@@ -28,7 +28,7 @@ import javax.swing.JTextField;
  *
  * @author MCwar
  */
-public class CobrarVentana extends Ventana implements ActionListener{
+public class VentanaCobrar extends Ventana implements ActionListener{
     
     private static final Font texto = new Font("Arial", Font.BOLD, 30);
     private static final Dimension dimensionVentana = new Dimension(600, 300);
@@ -59,7 +59,7 @@ public class CobrarVentana extends Ventana implements ActionListener{
     private final JButton borrar = new JButton("C");
     
     private JPanel panelPrincipal;
-    private InterfazPrincipal gui;
+    private VentanaMainGUI gui;
     private float total;
     private boolean isPuntoActivo = false;
     private float decimales = 1;
@@ -67,7 +67,7 @@ public class CobrarVentana extends Ventana implements ActionListener{
     
     private boolean visible = true;
     
-    public CobrarVentana(float total, InterfazPrincipal gui){
+    public VentanaCobrar(float total, VentanaMainGUI gui){
         
         this.total = total;
         this.gui = gui;        

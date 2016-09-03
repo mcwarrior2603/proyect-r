@@ -28,7 +28,7 @@ import javax.swing.JTextField;
  *
  * @author MCwar
  */
-public class ProductoFormulario extends Ventana implements ActionListener, FocusListener{
+public class VentanaProducto extends Ventana implements ActionListener, FocusListener{
     
     public static final int AXADIR = 0;
     public static final int MODIFICAR = 1;
@@ -60,9 +60,9 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
     private JRadioButton rbuttonProducto = new JRadioButton("Producto");
     private JRadioButton rbuttonCategoria = new JRadioButton("Categoria");
     
-    private final InterfazPrincipal gui;
+    private final VentanaMainGUI gui;
     
-    public ProductoFormulario(int uso, InterfazPrincipal gui){                
+    public VentanaProducto(int uso, VentanaMainGUI gui){                
         
         this.gui = gui;
         this.uso = uso;
@@ -256,7 +256,7 @@ public class ProductoFormulario extends Ventana implements ActionListener, Focus
         dispose();
         gui.setVisible(false);
         gui.dispose();
-        new InterfazPrincipal(gui.usuarioActivo);
+        new VentanaMainGUI(gui.usuarioActivo);
     }
     
     private void busquedaCorrecta(){

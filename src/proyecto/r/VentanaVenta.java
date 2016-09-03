@@ -24,7 +24,7 @@ import javax.swing.table.TableModel;
  *
  * @author MCwar
  */
-public class VentaFormulario extends Ventana{
+public class VentanaVenta extends Ventana{
     
     private Dimension dimensionVentana = new Dimension(500, 600);
     
@@ -50,7 +50,7 @@ public class VentaFormulario extends Ventana{
     
     private static final Color COLOR_COMPONENTES = new Color(0xD9D9D9);
     
-    public VentaFormulario(Venta ventaActiva){
+    public VentanaVenta(Venta ventaActiva){
         
         this.ventaActiva = ventaActiva;
         

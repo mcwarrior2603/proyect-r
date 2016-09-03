@@ -41,7 +41,7 @@ public class PanelProductos extends PanelInterfaz{
     private static ArrayList <Producto> productosRegistrados = new ArrayList();
     
     @Override
-    public void configurar(InterfazPrincipal gui){
+    public void configurar(VentanaMainGUI gui){
         super.configurar(gui);
         setBorder(borde);
         setOpaque(false);

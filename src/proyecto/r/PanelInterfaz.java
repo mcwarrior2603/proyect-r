@@ -17,9 +17,9 @@ import javax.swing.border.Border;
 public class PanelInterfaz extends JPanel{
     
     protected Color fondo = new Color(0x2aff00);        
-    protected InterfazPrincipal gui;        
+    protected VentanaMainGUI gui;        
     
-    public void configurar(InterfazPrincipal gui){
+    public void configurar(VentanaMainGUI gui){
         this.gui = gui;
         
         setBackground(fondo);                

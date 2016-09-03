@@ -35,7 +35,7 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
  *
  * @author MCwar
  */
-public class InterfazPrincipal extends Ventana{
+public class VentanaMainGUI extends Ventana{
                     
     private JLabel logo = new JLabel();
     
@@ -51,7 +51,7 @@ public class InterfazPrincipal extends Ventana{
     public boolean cobrando = false;
     public Usuario usuarioActivo;
     
-    public InterfazPrincipal(Usuario usuarioActivo){                
+    public VentanaMainGUI(Usuario usuarioActivo){                
         
         this.usuarioActivo = usuarioActivo;
         

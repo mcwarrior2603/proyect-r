@@ -6,6 +6,8 @@
 package proyecto.r;
 
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -26,26 +28,10 @@ import javax.swing.JOptionPane;
  *
  * @author MCwar
  */
-public class Ventana extends JFrame implements WindowListener{
+public class Ventana extends JFrame implements WindowListener, KeyListener{
 
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
-    public static final float DEFAULT_AFLOAT = -1.7932f;
-    
-    public static String hoy(String separador){
-        Calendar fecha = Calendar.getInstance();
-        String ret = "";
-        
-        ret += fecha.get(Calendar.YEAR) + separador;
-        ret += (fecha.get(Calendar.MONTH) + 1) + separador;
-        ret += fecha.get(Calendar.DAY_OF_MONTH);
-        
-        return ret;        
-    }
-        
-    public static String hoy(){
-        return hoy("/");
-    }
-    
+    public static final float DEFAULT_AFLOAT = -1.7932f;                 
     
     public static String obtenerMaster(){
         try {
@@ -96,13 +82,7 @@ public class Ventana extends JFrame implements WindowListener{
             setVisible(false);
             dispose();
         }
-    }
-    
-    @Override
-    public void windowClosing(WindowEvent e) {
-        if(isVisible())
-            confirmarCerrado();        
-    }
+    }        
     
     public static float aFloat(String f, String significado){
         try{
@@ -143,6 +123,34 @@ public class Ventana extends JFrame implements WindowListener{
         }                
     }
     
+    public static String hoy(){
+        return hoy("/");
+    }    
+    
+    public static String hoy(String separador){
+        Calendar fecha = Calendar.getInstance();
+        String ret = "";
+        
+        ret += fecha.get(Calendar.YEAR) + separador;
+        ret += (fecha.get(Calendar.MONTH) + 1) + separador;
+        ret += fecha.get(Calendar.DAY_OF_MONTH);
+        
+        return ret;        
+    }       
+    
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyChar());
+        if(e.getKeyCode() == KeyEvent.VK_F4)
+            System.out.println("F4");
+    }
+    
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if(isVisible())
+            confirmarCerrado();        
+    }
+    
     @Override
     public void windowOpened(WindowEvent e) {}    
     @Override
@@ -155,5 +163,10 @@ public class Ventana extends JFrame implements WindowListener{
     public void windowActivated(WindowEvent e) {}
     @Override
     public void windowDeactivated(WindowEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {}    
+    @Override
+    public void keyReleased(KeyEvent e) {}   
     
 }

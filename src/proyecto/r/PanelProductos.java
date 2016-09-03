@@ -36,7 +36,7 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
-    private static int numeroFilas = 20;
+    private static int numeroFilas = 25;
     
     private static ArrayList <Producto> productosRegistrados = new ArrayList();
     
@@ -52,8 +52,8 @@ public class PanelProductos extends PanelInterfaz{
     
     private void actualizarPanel(){
         contenedorProductos = new JPanel();
-        
-        contenedorProductos.setLayout(new GridLayout(numeroFilas, 5, 10, 10));
+                
+        contenedorProductos.setLayout(new GridLayout(numeroFilas, 4, 10, 10));
         contenedorProductos.setOpaque(false);
         
         for(int i = 0 ; i < 100 ; i++){
@@ -61,21 +61,22 @@ public class PanelProductos extends PanelInterfaz{
                 contenedorProductos.add(new SeleccionProducto(productosRegistrados.get(i), gui));
             else
                 contenedorProductos.add(new SeleccionProducto(null, null));
-        }         
+        }                                         
         
         scrollProductos = new JScrollPane(contenedorProductos, 
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollProductos.getViewport().setOpaque(false);
         scrollProductos.setOpaque(false);
         scrollProductos.setBorder(new EmptyBorder(1, 1, 1, 1));
+        scrollProductos.getVerticalScrollBar().setPreferredSize(new Dimension(50, 0));
         
         add(scrollProductos);  
         updateUI();
     }
     
     public void cargarProductos(){
-        ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS");
+        ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS ORDER BY NOMBRE");
         
         productosRegistrados.clear();
         

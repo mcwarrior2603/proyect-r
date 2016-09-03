@@ -60,8 +60,7 @@ public class InterfazPrincipal extends Ventana{
         } catch (UnsupportedLookAndFeelException ex) {
             reportarError(ex);
         }
-        
-        addWindowListener(this);             
+                                
         setExtendedState(MAXIMIZED_BOTH);        
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setVisible(true);                                            
@@ -69,6 +68,11 @@ public class InterfazPrincipal extends Ventana{
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.setLayout(new BorderLayout(15, 15));
         panelPrincipal.setBackground(new Color(0xfffc00));
+        
+        addWindowListener(this);             
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);        
         
         panelMenus.configurar(this);
         panelLateral.configurar(this, productosVenta);

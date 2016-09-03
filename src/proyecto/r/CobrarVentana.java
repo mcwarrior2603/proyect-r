@@ -28,7 +28,7 @@ import javax.swing.JTextField;
  *
  * @author MCwar
  */
-public class Cobrar extends Ventana implements ActionListener{
+public class CobrarVentana extends Ventana implements ActionListener{
     
     private static final Font texto = new Font("Arial", Font.BOLD, 30);
     private static final Dimension dimensionVentana = new Dimension(600, 300);
@@ -67,7 +67,7 @@ public class Cobrar extends Ventana implements ActionListener{
     
     private boolean visible = true;
     
-    public Cobrar(float total, InterfazPrincipal gui){
+    public CobrarVentana(float total, InterfazPrincipal gui){
         
         this.total = total;
         this.gui = gui;        

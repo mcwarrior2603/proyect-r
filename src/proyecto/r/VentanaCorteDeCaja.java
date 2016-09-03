@@ -5,10 +5,32 @@
  */
 package proyecto.r;
 
+import java.awt.Dimension;
+import javax.swing.JPanel;
+
 /**
  *
  * @author MCwar
  */
-public class VentanaCorteDeCaja {
+public class VentanaCorteDeCaja extends Ventana{        
+    
+    private static final Dimension dimensionVentana = new Dimension(600, 400);
+    
+    private JPanel mainPanel;
+    
+    
+    public VentanaCorteDeCaja(){
+    
+        setPreferredSize(dimensionVentana);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        
+        mainPanel = (JPanel) getContentPane();
+        
+        addWindowListener(this);
+        
+    }
     
 }

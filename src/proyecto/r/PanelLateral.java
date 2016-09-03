@@ -12,11 +12,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,37 +33,40 @@ import javax.swing.table.TableModel;
  *
  * @author MCwar
  */
-public class PanelLateral extends PanelInterfaz implements MouseListener{
+public class PanelLateral extends PanelInterfaz implements MouseListener, ActionListener{
         
     private JScrollPane listaProductos;
     public JTable tablaVenta = new JTable();        
-    private JLabel total = new JLabel("$0.0");
-    private JLabel logo = new JLabel();
+    private JLabel labelTotal = new JLabel("$0.0");
+    private JLabel labelLogo = new JLabel();
+    
+    private JButton buttonDevolucion = new JButton("Venta");
     
     private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel puntoDeVenta = new JPanel();
     private JPanel panelLista = new JPanel();
     private JPanel panelTotal = new JPanel();
     
-    private VentanaCobrar ventaActual = null;
+    private VentanaCobrar ventaActual = null;            
+    private ArrayList <Producto> productos;
+    private boolean devolucion = true;
     
     private static final Font letraTabla = new Font("Arial", Font.PLAIN, 15);
-    
-    private ArrayList <Producto> productos;
         
         
     public void configurar(VentanaMainGUI gui, ArrayList <Producto> productos){
         super.configurar(gui);
         setLayout(new BorderLayout(5, 5));
                 
-        total.addMouseListener(this);
+        labelTotal.addMouseListener(this);
+        buttonDevolucion.addActionListener(this);
         
         this.productos = productos;
         
         configurarLogo();
         configurarPuntoDeVenta();                
         
-        panelLogo.add(logo);
+        panelLogo.add(labelLogo);
         panelLogo.setOpaque(false);
         
         add(panelLogo, "North");
@@ -69,7 +75,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
     }
     
     private void configurarLogo(){
-        logo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
+        labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }
@@ -80,17 +86,21 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
         puntoDeVenta.setBackground(Color.GREEN);
         
         //Coloqué el JLabel en un panel para poder separarlo del borde del panel
-        total.setFont(new Font("Arial", Font.BOLD, 50));
-        total.setHorizontalAlignment(JLabel.RIGHT);  
-        total.setAlignmentY(TOP_ALIGNMENT);
-        total.setBorder(BorderFactory.createLoweredSoftBevelBorder());
-        total.setOpaque(true);
-        total.setBackground(Color.WHITE);    
+        labelTotal.setFont(new Font("Arial", Font.BOLD, 50));
+        labelTotal.setHorizontalAlignment(JLabel.RIGHT);  
+        labelTotal.setAlignmentY(TOP_ALIGNMENT);
+        labelTotal.setBorder(BorderFactory.createLoweredSoftBevelBorder());
+        labelTotal.setOpaque(true);
+        labelTotal.setBackground(Color.WHITE);                    
+        
+        buttonDevolucion.setFont(Ventana.fontTitulo);        
+        intercambiarVenta();
         
         panelTotal.setOpaque(false);
         panelTotal.setBorder(new EmptyBorder(5,5,5,5));
-        panelTotal.setLayout(new BorderLayout());
-        panelTotal.add(total, "Center");        
+        panelTotal.setLayout(new BorderLayout(5, 5));
+        panelTotal.add(labelTotal, "Center");   
+        panelTotal.add(buttonDevolucion, "West");
                                                
         tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                
@@ -122,15 +132,28 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
             sumaTotal += (productos.get(i).precio * productos.get(i).cantidad);                        
         }
         
-        total.setText("$" + sumaTotal); 
+        labelTotal.setText("$" + sumaTotal); 
         
         updateUI();
     }        
     
+    public void limpiarVenta(){
+        productos.clear();
+        actualizar();
+    }
+    
+    public void intercambiarVenta(){
+        devolucion = !devolucion;
+        if(devolucion)
+            buttonDevolucion.setText("Devolucion");
+        else 
+            buttonDevolucion.setText("Venta");
+    }
+    
     @Override
     public void mouseClicked(MouseEvent e) {                  
         if(!gui.cobrando){
-            float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");                    
+            float fTotal = Ventana.aFloat(labelTotal.getText().substring(1), "Total");                    
             
             if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
                 return;
@@ -141,7 +164,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
             ventaActual.setVisible(false);
             ventaActual.dispose();
             
-            float fTotal = Ventana.aFloat(total.getText().substring(1), "Total");                    
+            float fTotal = Ventana.aFloat(labelTotal.getText().substring(1), "Total");                    
             
             if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
                 return;
@@ -153,15 +176,19 @@ public class PanelLateral extends PanelInterfaz implements MouseListener{
     }
     
     @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == buttonDevolucion)
+            intercambiarVenta();
+    }
+    
+    @Override
     public void mousePressed(MouseEvent e) {}
     @Override
     public void mouseReleased(MouseEvent e) {}
     @Override
     public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {}
-    
-    
+    public void mouseExited(MouseEvent e) {}       
     
     class ModelProductos implements TableModel{
 

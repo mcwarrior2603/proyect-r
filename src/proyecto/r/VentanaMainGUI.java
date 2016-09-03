@@ -145,8 +145,7 @@ public class VentanaMainGUI extends Ventana{
     }
     
     public void limpiarVenta(){
-        productosVenta.clear();
-        panelLateral.actualizar();
+        panelLateral.limpiarVenta();
     }
     
     public void añadirProducto(Producto ing){

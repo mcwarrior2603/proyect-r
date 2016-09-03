@@ -36,7 +36,8 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
-    private static int numeroFilas = 25;
+    private static int numeroFilas;
+    private static int numeroColumnas;
     
     private static ArrayList <Producto> productosRegistrados = new ArrayList();
     
@@ -51,9 +52,13 @@ public class PanelProductos extends PanelInterfaz{
     }
     
     private void actualizarPanel(){
+                
+        numeroColumnas = (int) (Math.floor((float)(gui.getWidth() * 0.70)/ (SeleccionProducto.maximoTamaxo.getWidth() + 40)));
+        numeroFilas = (int) (Math.ceil(100f / (float) numeroColumnas));        
+        
         contenedorProductos = new JPanel();
                 
-        contenedorProductos.setLayout(new GridLayout(numeroFilas, 4, 10, 10));
+        contenedorProductos.setLayout(new GridLayout(numeroFilas, numeroColumnas, 10, 10));
         contenedorProductos.setOpaque(false);
         
         for(int i = 0 ; i < 100 ; i++){

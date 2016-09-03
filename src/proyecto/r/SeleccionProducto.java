@@ -26,7 +26,9 @@ import javax.swing.border.Border;
  */
 public class SeleccionProducto extends JPanel implements MouseListener{
     
-   
+    public static final Dimension maximoTamaxo = new Dimension(250, 250);    
+    private static final Border bordeDefault = BorderFactory.createRaisedBevelBorder();        
+    
     private final JLabel botonDisminuir = new JLabel();
     private final JLabel botonEliminar = new JLabel();    
     private final JLabel precio = new JLabel();
@@ -37,11 +39,8 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     private final JPanel panelPrecio = new JPanel(new FlowLayout(FlowLayout.CENTER));    
     private final JPanel panelDisminuir = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private final JPanel panelEliminar = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    
-    private final Dimension maximoTamaxo = new Dimension(200, 200);
-    private final Producto productoActivo;
-    
-    private final Border bordeDefault = BorderFactory.createRaisedBevelBorder();    
+        
+    private final Producto productoActivo;        
     private final VentanaMainGUI gui;
     
     public SeleccionProducto(Producto param, VentanaMainGUI gui){

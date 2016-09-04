@@ -138,6 +138,17 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         return ret;        
     }       
     
+    public static String horaNow(){
+        Calendar hora = Calendar.getInstance();
+        
+        String ret = "";
+        ret += hora.get(Calendar.HOUR_OF_DAY) + ":";
+        ret += hora.get(Calendar.MINUTE) + ":";
+        ret += hora.get(Calendar.SECOND);
+        
+        return ret;
+    }
+    
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println(e.getKeyChar());

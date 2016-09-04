@@ -171,6 +171,8 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             new VentanaVentasProductos();
         }else if(e.getSource() == contacto){
             JOptionPane.showMessageDialog(null, "Para ayuda contactanos en mcwarrior.mendez@hotmail.com");
-        }               
+        }else if(e.getSource() == acercaDe){
+            JOptionPane.showMessageDialog(null, "Version 1.1.0\nLiberada el 03/09/2016");
+        }            
     }
 }

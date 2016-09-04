@@ -37,6 +37,9 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
  */
 public class VentanaMainGUI extends Ventana{
                     
+    private static Dimension tamaxoVentana = new Dimension(300, 300);
+    public static String version = "1.1.0";
+    
     private JLabel logo = new JLabel();
     
     private JPanel panelPrincipal;
@@ -44,9 +47,7 @@ public class VentanaMainGUI extends Ventana{
     public PanelLateral panelLateral = new PanelLateral();   
     public PanelProductos panelProductos = new PanelProductos(); 
     
-    public ArrayList <Producto> productosVenta = new ArrayList();
-            
-    private Dimension tamaxoVentana = new Dimension(300, 300);
+    public ArrayList <Producto> productosVenta = new ArrayList();        
     
     public boolean cobrando = false;
     public Usuario usuarioActivo;
@@ -86,7 +87,7 @@ public class VentanaMainGUI extends Ventana{
         
         panelPrincipal.updateUI();
 
-    }            
+    }                    
     
     private int buscarProducto(Producto ing){
         int i;      
@@ -105,16 +106,54 @@ public class VentanaMainGUI extends Ventana{
         }
     }        
     
-    public boolean guardarVenta(float total){                
-                        
-        Calendar fecha = Calendar.getInstance();                
+    public boolean guardarDevolucion(float total){
+        int id = -1;
+        String sql = "INSERT INTO DEVOLUCIONES(FECHA, ID_USUARIO, HORA, TOTAL) "
+                + "VALUES(" 
+                + "'" + hoy() + "', "
+                + usuarioActivo.id + ", "
+                + "'" + horaNow() + "', "
+                + " " + total 
+                + ")";
+        
+        if(!SQLConnection.actualizar(sql))
+            return false;
+        
+        sql = "SELECT * FROM DEVOLUCIONES ORDER BY ID_DEVOLUCION DESC LIMIT 1";
+        ResultSet ultimoId = SQLConnection.buscar(sql);
+        
+        try {
+            ultimoId.next();
+            id = ultimoId.getInt("ID_DEVOLUCION");
+            System.out.println(id);            
+        } catch (SQLException ex) {
+            reportarError(ex);
+        }
+        
+        for(int i = 0 ; i < productosVenta.size() ; i++){
+            sql = "INSERT INTO PRODUCTOS_DEVOLUCIONES(ID_DEVOLUCION, ID_PRODUCTO, CANTIDAD) "
+                    + "VALUES("
+                    + id + ", "
+                    + productosVenta.get(i).idProducto + ", "
+                    + productosVenta.get(i).cantidad
+                    + ")";
+            
+            if(!SQLConnection.actualizar(sql))
+                return false;
+        }
+        
+        return true;                
+                
+    }
+    
+    public boolean guardarVenta(float total){                                                
         int id;
         
         String sql = "INSERT INTO VENTAS(ID_USUARIO, FECHA, HORA, TOTAL)"
                 + "VALUES("
                 + usuarioActivo.id + ","
                 + "'" + hoy() + "', "
-                + "'" + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE) + "',"
+                + "'" + horaNow() + "',"
                 + total 
                 + ")";
         

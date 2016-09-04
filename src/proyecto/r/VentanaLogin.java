@@ -108,7 +108,10 @@ public class VentanaLogin extends Ventana implements ActionListener {
                 if(BCrypt.checkpw(fieldPassword.getText(), query.getString("CONTRASEÑA"))){
                     setVisible(false);
 
-                    new VentanaMainGUI(new Usuario(query.getInt("ID_USUARIO"), query.getString("NOMBRE_USUARIO"),
+                    new VentanaMainGUI(new Usuario(
+                            query.getInt("ID_USUARIO"), 
+                            query.getString("NOMBRE_USUARIO"),
+                            query.getString("CONTRASEÑA"),
                             query.getInt("NIVEL_DE_ACCESO")));                    
 
                     dispose();                    

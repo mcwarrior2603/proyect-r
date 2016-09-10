@@ -38,7 +38,8 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 public class VentanaMainGUI extends Ventana{
                     
     private static Dimension tamaxoVentana = new Dimension(300, 300);
-    public static String version = "1.1.0";
+    public static String version = "1.2.0";
+    public static String fechaVersion = "04/09/2016";
     
     private JLabel logo = new JLabel();
     

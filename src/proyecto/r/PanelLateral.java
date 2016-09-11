@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,7 +41,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     private JLabel labelTotal = new JLabel("$0.0");
     private JLabel labelLogo = new JLabel();
     
-    private JButton buttonDevolucion = new JButton("Venta");
+    private JButton buttonDevolución = new JButton("Venta");
     
     private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel puntoDeVenta = new JPanel();
@@ -59,7 +60,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         setLayout(new BorderLayout(5, 5));
                 
         labelTotal.addMouseListener(this);
-        buttonDevolucion.addActionListener(this);
+        buttonDevolución.addActionListener(this);
         
         this.productos = productos;
         
@@ -93,14 +94,14 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         labelTotal.setOpaque(true);
         labelTotal.setBackground(Color.WHITE);                    
         
-        buttonDevolucion.setFont(Ventana.fontTitulo);        
+        buttonDevolución.setFont(Ventana.fontTitulo);        
         intercambiarVenta();
         
         panelTotal.setOpaque(false);
         panelTotal.setBorder(new EmptyBorder(5,5,5,5));
         panelTotal.setLayout(new BorderLayout(5, 5));
         panelTotal.add(labelTotal, "Center");   
-        panelTotal.add(buttonDevolucion, "West");
+        panelTotal.add(buttonDevolución, "West");
                                                
         tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                
@@ -140,44 +141,54 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     public void limpiarVenta(){
         productos.clear();
         actualizar();
+        devolucion = false;
+        buttonDevolución.setText("Venta");
+        
     }
     
     public void intercambiarVenta(){
         devolucion = !devolucion;
         if(devolucion)
-            buttonDevolucion.setText("Devolucion");
+            buttonDevolución.setText("Devolucion");
         else 
-            buttonDevolucion.setText("Venta");
+            buttonDevolución.setText("Venta");
+    }
+    
+    public void disposeVentaGUI(){
+        if(ventaActual != null){
+            ventaActual.setVisible(false);
+            ventaActual.dispose();
+            ventaActual = null;
+        }
+            
     }
     
     @Override
-    public void mouseClicked(MouseEvent e) {                  
-        if(!gui.cobrando){
-            float fTotal = Ventana.aFloat(labelTotal.getText().substring(1), "Total");                    
+    public void mouseClicked(MouseEvent e) {          
+        
+        disposeVentaGUI();
             
-            if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
-                return;
-            
-            ventaActual = new VentanaCobrar(fTotal, gui);            
-            gui.cobrando = true;
-        }else{
-            ventaActual.setVisible(false);
-            ventaActual.dispose();
-            
-            float fTotal = Ventana.aFloat(labelTotal.getText().substring(1), "Total");                    
-            
-            if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
-                return;
-            
+        float fTotal = Ventana.aFloat(labelTotal.getText().substring(1), "Total");                                    
+        if(fTotal == 0f || fTotal == Ventana.DEFAULT_AFLOAT)
+            return;
+                
+        if(devolucion){
+            if(gui.guardarDevolucion(fTotal)){
+                JOptionPane.showMessageDialog(null, "Devolución guardada :)");
+                limpiarVenta();
+            }else{
+                JOptionPane.showMessageDialog(null, "No se ha podido guardar la devolución");
+            }         
+        }else{            
             ventaActual = new VentanaCobrar(fTotal, gui);            
             gui.cobrando = true;
         }
         
-    }
+    }        
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == buttonDevolucion)
+        if(e.getSource() == buttonDevolución)
             intercambiarVenta();
     }
     

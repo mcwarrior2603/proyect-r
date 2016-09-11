@@ -21,7 +21,7 @@ public class SQLConnection {
     private volatile static String user = "presto";
     private volatile static String pass = "fenixoftPresto";
     
-    public static boolean abrirConexion(){
+    public synchronized static boolean abrirConexion(){
         if(conexion == null){
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -41,7 +41,7 @@ public class SQLConnection {
         return true;
     }
     
-    public static void cerrarConexion(){
+    public synchronized static void cerrarConexion(){
         if(conexion != null) try {
             if(!conexion.isClosed())
                 conexion.close();
@@ -50,7 +50,7 @@ public class SQLConnection {
         }
     }
     
-    public static ResultSet buscar(String sql){
+    public synchronized static ResultSet buscar(String sql){
         ResultSet query;
         if(!abrirConexion())
             return null;
@@ -64,7 +64,7 @@ public class SQLConnection {
         return null;
     }
     
-    public static boolean actualizar(String sql, int cambiosEsperados){
+    public synchronized static boolean actualizar(String sql, int cambiosEsperados){
         if(!abrirConexion())
             return false;
         try {
@@ -93,7 +93,7 @@ public class SQLConnection {
         
     }
     
-    public static boolean actualizar(String sql){
+    public synchronized static boolean actualizar(String sql){
         return actualizar(sql, 1);
     }
 

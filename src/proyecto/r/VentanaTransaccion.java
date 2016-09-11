@@ -24,11 +24,11 @@ import javax.swing.table.TableModel;
  *
  * @author MCwar
  */
-public class VentanaVenta extends Ventana{
+public class VentanaTransaccion extends Ventana{
+            
+    private Dimension dimensionVentana = new Dimension(500, 600);        
     
-    private Dimension dimensionVentana = new Dimension(500, 600);
-    
-    private JLabel labelTitulo = new JLabel("Venta");
+    private JLabel labelTitulo = new JLabel();
     private JLabel labelFolio = new JLabel("Folio:");
     private JLabel labelFecha = new JLabel("Fecha:");
     private JLabel labelCajero = new JLabel("Cajero:");
@@ -46,13 +46,13 @@ public class VentanaVenta extends Ventana{
     
     private JPanel panelPrincipal;
     
-    private Venta ventaActiva;
+    private Transaccion transaccionActiva;
     
     private static final Color COLOR_COMPONENTES = new Color(0xD9D9D9);
     
-    public VentanaVenta(Venta ventaActiva){
+    public VentanaTransaccion(Transaccion ventaActiva){
         
-        this.ventaActiva = ventaActiva;
+        this.transaccionActiva = ventaActiva;
         
         setPreferredSize(dimensionVentana);        
         pack();
@@ -90,7 +90,9 @@ public class VentanaVenta extends Ventana{
     }
     
     private void configurarComponentes(){
-        tableProductos.setModel(new ModelProductos(ventaActiva));
+        labelTitulo.setText(transaccionActiva.concepto);
+        
+        tableProductos.setModel(new ModelProductos(transaccionActiva));
         scrollProductos.setViewportView(tableProductos);
         
         labelTitulo.setBounds(25, 10, 100, 30);
@@ -120,26 +122,34 @@ public class VentanaVenta extends Ventana{
     }
     
     private void asignarValores(){
-        fieldFolio.setText(String.valueOf(ventaActiva.id));
-        fieldFecha.setText(ventaActiva.fecha);
-        fieldCajero.setText(ventaActiva.cajero);
-        fieldHora.setText(ventaActiva.hora);
-        fieldTotal.setText(String.valueOf(ventaActiva.total));
+        fieldFolio.setText(String.valueOf(transaccionActiva.id));
+        fieldFecha.setText(transaccionActiva.fecha);
+        fieldCajero.setText(transaccionActiva.cajero);
+        fieldHora.setText(transaccionActiva.hora);
+        fieldTotal.setText(String.valueOf(transaccionActiva.total));
     }
     
     class ModelProductos implements TableModel{
 
         ArrayList <Producto> productos = new ArrayList();
-        Venta ventaActiva;
+        Transaccion transaccionActiva;
         
-        public ModelProductos(Venta param){
-            ventaActiva = param;
+        String sql = "";
+        
+        public ModelProductos(Transaccion param){
+            transaccionActiva = param;
             
-            String sql = "SELECT * FROM PRODUCTOS_VENTAS " 
-                    + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_VENTAS.ID_PRODUCTO "
-                    + "INNER JOIN VENTAS ON VENTAS.ID_VENTA = PRODUCTOS_VENTAS.ID_VENTA "
-                    + "WHERE VENTAS.ID_VENTA = " + ventaActiva.id;
-            
+            if(transaccionActiva.concepto == transaccionActiva.VENTA){                
+                sql = "SELECT * FROM PRODUCTOS_VENTAS " 
+                        + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_VENTAS.ID_PRODUCTO "
+                        + "INNER JOIN VENTAS ON VENTAS.ID_VENTA = PRODUCTOS_VENTAS.ID_VENTA "
+                        + "WHERE VENTAS.ID_VENTA = " + transaccionActiva.id;
+            }else{
+                sql = "SELECT * FROM PRODUCTOS_DEVOLUCIONES "
+                        + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_DEVOLUCIONES.ID_PRODUCTO "
+                        + "INNER JOIN DEVOLUCIONES ON DEVOLUCIONES.ID_DEVOLUCION = PRODUCTOS_DEVOLUCIONES.ID_DEVOLUCION "
+                        + "WHERE DEVOLUCIONES.ID_DEVOLUCION = " + transaccionActiva.id;
+            }
             ResultSet query = SQLConnection.buscar(sql);
             
             try {

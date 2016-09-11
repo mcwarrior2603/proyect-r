@@ -11,20 +11,25 @@ import java.util.ArrayList;
  *
  * @author MCwar
  */
-public class Venta {
+public class Transaccion{
+    public static final String VENTA = "Venta";
+    public static final String DEVOLUCION = "Devolucion";
+    
     int id;
     String fecha;
     String cajero;
     String hora;
     float total;
+    String concepto;        
     
-    ArrayList <Producto> productos = new ArrayList();
-    
-    public Venta(int id, String fecha, String cajero, String hora, float total){
+    public Transaccion(int id, String concepto, String fecha, String cajero, String hora, float total){
         this.id = id;
+        this.concepto = concepto;
         this.fecha = fecha;
         this.cajero = cajero;
         this.hora = hora;
         this.total = total;
+        
+        
     }
 }

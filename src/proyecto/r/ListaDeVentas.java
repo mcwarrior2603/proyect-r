@@ -127,7 +127,7 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
         if(e.getClickCount() != 2)
             return;
         
-        new VentanaVenta(((ModelVentas)tableVentas.getModel()).ventas.get(tableVentas.rowAtPoint(e.getPoint())));
+        new VentanaTransaccion(((ModelVentas)tableVentas.getModel()).transacciones.get(tableVentas.rowAtPoint(e.getPoint())));
     }
     
     @Override
@@ -143,19 +143,20 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
 
 class ModelVentas implements TableModel{
 
-    ArrayList <Venta> ventas = new ArrayList();
+    ArrayList <Transaccion> transacciones = new ArrayList();
     
     public ModelVentas(String fechaInicio, String fechaFin){
         
         String sql = "SELECT * FROM VENTAS "
                 + "INNER JOIN USUARIOS ON VENTAS.ID_USUARIO = USUARIOS.ID_USUARIO "
-                + "WHERE VENTAS.FECHA >= '" + fechaInicio + "' AND " + "VENTAS.FECHA <= '" + fechaFin + "'";
+                + "WHERE VENTAS.FECHA >= '" + fechaInicio + "' AND VENTAS.FECHA <= '" + fechaFin + "'";
         ResultSet query = SQLConnection.buscar(sql);
         
         try {
             while(query.next()){
-                ventas.add(new Venta(
+                transacciones.add(new Transaccion(
                         query.getInt("ID_VENTA"),
+                        Transaccion.VENTA,
                         query.getString("FECHA"),
                         query.getString("NOMBRE_USUARIO"),
                         query.getString("HORA"),
@@ -164,35 +165,58 @@ class ModelVentas implements TableModel{
         } catch (SQLException ex) {
             Ventana.reportarError(ex);
         }
+        
+        sql = "SELECT * FROM DEVOLUCIONES "
+                + "INNER JOIN USUARIOS ON DEVOLUCIONES.ID_USUARIO = USUARIOS.ID_USUARIO "
+                + "WHERE DEVOLUCIONES.FECHA >= '" + fechaInicio + "' AND DEVOLUCIONES.FECHA <= '" + fechaFin + "'";
+        query = SQLConnection.buscar(sql);
+        try {
+            while(query.next()){
+                transacciones.add(new Transaccion(
+                        query.getInt("ID_DEVOLUCION"), 
+                        Transaccion.DEVOLUCION, 
+                        query.getString("FECHA"), 
+                        query.getString("NOMBRE_USUARIO"), 
+                        query.getString("HORA"),
+                        query.getFloat("TOTAL")));
+            }
+        } catch (SQLException ex) {
+            Ventana.reportarError(ex);
+        }
+                
     }
     
     @Override
     public int getRowCount() {
-        return ventas.size();
+        return transacciones.size();
     }
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
 
     @Override
     public String getColumnName(int columnIndex) {
         if(columnIndex == 0)
+            return "Concepto";
+        else if(columnIndex == 1)    
             return "Folio";
-        else if(columnIndex == 1)
-            return "Cajero";
         else if(columnIndex == 2)
-            return "Fecha";
+            return "Cajero";
         else if(columnIndex == 3)
+            return "Fecha";
+        else if(columnIndex == 4)
             return "Hora";
-        else 
+        else if(columnIndex == 5)            
             return "Total";
+        else 
+            return "";
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if(columnIndex == 0)
+        if(columnIndex == 1)
             return Integer.class;
         else 
             return String.class;
@@ -206,15 +230,18 @@ class ModelVentas implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if(columnIndex == 0)
-            return ventas.get(rowIndex).id;
+            return transacciones.get(rowIndex).concepto;
         else if(columnIndex == 1)
-            return ventas.get(rowIndex).cajero;
+            return transacciones.get(rowIndex).id;
         else if(columnIndex == 2)
-            return ventas.get(rowIndex).fecha;
+            return transacciones.get(rowIndex).cajero;
         else if(columnIndex == 3)
-            return ventas.get(rowIndex).hora;
-        else
-            return ventas.get(rowIndex).total;
+            return transacciones.get(rowIndex).fecha;
+        else if(columnIndex == 4)
+            return transacciones.get(rowIndex).hora;
+        else if(columnIndex == 5)
+            return transacciones.get(rowIndex).total;
+        else return "";
     }
 
     @Override

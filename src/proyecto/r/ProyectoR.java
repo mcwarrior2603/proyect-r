@@ -17,8 +17,9 @@ public class ProyectoR {
     public static void main(String[] args) {
 
 //        new VentaFormulario(new Venta(1, "2016/08/26", "Usuario1", "12:00:00", 125.00f));                
-        new VentanaLogin();
-
+        //new VentanaLogin();
+    new VentanaCorteDeCaja();
+    
     }
     
 }

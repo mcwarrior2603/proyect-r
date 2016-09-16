@@ -30,8 +30,7 @@ import javax.swing.JTextField;
  */
 public class VentanaCobrar extends Ventana implements ActionListener{
     
-    private static final Font texto = new Font("Arial", Font.BOLD, 30);
-    private static final Dimension dimensionVentana = new Dimension(600, 300);
+    private static final Font texto = new Font("Arial", Font.BOLD, 30);    
     
     private final JLabel labelTotal = new JLabel("Total");
     private final JLabel labelPago = new JLabel("Su pago");
@@ -67,25 +66,19 @@ public class VentanaCobrar extends Ventana implements ActionListener{
     
     private boolean visible = true;
     
-    public VentanaCobrar(float total, VentanaMainGUI gui){
+    public VentanaCobrar(float total, VentanaMainGUI gui){                
+        super(675, 300);
+        
+//        setUndecorated(true); 
         
         this.total = total;
-        this.gui = gui;        
-        
-        setUndecorated(true);
-        setPreferredSize(dimensionVentana);
-        pack();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);        
-        setVisible(true);        
+        this.gui = gui;                                        
         
         panelPrincipal = (JPanel)getContentPane();
         panelPrincipal.setLayout(null);
         panelPrincipal.setBackground(Color.WHITE);
         panelPrincipal.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        
-        addWindowListener(this);                
+                                
         buttonCancelar.addActionListener(this);
         buttonGuardar.addActionListener(this);        
         cero.addActionListener(this);
@@ -183,20 +176,17 @@ public class VentanaCobrar extends Ventana implements ActionListener{
         int valor = 0;
         
         if(e.getSource() == buttonCancelar){
-            dispose();
-            setVisible(false);
+            cerrar();
             gui.cobrando = false;
         }else if(e.getSource() == buttonGuardar){
             if(gui.guardarVenta(total)){
                 JOptionPane.showMessageDialog(null, "Venta correcta");
-                setVisible(false);
-                dispose();
+                cerrar();
                 gui.limpiarVenta();           
                 gui.cobrando = false;
             }else{
                 JOptionPane.showMessageDialog(null, "Venta correcta");
-                setVisible(false);
-                dispose();
+                cerrar();
                 gui.cobrando = false;
             }            
         }else if(e.getSource() == punto){
@@ -245,8 +235,7 @@ public class VentanaCobrar extends Ventana implements ActionListener{
     @Override
     public void windowClosing(WindowEvent e) {            
         if(isVisible()){
-            dispose();
-            setVisible(false);
+            cerrar();
             gui.cobrando = false;
         }                
     }

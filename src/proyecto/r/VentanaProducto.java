@@ -33,9 +33,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     public static final int AXADIR = 0;
     public static final int MODIFICAR = 1;
     public static final int ELIMINAR = 2;        
-    
-    private static Dimension dimensionVentana = new Dimension(370, 320);
-    
+            
     private JPanel contenedorGeneral;    
     private int uso;
     private boolean valido = false;
@@ -62,7 +60,8 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     
     private final VentanaMainGUI gui;
     
-    public VentanaProducto(int uso, VentanaMainGUI gui){                
+    public VentanaProducto(int uso, VentanaMainGUI gui){                        
+        super(370, 320);
         
         this.gui = gui;
         this.uso = uso;
@@ -75,16 +74,8 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
         
         rbuttonProducto.setSelected(true);
         rbuttonCategoria.setEnabled(false);
-        fieldCategoria.setEnabled(false);                
-        
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setPreferredSize(dimensionVentana);
-        pack();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);        
-        
-        addWindowListener(this);  
+        fieldCategoria.setEnabled(false);                                        
+                
         rbuttonProducto.addActionListener(this);
         rbuttonCategoria.addActionListener(this);
         buttonEliminar.addActionListener(this);
@@ -92,8 +83,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
         buttonCancelar.addActionListener(this);
         fieldNombre.addFocusListener(this);        
         
-        this.contenedorGeneral = (JPanel) getContentPane();        
-        contenedorGeneral.setLayout(null);
+        this.contenedorGeneral = (JPanel) getContentPane();                
         
         labelTitulo.setFont(fontTitulo);
         
@@ -251,12 +241,11 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
         }            
     }
     
-    private void cerrar(){
+    @Override
+    public void cerrar(){
         setVisible(false);
         dispose();
-        gui.setVisible(false);
-        gui.dispose();
-        new VentanaMainGUI(gui.usuarioActivo);
+        gui.actualizarProductos();
     }
     
     private void busquedaCorrecta(){

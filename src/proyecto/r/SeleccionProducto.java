@@ -40,7 +40,7 @@ public class SeleccionProducto extends JPanel implements MouseListener{
     private final JPanel panelDisminuir = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private final JPanel panelEliminar = new JPanel(new FlowLayout(FlowLayout.CENTER));
         
-    private final Producto productoActivo;        
+    public final Producto productoActivo;        
     private final VentanaMainGUI gui;
     
     public SeleccionProducto(Producto param, VentanaMainGUI gui){

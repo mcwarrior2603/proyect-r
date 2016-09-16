@@ -26,12 +26,13 @@ import javax.swing.event.MenuListener;
  */
 public class PanelMenus extends PanelInterfaz implements ActionListener{        
     
-    private Font letraMenus = new Font("Arial", Font.PLAIN, 15);
+    private Font letraMenus = new Font("Arial", Font.PLAIN, 18);
     
     private JMenuBar barraDeMenu = new JMenuBar();        
     
     private JMenu menuArchivo = new JMenu("Archivo");
     private JMenu menuReportes = new JMenu("Reportes");
+    private JMenu menuEgresos = new JMenu("Egresos");
     private JMenu menuUsuarios = new JMenu("Usuario");
     private JMenu menuProductos = new JMenu("Productos");
     private JMenu menuAyuda = new JMenu("Ayuda");
@@ -41,6 +42,8 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private final JMenuItem salir = new JMenuItem("Salir");
     private final JMenuItem reporteVentas = new JMenuItem("Reporte por ventas");
     private final JMenuItem reporteProductos = new JMenuItem("Reporte por productos");
+    private final JMenuItem reporteEgresos = new JMenuItem("Reporte de egresos");
+    private final JMenuItem reporteCorteDeCaja = new JMenuItem("Corte de caja");  
     private final JMenuItem añadirUsuario = new JMenuItem("Añadir");
     private final JMenuItem modificarUsuario = new JMenuItem("Modificar");
     private final JMenuItem eliminarUsuario = new JMenuItem("Eliminar");
@@ -49,7 +52,8 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private final JMenuItem eliminarProducto = new JMenuItem("Eliminar");
     private final JMenuItem ayuda = new JMenuItem("Ayuda");
     private final JMenuItem acercaDe = new JMenuItem("Acerca de...");
-    private final JMenuItem contacto = new JMenuItem("Contacto");
+    private final JMenuItem contacto = new JMenuItem("Contacto");   
+    private final JMenuItem generarEgreso = new JMenuItem("Nuevo Egreso");    
     
     @Override
     public void configurar(VentanaMainGUI gui){
@@ -64,21 +68,41 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         
         configurarMenuArchivo();
         configurarMenuReportes();
+        configurarMenuEgresos();
         configurarMenuUsuarios();
         configurarMenuProductos();
         configurarMenuAyuda();
         
         barraDeMenu.add(menuArchivo);        
         barraDeMenu.add(menuReportes);
+        barraDeMenu.add(menuEgresos);
         barraDeMenu.add(menuUsuarios);
         barraDeMenu.add(menuProductos);
-        barraDeMenu.add(menuAyuda);        
+        barraDeMenu.add(menuAyuda);         
         
         menuArchivo.setFont(letraMenus);
         menuReportes.setFont(letraMenus);
         menuUsuarios.setFont(letraMenus);
         menuProductos.setFont(letraMenus);
-        menuAyuda.setFont(letraMenus);                
+        menuAyuda.setFont(letraMenus); 
+        cancelarVenta.setFont(letraMenus); 
+        cerrarSesion.setFont(letraMenus); 
+        salir.setFont(letraMenus); 
+        reporteVentas.setFont(letraMenus); 
+        reporteProductos.setFont(letraMenus); 
+        reporteEgresos.setFont(letraMenus); 
+        reporteCorteDeCaja.setFont(letraMenus); 
+        añadirUsuario.setFont(letraMenus); 
+        modificarUsuario.setFont(letraMenus); 
+        eliminarUsuario.setFont(letraMenus); 
+        añadirProducto.setFont(letraMenus); 
+        modificarProducto.setFont(letraMenus); 
+        eliminarProducto.setFont(letraMenus); 
+        ayuda.setFont(letraMenus); 
+        acercaDe.setFont(letraMenus); 
+        contacto.setFont(letraMenus); 
+        generarEgreso.setFont(letraMenus); 
+        
         
         add(barraDeMenu);
         
@@ -98,10 +122,23 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     
     private void configurarMenuReportes(){
         menuReportes.add(reporteVentas);
-        menuReportes.add(reporteProductos);        
+        menuReportes.add(reporteProductos);   
+        menuReportes.add(reporteEgresos);
+        menuReportes.addSeparator();
+        menuReportes.add(reporteCorteDeCaja);
         
         reporteVentas.addActionListener(this);
         reporteProductos.addActionListener(this);
+        reporteEgresos.addActionListener(this);
+        reporteCorteDeCaja.addActionListener(this);
+    }
+    
+    private void configurarMenuEgresos(){
+        menuEgresos.setFont(letraMenus);
+        
+        menuEgresos.add(generarEgreso);
+        
+        generarEgreso.addActionListener(this);                
     }
     
     private void configurarMenuUsuarios(){
@@ -141,8 +178,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             gui.limpiarVenta();
         }else if(e.getSource() == cerrarSesion){
             new VentanaLogin();
-            gui.setVisible(false);
-            gui.dispose();
+            gui.cerrar();
         }else if(e.getSource() == salir){
             gui.confirmarCerrado();
         }else if(e.getSource() == añadirUsuario){
@@ -162,17 +198,31 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new ListaDeVentas();
+            new VentanaListaVentas();
         }else if(e.getSource() == reporteProductos){
             if(gui.usuarioActivo.nivelDeAcceso > 1){                
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new VentanaVentasProductos();
+            new VentanaListaProductos();
+        }else if(e.getSource() == reporteEgresos){
+            if(gui.usuarioActivo.nivelDeAcceso > 1){
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
+            new VentanaListaEgresos();
+        }else if(e.getSource() == reporteCorteDeCaja){
+            if(gui.usuarioActivo.nivelDeAcceso > 1){
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
+            new VentanaCorteDeCaja();
         }else if(e.getSource() == contacto){
             JOptionPane.showMessageDialog(null, "Para ayuda contactanos en mcwarrior.mendez@hotmail.com");
         }else if(e.getSource() == acercaDe){
             JOptionPane.showMessageDialog(null, "Version " + gui.version + "\nLiberada el " + gui.fechaVersion + ".");
-        }            
+        }else if(e.getSource() == generarEgreso){
+            new VentanaEgreso(VentanaEgreso.AÑADIR, gui);
+        }
     }
 }

@@ -39,14 +39,14 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     private JScrollPane listaProductos;
     public JTable tablaVenta = new JTable();        
     private JLabel labelTotal = new JLabel("$0.0");
-    private JLabel labelLogo = new JLabel();
+    private JLabel labelLogo = new JLabel();    
     
     private JButton buttonDevolución = new JButton("Venta");
     
     private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel puntoDeVenta = new JPanel();
     private JPanel panelLista = new JPanel();
-    private JPanel panelTotal = new JPanel();
+    private JPanel panelTotal = new JPanel();    
     
     private VentanaCobrar ventaActual = null;            
     private ArrayList <Producto> productos;
@@ -54,8 +54,13 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     
     private static final Font letraTabla = new Font("Arial", Font.PLAIN, 15);
         
-        
+    /**
+     * Configura los componentes del panel
+     * @param gui Interfaz principal que contiene el panel
+     * @param productos Productos contenidos en la venta
+     */
     public void configurar(VentanaMainGUI gui, ArrayList <Producto> productos){
+        
         super.configurar(gui);
         setLayout(new BorderLayout(5, 5));
                 
@@ -74,13 +79,19 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         add(puntoDeVenta, "Center");
                 
     }
-    
+    /**
+     * Se sentencia el metodo para colocar el logo en la ventana
+     */
     private void configurarLogo(){
+        
         labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }
-    
+    /**
+     * Se coloca el borde para cada elemento que conforma la ventana 
+     * Se le da color a la ventana
+     */
     private void configurarPuntoDeVenta(){               
         
         puntoDeVenta.setLayout(new BorderLayout(5, 5));
@@ -126,8 +137,11 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         puntoDeVenta.add(panelTotal, "South");                                
         
     }        
-    
+    /**
+     * Actualiza y suma los precios de la tabla
+     */
     public void actualizar(){
+        
         float sumaTotal = 0;
         for(int i = 0 ; i < productos.size() ; i++){
             sumaTotal += (productos.get(i).precio * productos.get(i).cantidad);                        
@@ -136,9 +150,13 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         labelTotal.setText("$" + sumaTotal); 
         
         updateUI();
+                
     }        
-    
+    /**
+     * Limpia la ventana y la vuelve a cero
+     */
     public void limpiarVenta(){
+        
         productos.clear();
         actualizar();
         devolucion = false;
@@ -146,18 +164,23 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         
     }
     
+    /**
+     * Este metodo permite intercambiar entre devolucion y venta
+     */
     public void intercambiarVenta(){
+        
         devolucion = !devolucion;
         if(devolucion)
             buttonDevolución.setText("Devolucion");
         else 
             buttonDevolución.setText("Venta");
     }
-    
+    /**
+     * Si se encuentra una ventatna activa se cierra y se abre una nueva 
+     */
     public void disposeVentaGUI(){
         if(ventaActual != null){
-            ventaActual.setVisible(false);
-            ventaActual.dispose();
+            ventaActual.cerrar();
             ventaActual = null;
         }
             

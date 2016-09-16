@@ -36,11 +36,12 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
+    private static int limiteProductos = 100;
     private static int numeroFilas;
     private static int numeroColumnas;
     
     private static ArrayList <Producto> productosRegistrados = new ArrayList();
-    
+    private static ArrayList <SeleccionProducto> botonesProductos = new ArrayList();
     @Override
     public void configurar(VentanaMainGUI gui){
         super.configurar(gui);
@@ -51,19 +52,25 @@ public class PanelProductos extends PanelInterfaz{
         cargarProductos();                                                           
     }
     
-    private void actualizarPanel(){
+    private void actualizarPanel(String buscar){
                 
+        removeAll();
+        
         numeroColumnas = (int) (Math.floor((float)(gui.getWidth() * 0.70)/ (SeleccionProducto.maximoTamaxo.getWidth() + 40)));
         numeroFilas = (int) (Math.ceil(100f / (float) numeroColumnas));        
         
         contenedorProductos = new JPanel();
                 
         contenedorProductos.setLayout(new GridLayout(numeroFilas, numeroColumnas, 10, 10));
-        contenedorProductos.setOpaque(false);
+        contenedorProductos.setOpaque(false);               
         
-        for(int i = 0 ; i < 100 ; i++){
-            if(i < productosRegistrados.size())
-                contenedorProductos.add(new SeleccionProducto(productosRegistrados.get(i), gui));
+        for(int i = 0 ; i < limiteProductos ; i++){
+            if(i < productosRegistrados.size()) 
+                if(botonesProductos.get(i).productoActivo.nombre.contains(buscar))
+                    contenedorProductos.add(botonesProductos.get(i));
+                else{
+                    contenedorProductos.add(new SeleccionProducto(null, null));                    
+                }
             else
                 contenedorProductos.add(new SeleccionProducto(null, null));
         }                                         
@@ -80,10 +87,19 @@ public class PanelProductos extends PanelInterfaz{
         updateUI();
     }
     
+    public void actualizarPanel(){
+        actualizarPanel("");
+    }
+    
     public void cargarProductos(){
         ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS ORDER BY NOMBRE");
-        
-        productosRegistrados.clear();
+                
+        for(int i = 0 ; i < productosRegistrados.size() ; i++){
+            productosRegistrados.remove(i);
+            botonesProductos.remove(i);
+        }
+        productosRegistrados = new ArrayList();
+        botonesProductos = new ArrayList();
         
         if(query == null)
             return;
@@ -99,6 +115,11 @@ public class PanelProductos extends PanelInterfaz{
         } catch (SQLException ex) {
             Ventana.reportarError(ex);
         }                
+        
+        for(int i = 0 ; i < productosRegistrados.size() ; i++){            
+            botonesProductos.add(new SeleccionProducto(
+                    productosRegistrados.get(i), gui));            
+        }
         
         actualizarPanel();
     }

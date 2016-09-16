@@ -24,9 +24,7 @@ import javax.swing.table.TableModel;
  *
  * @author MCwar
  */
-public class VentanaTransaccion extends Ventana{
-            
-    private Dimension dimensionVentana = new Dimension(500, 600);        
+public class VentanaTransaccion extends Ventana{                
     
     private JLabel labelTitulo = new JLabel();
     private JLabel labelFolio = new JLabel("Folio:");
@@ -51,20 +49,11 @@ public class VentanaTransaccion extends Ventana{
     private static final Color COLOR_COMPONENTES = new Color(0xD9D9D9);
     
     public VentanaTransaccion(Transaccion ventaActiva){
+        super(500, 600);
         
-        this.transaccionActiva = ventaActiva;
+        this.transaccionActiva = ventaActiva;                        
         
-        setPreferredSize(dimensionVentana);        
-        pack();
-        setResizable(false);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);        
-                        
-        addWindowListener(this);
-        
-        panelPrincipal = (JPanel)getContentPane();
-        panelPrincipal.setLayout(null);
+        panelPrincipal = (JPanel)getContentPane();        
         panelPrincipal.setBackground(Color.WHITE);
         
         configurarComponentes();
@@ -95,7 +84,7 @@ public class VentanaTransaccion extends Ventana{
         tableProductos.setModel(new ModelProductos(transaccionActiva));
         scrollProductos.setViewportView(tableProductos);
         
-        labelTitulo.setBounds(25, 10, 100, 30);
+        labelTitulo.setBounds(25, 10, 200, 30);
         labelFolio.setBounds(15, 45, 100, 30);
         fieldFolio.setBounds(120, 45, 100, 30);
         labelFecha.setBounds(320, 45, 100, 30);

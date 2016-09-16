@@ -31,9 +31,8 @@ import javax.swing.table.TableModel;
  *
  * @author USUARIO FINAL
  */
-public class VentanaVentasProductos extends Ventana{
-    
-    private final Dimension ventana = new Dimension(700,500);
+public class VentanaListaProductos extends Ventana{
+        
     private final JLabel titulo = new JLabel();
     private final JLabel alcance = new JLabel();
     
@@ -53,21 +52,12 @@ public class VentanaVentasProductos extends Ventana{
     
     
     
-    public VentanaVentasProductos(){
+    public VentanaListaProductos(){
+        super(700,500);
         
         generador.setEnabled(false);
         
-        setResizable(false);
-        addWindowListener(this);
-        setLayout(null);
-        setPreferredSize(ventana);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);        
-        pack();        
-        setLocationRelativeTo(null);                        
-        setVisible(true);        
-        
-        todo = (JPanel) getContentPane();        
-        todo.setLayout(null);                        
+        todo = (JPanel) getContentPane();                                 
         
         datos.setModel(new ModelVentasProductos(hoy(), hoy()));
         scTabla.setViewportView(datos);

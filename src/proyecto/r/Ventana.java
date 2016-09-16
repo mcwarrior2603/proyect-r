@@ -5,6 +5,7 @@
  */
 package proyecto.r;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,17 +13,14 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -31,7 +29,30 @@ import javax.swing.JOptionPane;
 public class Ventana extends JFrame implements WindowListener, KeyListener{
 
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
-    public static final float DEFAULT_AFLOAT = -1.7932f;                 
+    public static final float DEFAULT_AFLOAT = -1.7932f;
+            
+    protected Dimension dimensionVentana;        
+    
+    public Ventana(int width, int height){
+        dimensionVentana = new Dimension(width, height);
+                
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        
+        ((JPanel)getContentPane()).setLayout(null);
+        ((JPanel)getContentPane()).addKeyListener(this);        
+        
+        setPreferredSize(dimensionVentana);
+        pack();        
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+        
+        addKeyListener(this);
+        addWindowListener(this);
+        
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
+    }
     
     public static String obtenerMaster(){
         try {
@@ -75,15 +96,19 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
             reportarError(e);
         }                                
     }
-    
+         
     protected void confirmarCerrado(){
         if(JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar?", 
                 "Confirmación", JOptionPane.YES_NO_OPTION) == 0){
-            setVisible(false);
-            dispose();
+            cerrar();
         }
-    }        
-    
+    }
+
+    public void cerrar(){
+        setVisible(false);
+        dispose();        
+    }
+
     public static float aFloat(String f, String significado){
         try{
             return Float.parseFloat(f.trim());
@@ -92,11 +117,15 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
             return -1f;
         }        
     }
-    
+
     public static boolean checkFecha(String fecha){
         
         fecha = fecha.trim();
                                 
+        if(fecha.isEmpty()){
+            return false;
+        }
+        
         int axo;
         int mes;
         int dia;
@@ -120,13 +149,15 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
             return true;
         } catch(NumberFormatException e){
             return false;    
-        }                
+        } catch(StringIndexOutOfBoundsException e){
+            return false;
+        }
     }
-    
+
     public static String hoy(){
         return hoy("/");
-    }    
-    
+    }
+
     public static String hoy(String separador){
         Calendar fecha = Calendar.getInstance();
         String ret = "";
@@ -136,7 +167,7 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         ret += fecha.get(Calendar.DAY_OF_MONTH);
         
         return ret;        
-    }       
+    }
     
     public static String horaNow(){
         Calendar hora = Calendar.getInstance();
@@ -150,10 +181,12 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
     }
     
     @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
-        if(e.getKeyCode() == KeyEvent.VK_F4)
-            System.out.println("F4");
+    public void keyPressed(KeyEvent e) {        
+        if(e.getKeyCode() == KeyEvent.VK_F4){
+            System.out.println("F4"); 
+        }else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+            confirmarCerrado();
+        }
     }
     
     @Override
@@ -174,7 +207,6 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
     public void windowActivated(WindowEvent e) {}
     @Override
     public void windowDeactivated(WindowEvent e) {}
-
     @Override
     public void keyTyped(KeyEvent e) {}    
     @Override

@@ -5,23 +5,21 @@
  */
 package proyecto.r;
 
-import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 /**
  *
  * @author MCwar
  */
-public class VentanaCorteDeCaja extends Ventana{        
-    
-    private static final Dimension dimensionVentana = new Dimension(420, 500);
-    private final JRadioButton botonAyer = new JRadioButton("Ayer");
-    private final JRadioButton botonFecha = new JRadioButton("Fecha");
-    
+public class VentanaCorteDeCaja extends Ventana implements ActionListener{                   
     private final JTextField textApertura = new JTextField();
     private final JTextField textCierre = new JTextField();
     private final JTextField textFecha = new JTextField();
@@ -29,35 +27,34 @@ public class VentanaCorteDeCaja extends Ventana{
     private final JTextField textDevoluciones = new JTextField();
     private final JTextField textEgresos = new JTextField();
     
+    private final JLabel labelTitulo = new JLabel("Corte de caja");
+    private final JLabel linea = new JLabel("____________________________________");
     private final JLabel labelapertura = new JLabel("Apertura");
     private final JLabel labelCierre = new JLabel("Cierre");
     private final JLabel labelVentas = new JLabel("Ventas");
-    private final JLabel labelDevoluciones = new JLabel("Devoluciones");
-    private final JLabel labelEgresos = new JLabel("Egresos");
-    
-    private final JButton Ventas = new JButton ("Ver ventas");
-    
+    private final JLabel labelDevoluciones = new JLabel("Devoluciones/Cancelaciones");
+    private final JLabel labelEgresos = new JLabel("Egresos");    
+    private final JButton buttonBuscar = new JButton("Buscar");
+    private final JButton buttonVentas = new JButton ("Ventas/Devouciones");
+    private final JButton buttonEgresos = new JButton("Egresos");
     private JPanel mainPanel;
+              
+    private float fApertura;
+    private float fVentas;
+    private float fDevoluciones;
+    private float fEgresos;
+    private float fCierre;
     
     
-    public VentanaCorteDeCaja(){
-    
-        setLayout(null);
-        setPreferredSize(dimensionVentana);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
-        addWindowListener(this);
+    public VentanaCorteDeCaja(){    
+        super(420, 500);                        
         
         mainPanel = (JPanel) getContentPane();
-        
-        mainPanel.add(botonAyer);
-        mainPanel.add(botonFecha);
+                        
         mainPanel.add(textApertura);
         mainPanel.add(textCierre);
         mainPanel.add(textFecha);
+        mainPanel.add(buttonBuscar);
         mainPanel.add(textVentas);
         mainPanel.add(textDevoluciones);
         mainPanel.add(textEgresos);
@@ -66,30 +63,120 @@ public class VentanaCorteDeCaja extends Ventana{
         mainPanel.add(labelVentas);
         mainPanel.add(labelDevoluciones);
         mainPanel.add(labelEgresos);
-        mainPanel.add(Ventas);
+        mainPanel.add(buttonVentas);
+        mainPanel.add(linea);
+        mainPanel.add(buttonEgresos);
+        mainPanel.add(labelTitulo);
         
-        botonAyer.setBounds( 30, 30, 100, 30);
-        botonFecha.setBounds( 150, 30, 100, 30);
-        textFecha.setBounds( 270, 30, 100, 30);
+        textApertura.setEditable(false);
+        textVentas.setEditable(false);
+        textDevoluciones.setEditable(false);
+        textEgresos.setEditable(false);
+        textCierre.setEditable(false);
+        labelTitulo.setFont(fontTitulo);
+        textFecha.setText("AAAA/MM/DD");
         
-        labelapertura.setBounds( 100, 100, 100, 30);
-        textApertura.setBounds( 270, 100, 100, 30);
+        labelTitulo.setBounds( 15, 30, 185, 30);
+        textFecha.setBounds( 190, 30, 100, 30);
+        buttonBuscar.setBounds( 295, 30, 100, 30);
         
-        labelVentas.setBounds( 100, 150, 100, 30);
-        textVentas.setBounds( 270, 150, 100, 30);
+        labelapertura.setBounds( 25, 100, 100, 30);
+        textApertura.setBounds( 170, 100, 200, 30);        
+        labelVentas.setBounds( 25, 150, 100, 30);
+        textVentas.setBounds( 170, 150, 200, 30);        
+        labelDevoluciones.setBounds( 25, 200, 175, 30);
+        textDevoluciones.setBounds( 170, 200, 200, 30);        
+        labelEgresos.setBounds( 25, 250, 100, 30);
+        textEgresos.setBounds( 170, 250, 200, 30);        
+        labelCierre.setBounds( 25, 300, 100, 30);
+        textCierre.setBounds( 170, 300, 200, 30);
         
-        labelDevoluciones.setBounds( 100, 200, 100, 30);
-        textDevoluciones.setBounds( 270, 200, 100, 30);
+        linea.setBounds(160, 270, 220, 30);
         
-        labelEgresos.setBounds( 100, 250, 100, 30);
-        textEgresos.setBounds( 270, 250, 100, 30);
+        buttonVentas.setBounds( 85, 400, 150, 30);        
+        buttonEgresos.setBounds( 240, 400, 100, 30);
         
-        labelCierre.setBounds( 100, 300, 100, 30);
-        textCierre.setBounds( 270, 300, 100, 30);
+        buttonBuscar.addActionListener(this);
+        buttonVentas.addActionListener(this);
+    }
+    
+    private void buscar(String fecha){                                        
+        try {
+            String sql = "SELECT * FROM CORTES_CAJA WHERE FECHA = '" + fecha + "'";
         
-        Ventas.setBounds( 170, 400, 100, 30);
-        
-        
+            ResultSet query = SQLConnection.buscar(sql);
+            if(!query.next()){                
+                JOptionPane.showMessageDialog(null, "No existe corte "
+                        + "para la fecha indicada");
+                return;                
+            }else{                
+                fApertura = query.getFloat("APERTURA");
+                textApertura.setText(String.valueOf(fApertura));               
+            }
+            
+            sql = "SELECT  SUM(TOTAL) AS TOTAL FROM VENTAS WHERE FECHA = '" + fecha +"'";
+            
+            query = SQLConnection.buscar(sql);
+            
+            if(!query.next()){                
+                fVentas = 0.0f;
+                textVentas.setText(fVentas+"");
+            }else{
+                fVentas = query.getFloat("TOTAL");
+                textVentas.setText(fVentas+ "");
+            }
+            
+            sql = "SELECT SUM(TOTAL) AS TOTAL FROM DEVOLUCIONES WHERE "
+                    + "FECHA = '"+ fecha + "'";
+            
+            query = SQLConnection.buscar(sql);
+            
+            if(!query.next()){                
+                fDevoluciones = 0.0f;
+                textDevoluciones.setText(fDevoluciones+"");
+            }else{
+                fDevoluciones = query.getFloat("TOTAL");
+                textDevoluciones.setText(fDevoluciones+ "");
+            }
+            
+            sql = "SELECT SUM(MONTO) AS TOTAL FROM EGRESOS WHERE FECHA = '"
+                    + fecha + "'";
+            
+            query = SQLConnection.buscar(sql);
+            
+            if(!query.next()){                
+                fEgresos = 0.0f;
+                textEgresos.setText(fEgresos+"");
+            }else{
+                fEgresos = query.getFloat("TOTAL");
+                textEgresos.setText(fEgresos+ "");
+            }
+            
+            fCierre = fApertura + fVentas - fDevoluciones - fEgresos;
+            
+            textCierre.setText(fCierre + "");
+            
+        } catch (SQLException ex) {
+            reportarError(ex);
+        }
+    }        
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == buttonBuscar){            
+            if(!checkFecha(textFecha.getText().trim())){
+                JOptionPane.showMessageDialog(null, "Fecha inválida.");
+                return;
+            }
+            buscar(textFecha.getText());            
+        }else if(e.getSource() == buttonVentas){
+            if(checkFecha(textFecha.getText().trim())){
+                new VentanaListaVentas(textFecha.getText().trim());
+            }else{
+                JOptionPane.showMessageDialog(null, "Fecha inválida.");
+                return;   
+            }            
+        }
     }
     
 }

@@ -5,7 +5,6 @@
  */
 package proyecto.r;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,35 +12,31 @@ import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+import static proyecto.r.Ventana.fontTitulo;
 
 /**
  *
  * @author MCwar
  */
+public class VentanaListaEgresos extends Ventana implements ActionListener, MouseListener{
 
-public class ListaDeVentas extends Ventana implements ActionListener, MouseListener{
-    
-    private static final Dimension dimensionVentana = new Dimension(600,400);        
-    
     private final JLabel labelTitulo = new JLabel("Ventas");
     private final JLabel labelAl = new JLabel("al");
+    private final JLabel labelTotal = new JLabel("Total:");
     
     private final JScrollPane scrollTabla = new JScrollPane();
-    private final JTable tableVentas = new JTable();
+    private final JTable tableEgresos = new JTable();
     
     private final JRadioButton rbuttonHoy = new JRadioButton("Hoy");
     private final JRadioButton rbuttonPeriodo = new JRadioButton("Periodo del");
@@ -49,28 +44,29 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
     
     private final JTextField fieldFechaInicio = new JTextField();
     private final JTextField fieldFechaFin = new JTextField();
+    private final JTextField fieldTotal = new JTextField();
     
     private final JButton buttonBuscar = new JButton("Buscar");
     
-    public ListaDeVentas(){
-        
-        setPreferredSize(dimensionVentana);
-        setResizable(false);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        pack();
-        setVisible(true);
-        setLocationRelativeTo(null);
-        setLayout(null);
-        
-        addWindowListener(this);  
+    public VentanaListaEgresos(){
+        super(600, 450);
+        configurar("");
+    }
+    
+    public VentanaListaEgresos(String fecha){        
+        super(600,500);        
+        configurar(fecha);        
+    }
+    
+    private void configurar(String fecha){
         buttonBuscar.addActionListener(this);
-        tableVentas.addMouseListener(this);
+        tableEgresos.addMouseListener(this);
         
         labelTitulo.setFont(fontTitulo);
         bgFecha.add(rbuttonHoy);
         bgFecha.add(rbuttonPeriodo);        
-        scrollTabla.setViewportView(tableVentas);
-        tableVentas.setModel(new ModelVentas(hoy(), hoy()));
+        scrollTabla.setViewportView(tableEgresos);
+        tableEgresos.setModel(new ModelEgresos(hoy(), hoy()));
         
         rbuttonHoy.setSelected(true);
         
@@ -84,8 +80,15 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
         add(fieldFechaFin);
         add(buttonBuscar);
         add(scrollTabla);
+        add(labelTotal);
+        add(fieldTotal);
         
         ((JPanel)getContentPane()).updateUI();
+        
+        if(!fecha.trim().isEmpty()){
+            buscar(fecha, fecha);
+        }
+        
     }
     
     private void configurarPosiciones(){
@@ -97,13 +100,36 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
         fieldFechaFin.setBounds(330, 50, 75, 30);
         buttonBuscar.setBounds(410, 50, 100, 30);
         scrollTabla.setBounds(15, 90, 550, 250);
+        labelTotal.setBounds(400, 345, 50, 30);
+        fieldTotal.setBounds(455, 345, 100, 30);
     }   
 
+    private void buscar(){
+        buscar(hoy(), hoy());
+    }
+    
+    private void buscar(String fechaInicio, String fechaFin){
+        float total = 0;
+        
+        tableEgresos.setModel(new ModelEgresos(fechaInicio, fechaFin)); 
+                
+        ArrayList <Transaccion> ar = 
+                ((ModelVentas)tableEgresos.getModel()).transacciones;
+        
+        for(int i = 0 ; 
+                i < ar.size() ;
+                i++){
+            total += ar.get(i).total;
+        }
+        
+        fieldTotal.setText(String.valueOf(total));
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == buttonBuscar){
             if(rbuttonHoy.isSelected()){
-                tableVentas.setModel(new ModelVentas(hoy(), hoy()));
+                buscar();
             }else{
                 if(!checkFecha(fieldFechaInicio.getText())){
                     JOptionPane.showMessageDialog(null, "Fecha de inicio incorrecta.\n"
@@ -115,9 +141,8 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
                             + "El formato correcto es AAAA/MM/DD");
                     return;
                 }
-                tableVentas.setModel(new ModelVentas(
-                        fieldFechaInicio.getText(), 
-                        fieldFechaFin.getText()));
+                buscar(fieldFechaInicio.getText(), 
+                        fieldFechaFin.getText());
             }
         }            
     }
@@ -127,7 +152,10 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
         if(e.getClickCount() != 2)
             return;
         
-        new VentanaTransaccion(((ModelVentas)tableVentas.getModel()).transacciones.get(tableVentas.rowAtPoint(e.getPoint())));
+        new VentanaEgreso(
+                1,                
+                ((ModelEgresos)tableEgresos.getModel())
+                .egresos.get(tableEgresos.rowAtPoint(e.getPoint())));
     }
     
     @Override
@@ -141,76 +169,53 @@ public class ListaDeVentas extends Ventana implements ActionListener, MouseListe
     
 }
 
-class ModelVentas implements TableModel{
+class ModelEgresos implements TableModel{
 
-    ArrayList <Transaccion> transacciones = new ArrayList();
+    public ArrayList <Egreso> egresos = new ArrayList();
     
-    public ModelVentas(String fechaInicio, String fechaFin){
+    public ModelEgresos(String fechaInicio, String fechaFin){
         
-        String sql = "SELECT * FROM VENTAS "
-                + "INNER JOIN USUARIOS ON VENTAS.ID_USUARIO = USUARIOS.ID_USUARIO "
-                + "WHERE VENTAS.FECHA >= '" + fechaInicio + "' AND VENTAS.FECHA <= '" + fechaFin + "'";
+        String sql = "SELECT * FROM EGRESOS "
+                + "INNER JOIN USUARIOS ON EGRESOS.ID_USUARIO = USUARIOS.ID_USUARIO "
+                + "WHERE EGRESOS.FECHA >= '" + fechaInicio + "' AND EGRESOS.FECHA <= '" + fechaFin + "'";
         ResultSet query = SQLConnection.buscar(sql);
         
         try {
             while(query.next()){
-                transacciones.add(new Transaccion(
-                        query.getInt("ID_VENTA"),
-                        Transaccion.VENTA,
+                egresos.add(new Egreso(
+                        query.getInt("ID_EGRESO"),
                         query.getString("FECHA"),
-                        query.getString("NOMBRE_USUARIO"),
-                        query.getString("HORA"),
-                        query.getFloat("TOTAL")));
+                        query.getFloat("MONTO"),
+                        query.getString("CONCEPTO"),
+                        query.getString("NOMBRE_USUARIO")));
             }
         } catch (SQLException ex) {
             Ventana.reportarError(ex);
-        }
-        
-        sql = "SELECT * FROM DEVOLUCIONES "
-                + "INNER JOIN USUARIOS ON DEVOLUCIONES.ID_USUARIO = USUARIOS.ID_USUARIO "
-                + "WHERE DEVOLUCIONES.FECHA >= '" + fechaInicio + "' AND DEVOLUCIONES.FECHA <= '" + fechaFin + "'";
-        query = SQLConnection.buscar(sql);
-        try {
-            while(query.next()){
-                transacciones.add(new Transaccion(
-                        query.getInt("ID_DEVOLUCION"), 
-                        Transaccion.DEVOLUCION, 
-                        query.getString("FECHA"), 
-                        query.getString("NOMBRE_USUARIO"), 
-                        query.getString("HORA"),
-                        query.getFloat("TOTAL")));
-            }
-        } catch (SQLException ex) {
-            Ventana.reportarError(ex);
-        }
+        }                
                 
     }
     
     @Override
     public int getRowCount() {
-        return transacciones.size();
+        return egresos.size();
     }
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return 4;
     }
 
     @Override
     public String getColumnName(int columnIndex) {
         if(columnIndex == 0)
-            return "Concepto";
-        else if(columnIndex == 1)    
             return "Folio";
-        else if(columnIndex == 2)
-            return "Cajero";
-        else if(columnIndex == 3)
+        else if(columnIndex == 1)    
             return "Fecha";
-        else if(columnIndex == 4)
-            return "Hora";
-        else if(columnIndex == 5)            
-            return "Total";
-        else 
+        else if(columnIndex == 2)
+            return "Monto";
+        else if(columnIndex == 3)
+            return "Usuario";        
+        else
             return "";
     }
 
@@ -218,7 +223,9 @@ class ModelVentas implements TableModel{
     public Class<?> getColumnClass(int columnIndex) {
         if(columnIndex == 1)
             return Integer.class;
-        else 
+        else if(columnIndex == 2)
+            return Float.class;
+        else
             return String.class;
     }
 
@@ -230,17 +237,13 @@ class ModelVentas implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if(columnIndex == 0)
-            return transacciones.get(rowIndex).concepto;
+            return egresos.get(rowIndex).id;
         else if(columnIndex == 1)
-            return transacciones.get(rowIndex).id;
+            return egresos.get(rowIndex).fecha;
         else if(columnIndex == 2)
-            return transacciones.get(rowIndex).cajero;
+            return egresos.get(rowIndex).monto;
         else if(columnIndex == 3)
-            return transacciones.get(rowIndex).fecha;
-        else if(columnIndex == 4)
-            return transacciones.get(rowIndex).hora;
-        else if(columnIndex == 5)
-            return transacciones.get(rowIndex).total;
+            return egresos.get(rowIndex).usuario;        
         else return "";
     }
 

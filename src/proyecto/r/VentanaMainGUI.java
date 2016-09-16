@@ -9,35 +9,23 @@ import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.multi.MultiLookAndFeel;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.plaf.synth.SynthLookAndFeel;
 
 /**
  *
  * @author MCwar
  */
 public class VentanaMainGUI extends Ventana{
-                    
-    private static Dimension tamaxoVentana = new Dimension(300, 300);
+                        
     public static String version = "1.2.0";
     public static String fechaVersion = "04/09/2016";
     
@@ -53,7 +41,8 @@ public class VentanaMainGUI extends Ventana{
     public boolean cobrando = false;
     public Usuario usuarioActivo;
     
-    public VentanaMainGUI(Usuario usuarioActivo){                
+    public VentanaMainGUI(Usuario usuarioActivo){                        
+        super(300, 300);
         
         this.usuarioActivo = usuarioActivo;
         
@@ -63,18 +52,12 @@ public class VentanaMainGUI extends Ventana{
             reportarError(ex);
         }
                                 
-        setExtendedState(MAXIMIZED_BOTH);        
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setVisible(true);                                            
+        setExtendedState(MAXIMIZED_BOTH);                
+        setResizable(true);                
         
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.setLayout(new BorderLayout(15, 15));
-        panelPrincipal.setBackground(new Color(0xfffc00));
-        
-        addWindowListener(this);             
-        addKeyListener(this);
-        setFocusable(true);
-        setFocusTraversalKeysEnabled(false);        
+        panelPrincipal.setBackground(new Color(0xfffc00));                
         
         panelMenus.configurar(this);
         panelLateral.configurar(this, productosVenta);
@@ -98,14 +81,24 @@ public class VentanaMainGUI extends Ventana{
         }        
         return i;
     }
+            
+    @Override
+    public void confirmarCerrado(){
+        if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
+                System.exit(0);
+    }
     
     @Override
-    public void windowClosing(WindowEvent e){
-        if(isVisible()){
-            if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
-                System.exit(0);
+    public void keyPressed(KeyEvent e) {    
+        super.keyPressed(e);
+        if(e.getKeyCode() == KeyEvent.VK_F5){
+            panelProductos.actualizarPanel();            
         }
-    }        
+    }
+    
+    public void actualizarProductos(){
+        panelProductos.cargarProductos();        
+    }
     
     public boolean guardarDevolucion(float total){
         int id = -1;

@@ -27,7 +27,7 @@ import javax.swing.JPasswordField;
  * @author USUARIO FINAL
  */
 public class VentanaLogin extends Ventana implements ActionListener {
-    private final Dimension DimensionVentana = new Dimension(400,200);
+    
     private final JPanel PanelVentana;
     
     private final Label Usuario = new Label();
@@ -39,15 +39,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     private final JButton BotonEntrar = new JButton();
     
     public VentanaLogin(){
-        
-        addWindowListener(this);
-        setLayout(null);
-        setPreferredSize(DimensionVentana);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setResizable(false);
-        pack();
-        setVisible(true);
-        setLocationRelativeTo(null);
+        super(400,200);
         
         PanelVentana = (JPanel) getContentPane();
         
@@ -58,27 +50,26 @@ public class VentanaLogin extends Ventana implements ActionListener {
         Usuario.setText("Usuario :");
         labelContraseña.setText("Password :");
         BotonCerrar.setText("Cerrar");
-        BotonEntrar.setText("Entrar");
+        BotonEntrar.setText("Entrar");                
         
         PanelVentana.add(Usuario);
         PanelVentana.add(labelContraseña);
         PanelVentana.add(BotonCerrar);
         PanelVentana.add(BotonEntrar);
         PanelVentana.add(UsuarioText);
-        PanelVentana.add(fieldPassword);
-        //PanelVentana.add(PasswordText);
+        PanelVentana.add(fieldPassword);        
         
         Usuario.setBounds(15, 20, 100, 30);
         labelContraseña.setBounds( 15, 60, 100, 30);
         fieldPassword.setBounds( 120, 60, 200, 30);
-        UsuarioText.setBounds(120, 20, 200, 30);
-        //PasswordText.setBounds(120, 60, 200, 30);
+        UsuarioText.setBounds(120, 20, 200, 30);        
         BotonEntrar.setBounds(140, 115, 100, 30);
         BotonCerrar.setBounds(245, 115, 100, 30);
         
         UsuarioText.setEnabled(true);
         labelContraseña.setEnabled(true);                  
         
+        UsuarioText.requestFocus();
     
     }
     @Override

@@ -38,8 +38,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     public static final int AXADIR = 0;
     public static final int MODIFICAR = 1;
     public static final int ELIMINAR = 2;    
-                
-    public static Dimension dimensionVentana = new Dimension(420, 350);    
+                    
     private boolean valido = true;
     private String master;    
     public int uso;
@@ -66,18 +65,10 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     private JComboBox comboPermisos = new JComboBox();        
     
     public VentanaUsuario(int uso){
+        super(420, 350);
         
         this.master = Ventana.obtenerMaster();
         this.uso = uso;
-        
-        setLayout(null);
-        setPreferredSize(dimensionVentana);
-        setResizable(false);        
-        pack();
-        setVisible(true);
-        setLocationRelativeTo(null);
-                
-        addWindowListener(this);
                         
         contenedorGeneral = (JPanel) getContentPane();
         
@@ -157,12 +148,10 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
             case 0:
                 if(!añadirUsuario())
                     return;
-                setVisible(false);
-                dispose();
+                cerrar();
                 break;
             case 1:
-                setVisible(false);
-                dispose();
+                cerrar();
                 break;                                                                
         }
     }
@@ -193,8 +182,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
             if(!fieldNombre.getText().isEmpty()){
                 confirmarCerrado();
             }else{
-                setVisible(false);
-                dispose();
+                cerrar();
             }
         }else if(e.getSource() == buttonEliminar){
             if(!checkValido())
@@ -211,8 +199,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
             
         if(SQLConnection.actualizar(sql)){
            JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
-           setVisible(false);
-           dispose();
+           cerrar();
            return true;
         }else{
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");            
@@ -233,8 +220,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         sql += ")";
         if(SQLConnection.actualizar(sql)){
             JOptionPane.showMessageDialog(null, "Usuario añadido correctamente");
-            setVisible(false);
-            dispose();
+            cerrar();
             return true;
         }else{
             JOptionPane.showMessageDialog(null, "¡Ha ocurrido un error! :(");
@@ -250,8 +236,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         
         if(SQLConnection.actualizar(sql)){
             JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
-            setVisible(false);
-            dispose();
+            cerrar();
             return true;
         }else{
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");

@@ -14,6 +14,8 @@ import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,8 +28,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class VentanaMainGUI extends Ventana{
                         
-    public static String version = "1.2.0";
-    public static String fechaVersion = "04/09/2016";
+    public static String version = "1.3.0";
+    public static String fechaVersion = "19/09/2016";
     
     private JLabel logo = new JLabel();
     
@@ -40,6 +42,8 @@ public class VentanaMainGUI extends Ventana{
     
     public boolean cobrando = false;
     public Usuario usuarioActivo;
+    
+    public Timer timerRecordatorio = new Timer();;
     
     public VentanaMainGUI(Usuario usuarioActivo){                        
         super(300, 300);
@@ -70,8 +74,28 @@ public class VentanaMainGUI extends Ventana{
         panelLateral.actualizar();
         
         panelPrincipal.updateUI();
+        
+        if(!checkAperturaDeCaja()){
+            if(JOptionPane.showConfirmDialog(null, "¿Registrar corte de caja?\n"
+                    + "Usted lo puede hacer manualmente después o\n"
+                    + "le recordaremos de nuevo en unos minutos.", 
+                    "Corte de caja", JOptionPane.YES_NO_OPTION) == 0){
+                new VentanaGuardarApertura(this);
+            }else{    
+                activarRecordatorio();
+            }   
+        }
 
     }                    
+    
+    private void activarRecordatorio(){                       
+        timerRecordatorio.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                recordatorioApertura();
+            }
+        }, 3000);
+    }
     
     private int buscarProducto(Producto ing){
         int i;      
@@ -220,5 +244,50 @@ public class VentanaMainGUI extends Ventana{
         
         
     }
+    
+    /**
+     * Revisa si ya existe una apertura de caja registrada
+     * para el dia en que se está trabajando
+     * @return true si ya existe, false en caso contrario
+     */
+    public boolean checkAperturaDeCaja(){
+        
+        String sql = "SELECT * FROM CORTES_CAJA WHERE FECHA = '" + hoy() + "'";
+        
+        ResultSet query = SQLConnection.buscar(sql);
+        
+        try {
+            if(query.next()){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException ex) {
+            reportarError(ex);
+            return false;            
+        }
+        
+    }
+    
+    private void recordatorioApertura(){
+        if(checkAperturaDeCaja())
+            return;
+        
+        switch(JOptionPane.showConfirmDialog(
+                null, 
+                "Aún no registra la apertura de caja\n"
+                + "¿Quiere hacerlo en este momento?\n"
+                + "Presione cancelar para no\n"
+                + "volver a mostrar este mensaje.", 
+                "Recordatorio", 
+                JOptionPane.YES_NO_CANCEL_OPTION)){
+            case 0:
+                new VentanaGuardarApertura(this);
+                break;
+            case 1:
+                activarRecordatorio();
+                break;                        
+        }
+    }        
     
 }

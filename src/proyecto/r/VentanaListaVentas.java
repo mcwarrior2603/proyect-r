@@ -54,7 +54,7 @@ public class VentanaListaVentas extends Ventana implements ActionListener, Mouse
     }
     
     public VentanaListaVentas(String fecha){        
-        super(600,400);        
+        super(600,430);        
         configurar(fecha);        
     }
     

@@ -113,13 +113,13 @@ public class VentanaListaEgresos extends Ventana implements ActionListener, Mous
         
         tableEgresos.setModel(new ModelEgresos(fechaInicio, fechaFin)); 
                 
-        ArrayList <Transaccion> ar = 
-                ((ModelVentas)tableEgresos.getModel()).transacciones;
+        ArrayList <Egreso> ar = 
+                ((ModelEgresos)tableEgresos.getModel()).egresos;
         
         for(int i = 0 ; 
                 i < ar.size() ;
                 i++){
-            total += ar.get(i).total;
+            total += ar.get(i).monto;
         }
         
         fieldTotal.setText(String.valueOf(total));

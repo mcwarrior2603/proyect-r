@@ -32,7 +32,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     
     private JMenu menuArchivo = new JMenu("Archivo");
     private JMenu menuReportes = new JMenu("Reportes");
-    private JMenu menuEgresos = new JMenu("Egresos");
+    private JMenu menuExtras = new JMenu("Extras");
     private JMenu menuUsuarios = new JMenu("Usuario");
     private JMenu menuProductos = new JMenu("Productos");
     private JMenu menuAyuda = new JMenu("Ayuda");
@@ -50,10 +50,11 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private final JMenuItem añadirProducto = new JMenuItem("Añadir");
     private final JMenuItem modificarProducto = new JMenuItem("Modificar");
     private final JMenuItem eliminarProducto = new JMenuItem("Eliminar");
+    private final JMenuItem generarEgreso = new JMenuItem("Nuevo Egreso");    
+    private final JMenuItem guardarAperturaDeCaja = new JMenuItem("Apertura de caja");
     private final JMenuItem ayuda = new JMenuItem("Ayuda");
     private final JMenuItem acercaDe = new JMenuItem("Acerca de...");
-    private final JMenuItem contacto = new JMenuItem("Contacto");   
-    private final JMenuItem generarEgreso = new JMenuItem("Nuevo Egreso");    
+    private final JMenuItem contacto = new JMenuItem("Contacto");           
     
     @Override
     public void configurar(VentanaMainGUI gui){
@@ -68,41 +69,17 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         
         configurarMenuArchivo();
         configurarMenuReportes();
-        configurarMenuEgresos();
+        configurarMenuExtras();
         configurarMenuUsuarios();
         configurarMenuProductos();
         configurarMenuAyuda();
         
         barraDeMenu.add(menuArchivo);        
-        barraDeMenu.add(menuReportes);
-        barraDeMenu.add(menuEgresos);
+        barraDeMenu.add(menuReportes);        
         barraDeMenu.add(menuUsuarios);
         barraDeMenu.add(menuProductos);
-        barraDeMenu.add(menuAyuda);         
-        
-        menuArchivo.setFont(letraMenus);
-        menuReportes.setFont(letraMenus);
-        menuUsuarios.setFont(letraMenus);
-        menuProductos.setFont(letraMenus);
-        menuAyuda.setFont(letraMenus); 
-        cancelarVenta.setFont(letraMenus); 
-        cerrarSesion.setFont(letraMenus); 
-        salir.setFont(letraMenus); 
-        reporteVentas.setFont(letraMenus); 
-        reporteProductos.setFont(letraMenus); 
-        reporteEgresos.setFont(letraMenus); 
-        reporteCorteDeCaja.setFont(letraMenus); 
-        añadirUsuario.setFont(letraMenus); 
-        modificarUsuario.setFont(letraMenus); 
-        eliminarUsuario.setFont(letraMenus); 
-        añadirProducto.setFont(letraMenus); 
-        modificarProducto.setFont(letraMenus); 
-        eliminarProducto.setFont(letraMenus); 
-        ayuda.setFont(letraMenus); 
-        acercaDe.setFont(letraMenus); 
-        contacto.setFont(letraMenus); 
-        generarEgreso.setFont(letraMenus); 
-        
+        barraDeMenu.add(menuExtras);
+        barraDeMenu.add(menuAyuda);                                                                 
         
         add(barraDeMenu);
         
@@ -113,6 +90,11 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         menuArchivo.add(cerrarSesion);
         menuArchivo.addSeparator();
         menuArchivo.add(salir);
+        
+        menuArchivo.setFont(letraMenus);
+        cancelarVenta.setFont(letraMenus); 
+        cerrarSesion.setFont(letraMenus); 
+        salir.setFont(letraMenus); 
         
         cancelarVenta.addActionListener(this);
         cerrarSesion.addActionListener(this);
@@ -127,24 +109,27 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         menuReportes.addSeparator();
         menuReportes.add(reporteCorteDeCaja);
         
+        menuReportes.setFont(letraMenus);
+        reporteVentas.setFont(letraMenus); 
+        reporteProductos.setFont(letraMenus); 
+        reporteEgresos.setFont(letraMenus); 
+        reporteCorteDeCaja.setFont(letraMenus); 
+        
         reporteVentas.addActionListener(this);
         reporteProductos.addActionListener(this);
         reporteEgresos.addActionListener(this);
         reporteCorteDeCaja.addActionListener(this);
     }
-    
-    private void configurarMenuEgresos(){
-        menuEgresos.setFont(letraMenus);
-        
-        menuEgresos.add(generarEgreso);
-        
-        generarEgreso.addActionListener(this);                
-    }
-    
+            
     private void configurarMenuUsuarios(){
         menuUsuarios.add(añadirUsuario);
         menuUsuarios.add(modificarUsuario);
         menuUsuarios.add(eliminarUsuario);
+    
+        menuUsuarios.setFont(letraMenus);
+        añadirUsuario.setFont(letraMenus); 
+        modificarUsuario.setFont(letraMenus); 
+        eliminarUsuario.setFont(letraMenus); 
         
         añadirUsuario.addActionListener(this);
         modificarUsuario.addActionListener(this);
@@ -156,9 +141,26 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         menuProductos.add(modificarProducto);
         menuProductos.add(eliminarProducto);
         
+        menuProductos.setFont(letraMenus);
+        añadirProducto.setFont(letraMenus); 
+        modificarProducto.setFont(letraMenus); 
+        eliminarProducto.setFont(letraMenus); 
+        
         añadirProducto.addActionListener(this);
         modificarProducto.addActionListener(this);
         eliminarProducto.addActionListener(this);
+    }
+    
+    private void configurarMenuExtras(){
+        menuExtras.setFont(letraMenus);
+        generarEgreso.setFont(letraMenus); 
+        guardarAperturaDeCaja.setFont(letraMenus);
+        
+        menuExtras.add(generarEgreso);
+        menuExtras.add(guardarAperturaDeCaja);
+        
+        generarEgreso.addActionListener(this);                
+        guardarAperturaDeCaja.addActionListener(this);
     }
     
     private void configurarMenuAyuda(){
@@ -166,6 +168,11 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         menuAyuda.addSeparator();
         menuAyuda.add(ayuda);
         menuAyuda.add(acercaDe);        
+
+        menuAyuda.setFont(letraMenus);
+        ayuda.setFont(letraMenus); 
+        acercaDe.setFont(letraMenus); 
+        contacto.setFont(letraMenus); 
         
         contacto.addActionListener(this);
         ayuda.addActionListener(this);
@@ -223,6 +230,13 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             JOptionPane.showMessageDialog(null, "Version " + gui.version + "\nLiberada el " + gui.fechaVersion + ".");
         }else if(e.getSource() == generarEgreso){
             new VentanaEgreso(VentanaEgreso.AÑADIR, gui);
+        }else if(e.getSource() == guardarAperturaDeCaja){
+            
+            if(gui.checkAperturaDeCaja()){
+                JOptionPane.showMessageDialog(null, "Ya existe una apertura de caja registrada para hoy");
+            }else{
+                new VentanaGuardarApertura(gui);
+            }            
         }
     }
 }

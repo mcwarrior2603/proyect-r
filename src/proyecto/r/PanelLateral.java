@@ -46,7 +46,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel puntoDeVenta = new JPanel();
     private JPanel panelLista = new JPanel();
-    private JPanel panelTotal = new JPanel();    
+    private JPanel panelInferior = new JPanel();    
     
     private VentanaCobrar ventaActual = null;            
     private ArrayList <Producto> productos;
@@ -108,11 +108,11 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         buttonDevolución.setFont(Ventana.fontTitulo);        
         intercambiarVenta();
         
-        panelTotal.setOpaque(false);
-        panelTotal.setBorder(new EmptyBorder(5,5,5,5));
-        panelTotal.setLayout(new BorderLayout(5, 5));
-        panelTotal.add(labelTotal, "Center");   
-        panelTotal.add(buttonDevolución, "West");
+        panelInferior.setOpaque(false);
+        panelInferior.setBorder(new EmptyBorder(5,5,5,5));
+        panelInferior.setLayout(new BorderLayout(5, 5));
+        panelInferior.add(labelTotal, "Center");   
+        panelInferior.add(buttonDevolución, "West");
                                                
         tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                
@@ -134,7 +134,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         panelLista.add(listaProductos);
         
         puntoDeVenta.add(panelLista, "Center");
-        puntoDeVenta.add(panelTotal, "South");                                
+        puntoDeVenta.add(panelInferior, "South");                                
         
     }        
     /**

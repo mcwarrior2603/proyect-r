@@ -98,6 +98,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
         
         buttonBuscar.addActionListener(this);
         buttonVentas.addActionListener(this);
+        buttonEgresos.addActionListener(this);
     }
     
     private void buscar(String fecha){                                        
@@ -163,19 +164,17 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == buttonBuscar){            
-            if(!checkFecha(textFecha.getText().trim())){
-                JOptionPane.showMessageDialog(null, "Fecha inválida.");
-                return;
-            }
+        if(!checkFecha(textFecha.getText().trim())){
+            JOptionPane.showMessageDialog(null, "Fecha inválida.");
+            return;   
+        }            
+        
+        if(e.getSource() == buttonBuscar){                        
             buscar(textFecha.getText());            
         }else if(e.getSource() == buttonVentas){
-            if(checkFecha(textFecha.getText().trim())){
-                new VentanaListaVentas(textFecha.getText().trim());
-            }else{
-                JOptionPane.showMessageDialog(null, "Fecha inválida.");
-                return;   
-            }            
+            new VentanaListaVentas(textFecha.getText().trim());
+        }else if(e.getSource() == buttonEgresos){
+            new VentanaListaEgresos(textFecha.getText().trim());
         }
     }
     

@@ -106,7 +106,8 @@ public class VentanaEgreso extends Ventana implements ActionListener{
         mainPanel.add(buttonCerrar);
         
         fieldMonto.setBorder(BorderFactory.createLoweredSoftBevelBorder());
-        fieldConcepto.setBorder(BorderFactory.createLoweredSoftBevelBorder());  
+        fieldConcepto.setBorder(BorderFactory.createLoweredSoftBevelBorder()); 
+        fieldConcepto.setLineWrap(true);
         
         if(eg != null){
             fieldFecha.setText(eg.fecha);
@@ -144,27 +145,45 @@ public class VentanaEgreso extends Ventana implements ActionListener{
         }
     }
     
+    
+    
     private boolean guardarEgreso(){
         float monto = aFloat(fieldMonto.getText(), "Monto");
+        String sql;
         
         if(monto == DEFAULT_AFLOAT)
-            return false;
+            return false;        
         
-        String sql = "INSERT INTO EGRESOS "
-                + "(FECHA, MONTO, CONCEPTO, ID_USUARIO) "
-                + " VALUES("
-                + "'" + fieldFecha.getText() + "', "
-                + monto + ", "
-                + "'" + fieldConcepto.getText() + "', "
-                + gui.usuarioActivo.id + ")";
-        
-        if(!SQLConnection.actualizar(sql)){
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");
-            return false;
-        }else{
-            JOptionPane.showMessageDialog(null, "Guardado correcto");
-            return true;
+        if(uso == AÑADIR){        
+            sql = "INSERT INTO EGRESOS "
+                    + "(FECHA, MONTO, CONCEPTO, ID_USUARIO) "
+                    + " VALUES("
+                    + "'" + fieldFecha.getText() + "', "
+                    + monto + ", "
+                    + "'" + fieldConcepto.getText() + "', "
+                    + gui.usuarioActivo.id + ")";
+            
+            if(!SQLConnection.actualizar(sql)){
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");
+                return false;
+            }else{
+                JOptionPane.showMessageDialog(null, "Guardado correcto");
+                return true;
+            }
+        }else if(uso == VER){
+            sql = "UPDATE EGRESOS SET "
+                    + "MONTO = " + monto + ", "
+                    + "CONCEPTO = '" + fieldConcepto.getText() + "' "
+                    + "WHERE ID_EGRESO = " + eg.id;
+            if(!SQLConnection.actualizar(sql)){
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");
+                return false;
+            }else{
+                JOptionPane.showMessageDialog(null, "Guardado correcto");
+                return true;
+            }                                
         }
+        return false;
     }
     
 }

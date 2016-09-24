@@ -52,7 +52,7 @@ public class PanelProductos extends PanelInterfaz{
         cargarProductos();                                                           
     }
     
-    private void actualizarPanel(String buscar){
+    public void actualizarPanel(String buscar){
                 
         removeAll();
         

@@ -120,7 +120,11 @@ public class VentanaMainGUI extends Ventana{
         }
     }
     
-    public void actualizarProductos(){
+    public void buscarProductos(String aBuscar){
+        panelProductos.actualizarPanel(aBuscar);
+    }
+    
+    public void cargarProductos(){
         panelProductos.cargarProductos();        
     }
     

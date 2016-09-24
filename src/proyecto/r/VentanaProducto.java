@@ -245,7 +245,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     public void cerrar(){
         setVisible(false);
         dispose();
-        gui.actualizarProductos();
+        gui.cargarProductos();
     }
     
     private void busquedaCorrecta(){

@@ -28,8 +28,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class VentanaMainGUI extends Ventana{
                         
-    public static String version = "1.3.0";
-    public static String fechaVersion = "19/09/2016";
+    public static String version = "1.3.1";
+    public static String fechaVersion = "20/09/2016";
     
     private JLabel logo = new JLabel();
     
@@ -94,7 +94,7 @@ public class VentanaMainGUI extends Ventana{
             public void run() {
                 recordatorioApertura();
             }
-        }, 3000);
+        }, 300000);
     }
     
     private int buscarProducto(Producto ing){

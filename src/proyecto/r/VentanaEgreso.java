@@ -48,7 +48,7 @@ public class VentanaEgreso extends Ventana implements ActionListener{
     private int uso;
     
     public VentanaEgreso(int uso, VentanaMainGUI gui){        
-        super(400, 500);
+        super(400, 400);
                        
         this.gui = gui;
         configurar(uso);
@@ -121,11 +121,11 @@ public class VentanaEgreso extends Ventana implements ActionListener{
         fieldFecha.setEditable(false);
         fieldUsuario.setEditable(false);
         
-        fieldFecha.setText(hoy());
-        fieldUsuario.setText(gui.usuarioActivo.nombre);        
+        fieldFecha.setText(hoy());                
         
         if(uso == AÑADIR){
             buttonEliminar.setEnabled(false);
+            fieldUsuario.setText(gui.usuarioActivo.nombre);                    
         }else if(uso == VER){                   
             fieldMonto.setEditable(false);
             fieldConcepto.setEditable(false);

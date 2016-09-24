@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
@@ -36,23 +37,28 @@ import javax.swing.table.TableModel;
  */
 public class PanelLateral extends PanelInterfaz implements MouseListener, ActionListener{
         
-    private JScrollPane listaProductos;
     public JTable tablaVenta = new JTable();        
+    private JScrollPane listaProductos;    
     private JLabel labelTotal = new JLabel("$0.0");
     private JLabel labelLogo = new JLabel();    
     
     private JButton buttonDevolución = new JButton("Venta");
+    private JButton buttonBuscar = new JButton("Buscar");
+    
+    private JTextField textBuscar = new JTextField();
     
     private JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel puntoDeVenta = new JPanel();
     private JPanel panelLista = new JPanel();
-    private JPanel panelInferior = new JPanel();    
+    private JPanel panelInferior = new JPanel();
+    private JPanel panelTotal = new JPanel();
+    private JPanel panelBuscar = new JPanel();
     
     private VentanaCobrar ventaActual = null;            
     private ArrayList <Producto> productos;
     private boolean devolucion = true;
     
-    private static final Font letraTabla = new Font("Arial", Font.PLAIN, 15);
+    private static final Font letraTabla = new Font("Arial", Font.PLAIN, 20);
         
     /**
      * Configura los componentes del panel
@@ -110,9 +116,21 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         
         panelInferior.setOpaque(false);
         panelInferior.setBorder(new EmptyBorder(5,5,5,5));
-        panelInferior.setLayout(new BorderLayout(5, 5));
-        panelInferior.add(labelTotal, "Center");   
-        panelInferior.add(buttonDevolución, "West");
+        panelInferior.setLayout(new BorderLayout(2, 2));
+        panelInferior.add(panelBuscar, "North");   
+        panelInferior.add(panelTotal, "South");
+        panelBuscar.setBorder(new EmptyBorder(0,2,0,2));
+        panelBuscar.setLayout(new BorderLayout(2,2));
+        panelTotal.setBorder(new EmptyBorder(2,2,2,2));
+        panelTotal.setLayout(new BorderLayout(2,2));
+        
+        textBuscar.setFont(letraTabla);
+        textBuscar.setPreferredSize(new Dimension(0,40));
+        
+        panelBuscar.add(textBuscar,"Center");
+        panelBuscar.add(buttonBuscar, "East");
+        panelTotal.add(buttonDevolución,"West");
+        panelTotal.add(labelTotal,"Center");
                                                
         tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                

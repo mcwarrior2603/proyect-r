@@ -153,7 +153,7 @@ public class VentanaListaEgresos extends Ventana implements ActionListener, Mous
             return;
         
         new VentanaEgreso(
-                1,                
+                VentanaEgreso.VER,                
                 ((ModelEgresos)tableEgresos.getModel())
                 .egresos.get(tableEgresos.rowAtPoint(e.getPoint())));
     }

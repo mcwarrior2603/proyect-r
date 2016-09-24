@@ -120,10 +120,21 @@ public class VentanaMainGUI extends Ventana{
         }
     }
     
+    
+    /**
+     * Recibe una cadena la cual se usará para pasar como parámetro
+     * al método de la clase PanelProductos encargado de actualizar
+     * los productos mostrados.
+     * @param aBuscar Subcadena que se usará para buscar productos
+     */
     public void buscarProductos(String aBuscar){
         panelProductos.actualizarPanel(aBuscar);
     }
     
+    
+    /**
+     * Carga los porductos existentes en la base de datos
+     */
     public void cargarProductos(){
         panelProductos.cargarProductos();        
     }

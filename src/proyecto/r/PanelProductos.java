@@ -52,6 +52,12 @@ public class PanelProductos extends PanelInterfaz{
         cargarProductos();                                                           
     }
     
+    /**
+     * Actualiza los productos mostrados en el panel, mostrando
+     * solamente aquellos en cuyo nombre se encuentre la subcadena
+     * recibida.
+     * @param buscar subcadena que se buscará en los nombres de los productos
+     */
     public void actualizarPanel(String buscar){
                 
         removeAll();
@@ -87,6 +93,10 @@ public class PanelProductos extends PanelInterfaz{
         updateUI();
     }
     
+    /**
+     * Método que manda llamar a su homónimo, pasando como parámetro 
+     * una cadena vacía lo cual hará que e muestren todos los productos
+     */
     public void actualizarPanel(){
         actualizarPanel("");
     }

@@ -50,6 +50,8 @@ public class VentanaMainGUI extends Ventana{
         
         this.usuarioActivo = usuarioActivo;
         
+        System.out.println("-----" + System.getProperty("os.name"));
+        
         try {
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {

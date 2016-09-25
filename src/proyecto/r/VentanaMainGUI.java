@@ -48,15 +48,7 @@ public class VentanaMainGUI extends Ventana{
     public VentanaMainGUI(Usuario usuarioActivo){                        
         super(300, 300);
         
-        this.usuarioActivo = usuarioActivo;
-        
-        System.out.println("-----" + System.getProperty("os.name"));
-        
-        try {
-            UIManager.setLookAndFeel(new WindowsLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            reportarError(ex);
-        }
+        this.usuarioActivo = usuarioActivo;                
                                 
         setExtendedState(MAXIMIZED_BOTH);                
         setResizable(true);                

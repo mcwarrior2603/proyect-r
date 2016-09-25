@@ -119,10 +119,13 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         panelInferior.setLayout(new BorderLayout(2, 2));
         panelInferior.add(panelBuscar, "North");   
         panelInferior.add(panelTotal, "South");
+        
         panelBuscar.setBorder(new EmptyBorder(0,2,0,2));
         panelBuscar.setLayout(new BorderLayout(2,2));
+        panelBuscar.setOpaque(false);
         panelTotal.setBorder(new EmptyBorder(2,2,2,2));
         panelTotal.setLayout(new BorderLayout(2,2));
+        panelTotal.setOpaque(false);
         
         textBuscar.setFont(letraTabla);
         textBuscar.setPreferredSize(new Dimension(0,40));

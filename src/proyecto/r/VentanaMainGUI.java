@@ -50,8 +50,8 @@ public class VentanaMainGUI extends Ventana{
         
         this.usuarioActivo = usuarioActivo;                
                                 
-        setExtendedState(MAXIMIZED_BOTH);                
         setResizable(true);                
+        setExtendedState(MAXIMIZED_BOTH);                        
         
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.setLayout(new BorderLayout(15, 15));

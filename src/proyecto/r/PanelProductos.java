@@ -36,7 +36,7 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
-    private static int limiteProductos = 100;
+    private static int numeroProductos;
     private static int numeroFilas;
     private static int numeroColumnas;
     
@@ -63,14 +63,14 @@ public class PanelProductos extends PanelInterfaz{
         removeAll();
         
         numeroColumnas = (int) (Math.floor((float)(gui.getWidth() * 0.70)/ (SeleccionProducto.maximoTamaxo.getWidth() + 40)));
-        numeroFilas = (int) (Math.ceil(100f / (float) numeroColumnas));        
+        numeroFilas = (int) (Math.ceil(((float) numeroProductos) / (float) numeroColumnas));        
         
         contenedorProductos = new JPanel();
                 
         contenedorProductos.setLayout(new GridLayout(numeroFilas, numeroColumnas, 10, 10));
         contenedorProductos.setOpaque(false);               
         
-        for(int i = 0 ; i < limiteProductos ; i++){
+        for(int i = 0 ; i < numeroProductos ; i++){
             if(i < productosRegistrados.size()) 
                 if(botonesProductos.get(i).productoActivo.nombre.contains(buscar))
                     contenedorProductos.add(botonesProductos.get(i));
@@ -130,6 +130,8 @@ public class PanelProductos extends PanelInterfaz{
             botonesProductos.add(new SeleccionProducto(
                     productosRegistrados.get(i), gui));            
         }
+        
+        numeroProductos = productosRegistrados.size();
         
         actualizarPanel();
     }

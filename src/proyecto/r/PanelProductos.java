@@ -62,8 +62,14 @@ public class PanelProductos extends PanelInterfaz{
                 
         removeAll();
         
-        numeroColumnas = (int) (Math.floor((float)(gui.getWidth() * 0.70)/ (SeleccionProducto.maximoTamaxo.getWidth() + 40)));
-        numeroFilas = (int) (Math.ceil(((float) numeroProductos) / (float) numeroColumnas));        
+        numeroColumnas = Math.max(
+                (int) (Math.floor((float)(gui.getWidth() * 0.70)/ 
+                        (SeleccionProducto.maximoTamaxo.getWidth() + 40))),
+                1);
+        numeroFilas = Math.max(
+                (int) (Math.ceil(((float) numeroProductos) / 
+                        (float) numeroColumnas)),
+                1);
         
         contenedorProductos = new JPanel();
                 
@@ -131,7 +137,7 @@ public class PanelProductos extends PanelInterfaz{
                     productosRegistrados.get(i), gui));            
         }
         
-        numeroProductos = productosRegistrados.size();
+        numeroProductos = Math.max(productosRegistrados.size(), 1);
         
         actualizarPanel();
     }

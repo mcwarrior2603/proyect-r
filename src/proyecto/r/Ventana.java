@@ -114,7 +114,7 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
             return Float.parseFloat(f.trim());
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, f + " no es un valor correcto para " + significado);
-            return -1f;
+            return DEFAULT_AFLOAT;
         }        
     }
 

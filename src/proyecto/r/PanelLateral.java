@@ -95,25 +95,25 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         
     }
     /**
-     * Se coloca el borde para cada elemento que conforma la ventana 
-     * Se le da color a la ventana
+     * Se configuran los componentes que pertenecen al panel
+     * asignando tamaños, colores, y posiciones
      */
     private void configurarPuntoDeVenta(){               
         
         puntoDeVenta.setLayout(new BorderLayout(5, 5));
         puntoDeVenta.setBackground(Color.GREEN);
         
-        //Coloqué el JLabel en un panel para poder separarlo del borde del panel
+        //Panel total
         labelTotal.setFont(new Font("Arial", Font.BOLD, 50));
         labelTotal.setHorizontalAlignment(JLabel.RIGHT);  
         labelTotal.setAlignmentY(TOP_ALIGNMENT);
         labelTotal.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         labelTotal.setOpaque(true);
-        labelTotal.setBackground(Color.WHITE);                    
-        
+        labelTotal.setBackground(Color.WHITE);                            
         buttonDevolución.setFont(Ventana.fontTitulo);        
         intercambiarVenta();
         
+        //Parte inferior del panel lateral
         panelInferior.setOpaque(false);
         panelInferior.setBorder(new EmptyBorder(5,5,5,5));
         panelInferior.setLayout(new BorderLayout(2, 2));
@@ -127,14 +127,15 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         panelTotal.setLayout(new BorderLayout(2,2));
         panelTotal.setOpaque(false);
         
+        //Barra de búsqueda
         textBuscar.setFont(letraTabla);
-        textBuscar.setPreferredSize(new Dimension(0,40));
-        
+        textBuscar.setPreferredSize(new Dimension(0,40));        
         panelBuscar.add(textBuscar,"Center");
         panelBuscar.add(buttonBuscar, "East");
         panelTotal.add(buttonDevolución,"West");
         panelTotal.add(labelTotal,"Center");
-                                               
+                           
+        //Tabla de productos
         tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
@@ -158,6 +159,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         puntoDeVenta.add(panelInferior, "South");                                
         
     }        
+    
     /**
      * Actualiza y suma los precios de la tabla
      */
@@ -173,6 +175,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         updateUI();
                 
     }        
+    
     /**
      * Limpia la ventana y la vuelve a cero
      */
@@ -196,8 +199,9 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         else 
             buttonDevolución.setText("Venta");
     }
+    
     /**
-     * Si se encuentra una ventatna activa se cierra y se abre una nueva 
+     * Si se encuentra una interfaz de cobro activa se cierra y se abre una nueva 
      */
     public void disposeVentaGUI(){
         if(ventaActual != null){

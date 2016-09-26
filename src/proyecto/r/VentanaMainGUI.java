@@ -42,6 +42,11 @@ public class VentanaMainGUI extends Ventana{
     
     public boolean cobrando = false;
     public Usuario usuarioActivo;
+    public Color colorFondo = new Color(0xfffc00);
+    public Color colorPanel = new Color(0x2aff00);
+    public Color colorBoton = new Color(0xFAD12E);
+    public String logotipo;
+    public String minutosRecordatorio;
     
     public Timer timerRecordatorio = new Timer();;
     
@@ -55,7 +60,8 @@ public class VentanaMainGUI extends Ventana{
         
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.setLayout(new BorderLayout(15, 15));
-        panelPrincipal.setBackground(new Color(0xfffc00));                
+        panelPrincipal.setBackground(colorFondo);  
+        
         
         panelMenus.configurar(this);
         panelLateral.configurar(this, productosVenta);

@@ -55,7 +55,7 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         
         setLayout(new BorderLayout(5, 5));
         setBorder(bordeDefault);
-        setBackground(new Color(0xFAD12E));
+        setBackground(gui.colorBoton);
         setPreferredSize(maximoTamaxo);                            
         setToolTipText(productoActivo.nombre);
         

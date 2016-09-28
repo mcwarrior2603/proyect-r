@@ -101,7 +101,10 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
         buttonEgresos.addActionListener(this);
     }
     
-    private void buscar(String fecha){                                        
+    private void buscar(String fecha){   
+        /**
+         * Busca la fecha de acuerdo al corte de caja que se desea ver
+         */
         try {
             String sql = "SELECT * FROM CORTES_CAJA WHERE FECHA = '" + fecha + "'";
         

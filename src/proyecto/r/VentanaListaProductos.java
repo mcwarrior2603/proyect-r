@@ -104,13 +104,18 @@ public class VentanaListaProductos extends Ventana{
 
 class ModelVentasProductos implements TableModel{
 
-    
+    /**
+    *Se implementa las listas con las que se manejara el producto y su cantidad 
+    */    
     ArrayList <String> productos = new ArrayList();
     
     ArrayList <Integer> cantidad = new ArrayList();
     
     public ModelVentasProductos(String fechaInicio, String fechaFin){
-        
+        /**
+         * Se da la setencia SQL para encontrar dichos productos
+         * Y la fecha en que se desea ver
+         */
         String sql = "SELECT PRODUCTOS.NOMBRE, SUM(CANTIDAD) AS CANTIDAD FROM PRODUCTOS_VENTAS "
                 + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_VENTAS.ID_PRODUCTO "
                 + "INNER JOIN VENTAS ON VENTAS.ID_VENTA = PRODUCTOS_VENTAS.ID_VENTA "                

@@ -63,7 +63,9 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
     }
     
     private void guardarApertura(){
-        
+        /**
+         * Guarda la apertura al iniciar el programa
+         */
         float monto = aFloat(fieldMonto.getText(), "Monto de apertura");
         
         if(monto == DEFAULT_AFLOAT)

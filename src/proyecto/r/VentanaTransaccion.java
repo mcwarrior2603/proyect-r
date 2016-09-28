@@ -119,7 +119,10 @@ public class VentanaTransaccion extends Ventana{
     }
     
     class ModelProductos implements TableModel{
-
+        /**
+         * Se asigna la lista en la tabla donde se mostrara
+         * y hace nueva transacción
+         */
         ArrayList <Producto> productos = new ArrayList();
         Transaccion transaccionActiva;
         

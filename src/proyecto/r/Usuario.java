@@ -10,7 +10,9 @@ package proyecto.r;
  * @author MCwar
  */
 public class Usuario {
-    
+    /**
+     * Se define la información necesaria para el usuario
+     */
     public int id;
     public String nombre;
     public String password;

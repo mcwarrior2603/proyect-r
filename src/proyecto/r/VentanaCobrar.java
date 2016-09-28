@@ -68,7 +68,10 @@ public class VentanaCobrar extends Ventana implements ActionListener{
     
     public VentanaCobrar(float total, VentanaMainGUI gui){                
         super(675, 340);
-        
+        /**
+         * Se asigna las funciones a la ventana 
+         * así como las isntrucciones que debe seguir
+         */
 //        setUndecorated(true); 
         
         this.total = total;

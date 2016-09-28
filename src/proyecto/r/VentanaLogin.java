@@ -88,6 +88,9 @@ public class VentanaLogin extends Ventana implements ActionListener {
     }
     
     private void Check(){
+        /**
+         * Checa y permite ingresar a la interfaz principal
+         */
         if(UsuarioText.getText().isEmpty() || UsuarioText.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Asegurese de haber ingresado\nun usuario y contraseña.", "Información faltane", JOptionPane.WARNING_MESSAGE);
             return;

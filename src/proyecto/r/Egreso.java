@@ -10,6 +10,9 @@ package proyecto.r;
  * @author MCwar
  */
 public class Egreso {
+    /**
+     * Se obtiene los datos necesarios para generar el egreso
+     */
     int id;
     String fecha;
     float monto;
@@ -17,6 +20,9 @@ public class Egreso {
     String usuario;
     
     public Egreso(int id, String fecha, float monto, String concepto, String usuario){
+        /**
+         * Señala y obtiene la informaciòn
+         */
         this.id = id;
         this.fecha = fecha;
         this.monto = monto;

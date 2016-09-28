@@ -203,7 +203,10 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         }
             
     }
-    
+    /**
+     * Notifica si se ha guardado la venta o la devoluciòn
+     * @param e 
+     */
     @Override
     public void mouseClicked(MouseEvent e) {          
         
@@ -229,6 +232,9 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        /**
+         * Hace el cambio de venta a devoluciòn
+         */
         if(e.getSource() == buttonDevolución)
             intercambiarVenta();
     }
@@ -243,6 +249,9 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     public void mouseExited(MouseEvent e) {}       
     
     class ModelProductos implements TableModel{
+        /**
+         * Se crea la lista y los productos que se pueden seleccionar para la venta
+         */
 
         ArrayList <Producto> productos;        
         

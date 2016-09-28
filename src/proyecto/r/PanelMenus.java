@@ -58,6 +58,9 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     
     @Override
     public void configurar(VentanaMainGUI gui){
+        /**
+         * Se agrega los elementos a las barras del menu 
+         */
         super.configurar(gui);                
         setLayout(new FlowLayout(FlowLayout.LEFT, 15, 2));
         
@@ -86,6 +89,10 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     }
     
     private void configurarMenuArchivo(){
+        /**
+         * Se le añade el tamaño de letra
+         * se manda llamar a distintas partes del menu
+         */
         menuArchivo.add(cancelarVenta);
         menuArchivo.add(cerrarSesion);
         menuArchivo.addSeparator();

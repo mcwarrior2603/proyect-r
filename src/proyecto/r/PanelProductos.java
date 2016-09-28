@@ -53,6 +53,11 @@ public class PanelProductos extends PanelInterfaz{
     }
     
     private void actualizarPanel(String buscar){
+        
+        /**
+         * Actualiza el panel de los productos
+         * Y los agrega todos los productos que ya estan agregados
+         */
                 
         removeAll();
         
@@ -86,12 +91,18 @@ public class PanelProductos extends PanelInterfaz{
         add(scrollProductos);  
         updateUI();
     }
-    
+    /**
+     * Actualiza el panel
+     */
     public void actualizarPanel(){
         actualizarPanel("");
     }
     
     public void cargarProductos(){
+        /**
+         * Genera todos los productos al iniciar la ventana
+         */
+        
         ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS ORDER BY NOMBRE");
                 
         for(int i = 0 ; i < productosRegistrados.size() ; i++){

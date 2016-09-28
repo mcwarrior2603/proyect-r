@@ -7,8 +7,10 @@ package proyecto.r;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -18,7 +20,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -30,10 +34,24 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
 
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
     public static final float DEFAULT_AFLOAT = -1.7932f;
+    public static final int DEFAULT_AINTEGER = -17898;
             
     protected Dimension dimensionVentana;        
     
-    public Ventana(int width, int height){
+    private JFrame ventanaCarga;    
+    private WindowListener listenerCarga = new WindowAdapter() {
+        @Override
+        public void windowActivated(WindowEvent e) {
+            ventanaCarga.setAlwaysOnTop(true);
+        }
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+            ventanaCarga.setAlwaysOnTop(false);
+        }
+    };
+        
+    
+    public Ventana(int width, int height){                                                
         dimensionVentana = new Dimension(width, height);
                 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -52,6 +70,41 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+    }
+    
+    protected void abrirVentanaCarga(){
+        
+        JLabel iconoCargando = new JLabel();
+                        
+        iconoCargando.setIcon(new ImageIcon(
+                new ImageIcon("multimedia/cargando.gif").getImage().
+                        getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+        ventanaCarga = new JFrame();
+        
+        (ventanaCarga.getContentPane()).add(iconoCargando);
+        ventanaCarga.setUndecorated(true);
+        ventanaCarga.setSize(250, 250);
+        ventanaCarga.setLocationRelativeTo(null);
+        ventanaCarga.setVisible(true);
+        ventanaCarga.setAlwaysOnTop(true);
+        
+        ventanaCarga.toFront();                
+        
+        addWindowListener(listenerCarga);
+        
+        ((JPanel)ventanaCarga.getContentPane()).updateUI();                
+    }
+    
+    protected void cerrarVentanaCarga(){
+        
+        if(ventanaCarga == null)
+            return;
+        
+        ventanaCarga.setVisible(false);
+        ventanaCarga.dispose();
+        ventanaCarga = null;        
+        removeWindowListener(listenerCarga);
+        
     }
     
     public static String obtenerMaster(){
@@ -116,6 +169,14 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
             JOptionPane.showMessageDialog(null, f + " no es un valor correcto para " + significado);
             return DEFAULT_AFLOAT;
         }        
+    }
+    
+    public static int aInteger(String i){
+        try{
+            return Integer.parseInt(i.trim());
+        }catch(Exception e){            
+            return DEFAULT_AINTEGER;
+        }
     }
 
     public static boolean checkFecha(String fecha){

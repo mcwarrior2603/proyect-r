@@ -243,7 +243,11 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
                 new VentanaGuardarApertura(gui);
             }            
         }else if(e.getSource() == ajustes){
-            new VentanaConfiguracion(gui);
+            if(gui.archivoConfiguracion.exists()){
+                new VentanaConfiguracion(gui, VentanaConfiguracion.CONFIGURACION_COMUN);
+            }else{
+                new VentanaConfiguracion(gui, VentanaConfiguracion.CONFIGURACION_INICIAL);
+            }
         }
     }
 }

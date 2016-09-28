@@ -16,7 +16,8 @@ import javax.swing.border.Border;
  */
 public class PanelInterfaz extends JPanel{
     //en esta seccion se le da color al fondo de la ´pantalla           
-    protected VentanaMainGUI gui;        
+    protected VentanaMainGUI gui;      
+    
     /**
      * Super clase de los paneles de la interfaz principal;
      * @param gui Interfaz principal la cual contiene los paneles
@@ -24,6 +25,10 @@ public class PanelInterfaz extends JPanel{
     public void configurar(VentanaMainGUI gui){        
         this.gui = gui;
         
-        setBackground(gui.colorPanel);
-    }        
+        configurarColores(gui.colorPanel);
+    }       
+    
+    public void configurarColores(Color fondo){
+        setBackground(fondo);
+    }
 }

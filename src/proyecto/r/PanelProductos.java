@@ -42,6 +42,7 @@ public class PanelProductos extends PanelInterfaz{
     
     private static ArrayList <Producto> productosRegistrados = new ArrayList();
     private static ArrayList <SeleccionProducto> botonesProductos = new ArrayList();
+    
     @Override
     public void configurar(VentanaMainGUI gui){
         super.configurar(gui);
@@ -50,6 +51,14 @@ public class PanelProductos extends PanelInterfaz{
         setLayout(new BorderLayout());
         
         cargarProductos();                                                           
+    }
+    
+    @Override
+    public void configurarColores(Color fondo){
+        setBackground(fondo);
+        for (SeleccionProducto botonesProducto : botonesProductos) {
+            botonesProducto.configurarColores(gui.colorBoton);
+        }
     }
     
     /**

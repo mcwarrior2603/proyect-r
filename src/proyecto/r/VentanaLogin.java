@@ -37,7 +37,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     private final JButton BotonCerrar = new JButton();
     private final JButton BotonEntrar = new JButton();
     
-    public VentanaLogin(){
+    public VentanaLogin(){                
         super(400,200);
         
         PanelVentana = (JPanel) getContentPane();
@@ -70,6 +70,8 @@ public class VentanaLogin extends Ventana implements ActionListener {
         
         UsuarioText.requestFocus();
     
+        cerrarVentanaCarga();
+        
     }
     @Override
     protected void confirmarCerrado(){
@@ -102,8 +104,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
                             query.getInt("ID_USUARIO"), 
                             query.getString("NOMBRE_USUARIO"),
                             query.getString("CONTRASEÑA"),
-                            query.getInt("NIVEL_DE_ACCESO")));                    
-
+                            query.getInt("NIVEL_DE_ACCESO")));                                        
                     dispose();                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Contraseña incorrecta");

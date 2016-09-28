@@ -26,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -76,7 +75,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         this.productos = productos;
         
         configurarLogo();
-        configurarPuntoDeVenta();                
+        configurarPosiciones();                
         
         panelLogo.add(labelLogo);
         panelLogo.setOpaque(false);
@@ -85,25 +84,61 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         add(puntoDeVenta, "Center");
                 
     }
+    
     /**
-     * Se sentencia el metodo para colocar el logo en la ventana
+     * Se instancía el metodo para colocar el logo en la ventana
      */
     private void configurarLogo(){
         
-        labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
+        labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/" + gui.logotipo).getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }
+    
+    @Override
+    public void configurarColores(Color fondo){
+        super.configurarColores(fondo);
+        configurarLogo();
+    }
+    
     /**
-     * Se configuran los componentes que pertenecen al panel
-     * asignando tamaños, colores, y posiciones
+     * Se configura la posicion de los componentes
+     * y se añaden al panel
      */
-    private void configurarPuntoDeVenta(){               
+    private void configurarPosiciones(){               
+        
+        configurarComponentes();  
         
         puntoDeVenta.setLayout(new BorderLayout(5, 5));
-        puntoDeVenta.setBackground(Color.GREEN);
+        puntoDeVenta.setBackground(gui.colorPanel);                                
         
-        //Panel total
+        panelInferior.add(panelBuscar, "North");   
+        panelInferior.add(panelTotal, "South");
+        
+        panelBuscar.add(textBuscar,"Center");
+        panelBuscar.add(buttonBuscar, "East");
+        
+        panelTotal.add(buttonDevolución,"West");
+        panelTotal.add(labelTotal,"Center");
+                                     
+        panelLista.setLayout(new BorderLayout());
+        panelLista.add(listaProductos);
+        
+        puntoDeVenta.add(panelLista, "Center");
+        puntoDeVenta.add(panelInferior, "South");                       
+    }                
+    
+    private void configurarComponentes(){                                                                                 
+        configurarLabelTotal();
+        configurarPanelInferior();
+        configurarPanelBuscar();
+        configurarBarraBusqueda();
+        configurarTablaProductos();
+        configurarListaProductos();
+    }
+    
+    private void configurarLabelTotal(){
+        //Label total
         labelTotal.setFont(new Font("Arial", Font.BOLD, 50));
         labelTotal.setHorizontalAlignment(JLabel.RIGHT);  
         labelTotal.setAlignmentY(TOP_ALIGNMENT);
@@ -112,53 +147,52 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         labelTotal.setBackground(Color.WHITE);                            
         buttonDevolución.setFont(Ventana.fontTitulo);        
         intercambiarVenta();
-        
+    }
+    
+    private void configurarPanelInferior(){
         //Parte inferior del panel lateral
         panelInferior.setOpaque(false);
         panelInferior.setBorder(new EmptyBorder(5,5,5,5));
         panelInferior.setLayout(new BorderLayout(2, 2));
-        panelInferior.add(panelBuscar, "North");   
-        panelInferior.add(panelTotal, "South");
-        
+    }
+    
+    private void configurarPanelBuscar(){
+        //Panel buscar
         panelBuscar.setBorder(new EmptyBorder(0,2,0,2));
         panelBuscar.setLayout(new BorderLayout(2,2));
         panelBuscar.setOpaque(false);
         panelTotal.setBorder(new EmptyBorder(2,2,2,2));
         panelTotal.setLayout(new BorderLayout(2,2));
         panelTotal.setOpaque(false);
-        
+    }
+    
+    private void configurarBarraBusqueda(){
         //Barra de búsqueda
         textBuscar.setFont(letraTabla);
-        textBuscar.setPreferredSize(new Dimension(0,40));        
-        panelBuscar.add(textBuscar,"Center");
-        panelBuscar.add(buttonBuscar, "East");
-        panelTotal.add(buttonDevolución,"West");
-        panelTotal.add(labelTotal,"Center");
-                           
+        textBuscar.setPreferredSize(new Dimension(0,40));              
+    }
+    
+    private void configurarTablaProductos(){
         //Tabla de productos
-        tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
+        tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
-        tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 4));
+        tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 5));
         tablaVenta.setFont(letraTabla);
         tablaVenta.setRowHeight(30);        
         tablaVenta.setShowVerticalLines(false);
         tablaVenta.setShowHorizontalLines(false);        
         tablaVenta.setBackground(Color.WHITE);
-        
-        listaProductos = new JScrollPane(tablaVenta); 
-        
+    }
+    
+    private void configurarListaProductos(){
+        //lista productos
+        listaProductos = new JScrollPane(tablaVenta);         
         listaProductos.setBorder(new EmptyBorder(5,5,5,5));                        
         listaProductos.getViewport().setOpaque(false);
-        listaProductos.setBackground(Color.WHITE);                
-        
-        panelLista.setLayout(new BorderLayout());
-        panelLista.add(listaProductos);
-        
-        puntoDeVenta.add(panelLista, "Center");
-        puntoDeVenta.add(panelInferior, "South");                                
-        
-    }        
+        listaProductos.setBackground(Color.WHITE);   
+        listaProductos.setPreferredSize(new Dimension((int)(gui.getWidth() / 8), 0));
+    }
     
     /**
      * Actualiza y suma los precios de la tabla
@@ -179,17 +213,15 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     /**
      * Limpia la ventana y la vuelve a cero
      */
-    public void limpiarVenta(){
-        
+    public void limpiarVenta(){        
         productos.clear();
         actualizar();
         devolucion = false;
-        buttonDevolución.setText("Venta");
-        
+        buttonDevolución.setText("Venta");        
     }
     
     /**
-     * Este metodo permite intercambiar entre devolucion y venta
+     * Intercambia entre venta y devolución
      */
     public void intercambiarVenta(){
         
@@ -207,8 +239,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         if(ventaActual != null){
             ventaActual.cerrar();
             ventaActual = null;
-        }
-            
+        }            
     }
     
     @Override

@@ -20,7 +20,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,21 +40,10 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
     public static final int DEFAULT_AINTEGER = -17898;
             
     protected Dimension dimensionVentana;        
-    
-    private JFrame ventanaCarga;    
-    private WindowListener listenerCarga = new WindowAdapter() {
-        @Override
-        public void windowActivated(WindowEvent e) {
-            ventanaCarga.setAlwaysOnTop(true);
-        }
-        @Override
-        public void windowDeactivated(WindowEvent e) {
-            ventanaCarga.setAlwaysOnTop(false);
-        }
-    };
-        
-    
-    public Ventana(int width, int height){                                                
+                        
+    private JDialog ventanaCarga;        
+
+    public Ventana(int width, int height, boolean visible){                                                
         dimensionVentana = new Dimension(width, height);
                 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -62,7 +54,7 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         setPreferredSize(dimensionVentana);
         pack();        
         setLocationRelativeTo(null);
-        setVisible(true);
+        setVisible(visible);
         setResizable(false);
         
         addKeyListener(this);
@@ -70,32 +62,30 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-    }
-    
-    protected void abrirVentanaCarga(){
+    }                
+                        
+    public void abrirVentanaCarga(){
         
         JLabel iconoCargando = new JLabel();
-                        
+        
         iconoCargando.setIcon(new ImageIcon(
                 new ImageIcon("multimedia/cargando.gif").getImage().
                         getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
-        ventanaCarga = new JFrame();
+           
+        ventanaCarga = new JDialog();
         
         (ventanaCarga.getContentPane()).add(iconoCargando);
         ventanaCarga.setUndecorated(true);
-        ventanaCarga.setSize(250, 250);
-        ventanaCarga.setLocationRelativeTo(null);
-        ventanaCarga.setVisible(true);
-        ventanaCarga.setAlwaysOnTop(true);
-        
-        ventanaCarga.toFront();                
-        
-        addWindowListener(listenerCarga);
-        
-        ((JPanel)ventanaCarga.getContentPane()).updateUI();                
+        ventanaCarga.setPreferredSize(new Dimension(250, 250));
+        ventanaCarga.pack();
+        ventanaCarga.setAlwaysOnTop(true);           
+        ventanaCarga.setLocationRelativeTo(null);        
+        ventanaCarga.setVisible(true);                                                         
+                
+        ((JPanel)ventanaCarga.getContentPane()).updateUI();                             
     }
-    
-    protected void cerrarVentanaCarga(){
+        
+    public void cerrarVentanaCarga(){
         
         if(ventanaCarga == null)
             return;
@@ -103,10 +93,10 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         ventanaCarga.setVisible(false);
         ventanaCarga.dispose();
         ventanaCarga = null;        
-        removeWindowListener(listenerCarga);
-        
+            
+            
     }
-    
+        
     public static String obtenerMaster(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader("archivos/master.txt"));
@@ -272,5 +262,5 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
     public void keyTyped(KeyEvent e) {}    
     @Override
     public void keyReleased(KeyEvent e) {}   
-    
+        
 }

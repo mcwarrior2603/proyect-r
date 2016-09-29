@@ -49,12 +49,12 @@ public class VentanaListaEgresos extends Ventana implements ActionListener, Mous
     private final JButton buttonBuscar = new JButton("Buscar");
     
     public VentanaListaEgresos(){
-        super(600, 450);
+        super(600, 450, true);
         configurar("");
     }
     
     public VentanaListaEgresos(String fecha){        
-        super(600,500);        
+        super(600, 500, true);        
         configurar(fecha);        
     }
     

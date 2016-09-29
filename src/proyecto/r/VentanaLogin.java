@@ -38,7 +38,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     private final JButton BotonEntrar = new JButton();
     
     public VentanaLogin(){                
-        super(400,200);
+        super(400, 200, true);
         
         PanelVentana = (JPanel) getContentPane();
         
@@ -68,9 +68,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
         UsuarioText.setEnabled(true);
         labelContraseña.setEnabled(true);                  
         
-        UsuarioText.requestFocus();
-    
-        cerrarVentanaCarga();
+        UsuarioText.requestFocus();            
         
     }
     @Override
@@ -99,13 +97,13 @@ public class VentanaLogin extends Ventana implements ActionListener {
             if(query.next())
                 if(BCrypt.checkpw(fieldPassword.getText(), query.getString("CONTRASEÑA"))){
                     setVisible(false);
-
+                                       
                     new VentanaMainGUI(new Usuario(
                             query.getInt("ID_USUARIO"), 
                             query.getString("NOMBRE_USUARIO"),
                             query.getString("CONTRASEÑA"),
-                            query.getInt("NIVEL_DE_ACCESO")));                                        
-                    dispose();                    
+                            query.getInt("NIVEL_DE_ACCESO")));                                                            
+                    dispose();                                                                             
                 }else{
                     JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
                 }

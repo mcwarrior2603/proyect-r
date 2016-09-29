@@ -49,7 +49,7 @@ public class VentanaTransaccion extends Ventana{
     private static final Color COLOR_COMPONENTES = new Color(0xD9D9D9);
     
     public VentanaTransaccion(Transaccion ventaActiva){
-        super(500, 600);
+        super(500, 600, true);
         
         this.transaccionActiva = ventaActiva;                        
         

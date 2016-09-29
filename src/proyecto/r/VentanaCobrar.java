@@ -67,9 +67,9 @@ public class VentanaCobrar extends Ventana implements ActionListener{
     private boolean visible = true;
     
     public VentanaCobrar(float total, VentanaMainGUI gui){                
-        super(675, 340);
+        super(675, 340, true);
         
-//        setUndecorated(true); 
+        setUndecorated(true); 
         
         this.total = total;
         this.gui = gui;                                        

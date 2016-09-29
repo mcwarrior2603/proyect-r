@@ -65,7 +65,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     private JComboBox comboPermisos = new JComboBox();        
     
     public VentanaUsuario(int uso){
-        super(420, 350);
+        super(420, 350, true);
         
         this.master = Ventana.obtenerMaster();
         this.uso = uso;

@@ -60,14 +60,17 @@ public class VentanaMainGUI extends Ventana{
     public Timer timerRecordatorio = new Timer();;
     
     public VentanaMainGUI(Usuario usuarioActivo){                        
-        super(300, 300);                                             
-        
-        this.usuarioActivo = usuarioActivo;                                
-                
-        setResizable(true);                
-        setExtendedState(MAXIMIZED_BOTH);                                        
+        super(300, 300, false);                                                                     
         
         panelPrincipal = (JPanel) getContentPane();
+        panelPrincipal.updateUI();                                          
+        
+        this.usuarioActivo = usuarioActivo;                                
+        
+        setResizable(true);
+        setVisible(true);
+        setExtendedState(MAXIMIZED_BOTH);                                                
+                
         panelPrincipal.setLayout(new BorderLayout(15, 15));
         panelPrincipal.setBackground(colorFondo);  
                 
@@ -82,8 +85,8 @@ public class VentanaMainGUI extends Ventana{
         panelLateral.actualizar();        
         cargarConfiguracion();
                 
-        panelPrincipal.updateUI();                
-  
+        panelPrincipal.updateUI();                        
+        
         if(!checkAperturaDeCaja()){
             if(JOptionPane.showConfirmDialog(null, "¿Registrar corte de caja?\n"
                     + "Usted lo puede hacer manualmente después o\n"
@@ -93,7 +96,7 @@ public class VentanaMainGUI extends Ventana{
             }else{    
                 activarRecordatorio();
             }   
-        }               
+        }                              
         
     }                    
     
@@ -105,16 +108,7 @@ public class VentanaMainGUI extends Ventana{
             }
         }, 60000 * minutosRecordatorio);
     }
-    
-    private int buscarProducto(Producto ing){
-        int i;      
-        for(i = 0 ; i < productosVenta.size() ; i++){
-            if(productosVenta.get(i).idProducto == ing.idProducto)
-                break;
-        }        
-        return i;
-    }
-         
+             
     public void cargarConfiguracion(){
         
         int r, g, b;        
@@ -280,6 +274,22 @@ public class VentanaMainGUI extends Ventana{
     
     public void limpiarVenta(){
         panelLateral.limpiarVenta();
+    }
+    
+    /**
+     * Busca si un producto en la lista de productos que se están
+     * vendiendo para realizar la acción correspondiente sobre la venta     
+     * @param ing El producto que se está buscando
+     * @return El índice en que se encuentra el producto
+     * @return El tamaño de la lista si no existe
+     */
+    private int buscarProducto(Producto ing){
+        int i;      
+        for(i = 0 ; i < productosVenta.size() ; i++){
+            if(productosVenta.get(i).idProducto == ing.idProducto)
+                break;
+        }        
+        return i;
     }
     
     public void añadirProducto(Producto ing){

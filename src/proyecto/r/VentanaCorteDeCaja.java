@@ -47,7 +47,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
     
     
     public VentanaCorteDeCaja(){    
-        super(420, 500);                        
+        super(420, 500, true);                        
         
         mainPanel = (JPanel) getContentPane();
                         

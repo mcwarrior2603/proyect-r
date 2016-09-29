@@ -53,7 +53,7 @@ public class VentanaListaProductos extends Ventana{
     
     
     public VentanaListaProductos(){
-        super(700,500);
+        super(700,500, true);
         
         generador.setEnabled(false);
         

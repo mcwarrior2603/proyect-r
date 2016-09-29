@@ -61,7 +61,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     private final VentanaMainGUI gui;
     
     public VentanaProducto(int uso, VentanaMainGUI gui){                        
-        super(370, 320);
+        super(370, 320, true);
         
         this.gui = gui;
         this.uso = uso;

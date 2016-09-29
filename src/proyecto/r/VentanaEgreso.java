@@ -48,14 +48,14 @@ public class VentanaEgreso extends Ventana implements ActionListener{
     private int uso;
     
     public VentanaEgreso(int uso, VentanaMainGUI gui){        
-        super(400, 400);
+        super(400, 400, true);
                        
         this.gui = gui;
         configurar(uso);
     }
     
     public VentanaEgreso(int uso, Egreso eg){
-        super(400, 400);        
+        super(400, 400, true);        
         
         this.eg = eg;                        
         configurar(uso);

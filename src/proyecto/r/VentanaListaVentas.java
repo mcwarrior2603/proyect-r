@@ -49,12 +49,12 @@ public class VentanaListaVentas extends Ventana implements ActionListener, Mouse
     private final JButton buttonBuscar = new JButton("Buscar");
     
     public VentanaListaVentas(){
-        super(600, 450);
+        super(600, 450, true);
         configurar("");
     }
     
     public VentanaListaVentas(String fecha){        
-        super(600,430);        
+        super(600,430, true);        
         configurar(fecha);        
     }
     

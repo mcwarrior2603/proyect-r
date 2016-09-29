@@ -60,7 +60,7 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
     private VentanaMainGUI gui;
     
     public VentanaConfiguracion(VentanaMainGUI gui, int uso){
-        super(500, 500);
+        super(500, 500, true);
                 
         configurarComponentes(gui, uso);
         

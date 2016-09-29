@@ -28,7 +28,7 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
     private VentanaMainGUI gui;
     
     public VentanaGuardarApertura(VentanaMainGUI gui){
-        super(300, 160);                        
+        super(300, 160, true);                        
         
         this.gui = gui;
         

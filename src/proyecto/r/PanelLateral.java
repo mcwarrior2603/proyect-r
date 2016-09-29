@@ -26,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -76,7 +75,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         this.productos = productos;
         
         configurarLogo();
-        configurarPuntoDeVenta();                
+        configurarPosiciones();                
         
         panelLogo.add(labelLogo);
         panelLogo.setOpaque(false);
@@ -85,79 +84,112 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         add(puntoDeVenta, "Center");
                 
     }
-    /**
-     * Se sentencia el metodo para colocar el logo en la ventana
-     */
+    
+    
     private void configurarLogo(){
         
-        labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/logotipo_super.png").getImage()
+        labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/" + gui.logotipo).getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }
-    /**
-     * Se coloca el borde para cada elemento que conforma la ventana 
-     * Se le da color a la ventana
-     */
-    private void configurarPuntoDeVenta(){               
+    
+    @Override
+    public void configurarColores(Color fondo){
+        super.configurarColores(fondo);
+        configurarLogo();
+    }
+    
+  
+    private void configurarPosiciones(){               
+        
+        configurarComponentes();  
         
         puntoDeVenta.setLayout(new BorderLayout(5, 5));
-        puntoDeVenta.setBackground(Color.GREEN);
+        puntoDeVenta.setBackground(gui.colorPanel);                                
         
-        //Coloqué el JLabel en un panel para poder separarlo del borde del panel
+        panelInferior.add(panelBuscar, "North");   
+        panelInferior.add(panelTotal, "South");
+        
+        panelBuscar.add(textBuscar,"Center");
+        panelBuscar.add(buttonBuscar, "East");
+        
+        panelTotal.add(buttonDevolución,"West");
+        panelTotal.add(labelTotal,"Center");
+                                     
+        panelLista.setLayout(new BorderLayout());
+        panelLista.add(listaProductos);
+        
+        puntoDeVenta.add(panelLista, "Center");
+        puntoDeVenta.add(panelInferior, "South");                       
+    }                
+    
+    private void configurarComponentes(){                                                                                 
+        configurarLabelTotal();
+        configurarPanelInferior();
+        configurarPanelBuscar();
+        configurarBarraBusqueda();
+        configurarTablaProductos();
+        configurarListaProductos();
+    }
+    
+    private void configurarLabelTotal(){
+        //Label total
         labelTotal.setFont(new Font("Arial", Font.BOLD, 50));
         labelTotal.setHorizontalAlignment(JLabel.RIGHT);  
         labelTotal.setAlignmentY(TOP_ALIGNMENT);
         labelTotal.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         labelTotal.setOpaque(true);
-        labelTotal.setBackground(Color.WHITE);                    
-        
+        labelTotal.setBackground(Color.WHITE);                            
         buttonDevolución.setFont(Ventana.fontTitulo);        
         intercambiarVenta();
-        
+    }
+    
+    private void configurarPanelInferior(){
+        //Parte inferior del panel lateral
         panelInferior.setOpaque(false);
         panelInferior.setBorder(new EmptyBorder(5,5,5,5));
         panelInferior.setLayout(new BorderLayout(2, 2));
-        panelInferior.add(panelBuscar, "North");   
-        panelInferior.add(panelTotal, "South");
+    }
+    
+    private void configurarPanelBuscar(){
+        //Panel buscar
         panelBuscar.setBorder(new EmptyBorder(0,2,0,2));
         panelBuscar.setLayout(new BorderLayout(2,2));
+        panelBuscar.setOpaque(false);
         panelTotal.setBorder(new EmptyBorder(2,2,2,2));
         panelTotal.setLayout(new BorderLayout(2,2));
-        
+        panelTotal.setOpaque(false);
+    }
+    
+    private void configurarBarraBusqueda(){
+        //Barra de búsqueda
         textBuscar.setFont(letraTabla);
-        textBuscar.setPreferredSize(new Dimension(0,40));
-        
-        panelBuscar.add(textBuscar,"Center");
-        panelBuscar.add(buttonBuscar, "East");
-        panelTotal.add(buttonDevolución,"West");
-        panelTotal.add(labelTotal,"Center");
-                                               
-        tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 4.5), 0));
+        textBuscar.setPreferredSize(new Dimension(0,40));              
+    }
+    
+    private void configurarTablaProductos(){
+        //Tabla de productos
+        tablaVenta.setMaximumSize(new Dimension((int)(gui.getWidth() / 5), 0));
         tablaVenta.setModel(new ModelProductos(productos));                
         tablaVenta.getColumnModel().getColumn(1).setMaxWidth(100);
-        tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 4));
+        tablaVenta.getColumnModel().getColumn(0).setMaxWidth((int)(gui.getWidth() / 5));
         tablaVenta.setFont(letraTabla);
         tablaVenta.setRowHeight(30);        
         tablaVenta.setShowVerticalLines(false);
         tablaVenta.setShowHorizontalLines(false);        
         tablaVenta.setBackground(Color.WHITE);
-        
-        listaProductos = new JScrollPane(tablaVenta); 
-        
+    }
+    
+    private void configurarListaProductos(){
+        //lista productos
+        listaProductos = new JScrollPane(tablaVenta);         
         listaProductos.setBorder(new EmptyBorder(5,5,5,5));                        
         listaProductos.getViewport().setOpaque(false);
-        listaProductos.setBackground(Color.WHITE);                
-        
-        panelLista.setLayout(new BorderLayout());
-        panelLista.add(listaProductos);
-        
-        puntoDeVenta.add(panelLista, "Center");
-        puntoDeVenta.add(panelInferior, "South");                                
-        
-    }        
-    /**
-     * Actualiza y suma los precios de la tabla
-     */
+        listaProductos.setBackground(Color.WHITE);   
+        listaProductos.setPreferredSize(new Dimension((int)(gui.getWidth() / 8), 0));
+    }
+    
+  
     public void actualizar(){
         
         float sumaTotal = 0;
@@ -170,20 +202,17 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         updateUI();
                 
     }        
-    /**
-     * Limpia la ventana y la vuelve a cero
-     */
-    public void limpiarVenta(){
-        
+    
+  
+    public void limpiarVenta(){        
         productos.clear();
         actualizar();
         devolucion = false;
-        buttonDevolución.setText("Venta");
-        
+        buttonDevolución.setText("Venta");        
     }
     
     /**
-     * Este metodo permite intercambiar entre devolucion y venta
+     * Intercambia entre venta y devolución
      */
     public void intercambiarVenta(){
         
@@ -193,15 +222,13 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         else 
             buttonDevolución.setText("Venta");
     }
-    /**
-     * Si se encuentra una ventatna activa se cierra y se abre una nueva 
-     */
+    
+    
     public void disposeVentaGUI(){
         if(ventaActual != null){
             ventaActual.cerrar();
             ventaActual = null;
-        }
-            
+        }            
     }
     /**
      * Notifica si se ha guardado la venta o la devoluciòn
@@ -249,9 +276,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     public void mouseExited(MouseEvent e) {}       
     
     class ModelProductos implements TableModel{
-        /**
-         * Se crea la lista y los productos que se pueden seleccionar para la venta
-         */
+      
 
         ArrayList <Producto> productos;        
         

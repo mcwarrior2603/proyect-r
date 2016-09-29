@@ -129,9 +129,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private void configurarUso(){    
-        /**
-         * Permite añadir un nuevo porducto
-         */
+        
         if(uso == AXADIR){
             buttonEliminar.setEnabled(false);
             labelTitulo.setText(labelTitulo.getText() + " - Añadir");
@@ -162,9 +160,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private boolean confirmarModificacion(){
-        /**
-         * Da un mensaje de confirmación al agregar el producto
-         */
+     
         if(gui.cobrando){
             JOptionPane.showMessageDialog(null, "Hay una venta realizandose,\n"
                     + "termínela para poder continuar.");
@@ -180,9 +176,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private void eliminar(){
-        /**
-         * Elimina el producto y en caso de que este no pueda se da el mensaje
-         */
+        
         if(!valido)
             return;
         
@@ -202,9 +196,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private void actualizar(){
-        /**
-         * Actualiza todo el panel productos y permite ver la modificación de estos
-         */
+     
         float precio = aFloat(fieldPrecio.getText(), "precio");
         
         if(!valido)
@@ -229,10 +221,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private void añadir(){   
-        /**
-         * En este metodo se obtiene cada uno de los atributos 
-         * y ayuda a crear el nuevo producto
-         */
+     
         float precio = aFloat(fieldPrecio.getText(), "precio");
         
         if(!valido)        
@@ -261,7 +250,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     public void cerrar(){
         setVisible(false);
         dispose();
-        gui.actualizarProductos();
+        gui.cargarProductos();
     }
     
     private void busquedaCorrecta(){

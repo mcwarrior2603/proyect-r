@@ -11,11 +11,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,7 +35,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class VentanaMainGUI extends Ventana{
                         
-    public static String version = "1.3.1";
+    public static String version = "1.4.0";
     public static String fechaVersion = "20/09/2016";
     
     private JLabel logo = new JLabel();
@@ -43,26 +50,27 @@ public class VentanaMainGUI extends Ventana{
     public boolean cobrando = false;
     public Usuario usuarioActivo;
     
+    public File archivoConfiguracion = new File("archivos/configuracion.txt");
+    public Color colorFondo = new Color(0xFFFFFF);
+    public Color colorPanel = new Color(0xFFFFFF);
+    public Color colorBoton = new Color(0xFFFFFF);
+    public String logotipo;
+    public int minutosRecordatorio;
+    
     public Timer timerRecordatorio = new Timer();;
     
     public VentanaMainGUI(Usuario usuarioActivo){                        
-        super(300, 300);
+        super(300, 300);                                             
         
-        this.usuarioActivo = usuarioActivo;
-        
-        try {
-            UIManager.setLookAndFeel(new WindowsLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            reportarError(ex);
-        }
-                                
-        setExtendedState(MAXIMIZED_BOTH);                
+        this.usuarioActivo = usuarioActivo;                                
+                
         setResizable(true);                
+        setExtendedState(MAXIMIZED_BOTH);                                        
         
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.setLayout(new BorderLayout(15, 15));
-        panelPrincipal.setBackground(new Color(0xfffc00));                
-        
+        panelPrincipal.setBackground(colorFondo);  
+                
         panelMenus.configurar(this);
         panelLateral.configurar(this, productosVenta);
         panelProductos.configurar(this);
@@ -71,10 +79,11 @@ public class VentanaMainGUI extends Ventana{
         panelPrincipal.add(panelLateral, BorderLayout.WEST);
         panelPrincipal.add(panelMenus, BorderLayout.NORTH);                                        
         
-        panelLateral.actualizar();
-        
-        panelPrincipal.updateUI();
-        
+        panelLateral.actualizar();        
+        cargarConfiguracion();
+                
+        panelPrincipal.updateUI();                
+  
         if(!checkAperturaDeCaja()){
             if(JOptionPane.showConfirmDialog(null, "¿Registrar corte de caja?\n"
                     + "Usted lo puede hacer manualmente después o\n"
@@ -84,8 +93,8 @@ public class VentanaMainGUI extends Ventana{
             }else{    
                 activarRecordatorio();
             }   
-        }
-
+        }               
+        
     }                    
     
     private void activarRecordatorio(){                       
@@ -94,7 +103,7 @@ public class VentanaMainGUI extends Ventana{
             public void run() {
                 recordatorioApertura();
             }
-        }, 300000);
+        }, 60000 * minutosRecordatorio);
     }
     
     private int buscarProducto(Producto ing){
@@ -105,12 +114,66 @@ public class VentanaMainGUI extends Ventana{
         }        
         return i;
     }
+         
+    public void cargarConfiguracion(){
+        
+        int r, g, b;        
+        BufferedReader reader;        
+        
+        try{
+            reader = new BufferedReader(new FileReader(archivoConfiguracion));
             
+            //Color fondo
+            r = Integer.parseInt(reader.readLine());
+            g = Integer.parseInt(reader.readLine());
+            b = Integer.parseInt(reader.readLine());
+            colorFondo = new Color(r, g, b);
+            
+            //Color panel
+            r = Integer.parseInt(reader.readLine());
+            g = Integer.parseInt(reader.readLine());
+            b = Integer.parseInt(reader.readLine());
+            colorPanel = new Color(r, g, b);
+            
+            //Color Botones
+            r = Integer.parseInt(reader.readLine());
+            g = Integer.parseInt(reader.readLine());
+            b = Integer.parseInt(reader.readLine());
+            colorBoton = new Color(r, g, b);
+            
+            //Logotipo
+            logotipo = reader.readLine();
+            
+            //Minutos entre cada recordatorio
+            minutosRecordatorio = Integer.parseInt(reader.readLine());
+            
+            configurarColores();
+            
+        } catch(FileNotFoundException ex){
+            JOptionPane.showMessageDialog(null, 
+                    "No existe un archivo de configuración.\n"
+                            + "Por favor configure el programa");
+            new VentanaConfiguracion(this, VentanaConfiguracion.CONFIGURACION_INICIAL);
+        } catch (IOException ex) { 
+            System.out.println("Error");
+        }
+    }   
+    
+    public void configurarColores(){
+        panelPrincipal = (JPanel) getContentPane();
+        
+        panelPrincipal.setBackground(colorFondo);
+        panelLateral.configurarColores(colorPanel);
+        panelMenus.configurarColores(colorPanel);
+        panelProductos.configurarColores(colorPanel);
+        panelPrincipal.updateUI();
+    }
+    
     @Override
     public void confirmarCerrado(){
         if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
                 System.exit(0);
-    }
+    }        
     
     @Override
     public void keyPressed(KeyEvent e) {    
@@ -118,9 +181,23 @@ public class VentanaMainGUI extends Ventana{
         if(e.getKeyCode() == KeyEvent.VK_F5){
             panelProductos.actualizarPanel();            
         }
+    }        
+        
+    /**
+     * Recibe una cadena la cual se usará para pasar como parámetro
+     * al método de la clase PanelProductos encargado de actualizar
+     * los productos mostrados.
+     * @param aBuscar Subcadena que se usará para buscar productos
+     */
+    public void buscarProductos(String aBuscar){
+        panelProductos.actualizarPanel(aBuscar);
     }
     
-    public void actualizarProductos(){
+    
+    /**
+     * Carga los porductos existentes en la base de datos
+     */
+    public void cargarProductos(){
         panelProductos.cargarProductos();        
     }
     

@@ -19,7 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.PasswordField;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 /**
@@ -38,7 +37,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     private final JButton BotonCerrar = new JButton();
     private final JButton BotonEntrar = new JButton();
     
-    public VentanaLogin(){
+    public VentanaLogin(){                
         super(400,200);
         
         PanelVentana = (JPanel) getContentPane();
@@ -71,6 +70,8 @@ public class VentanaLogin extends Ventana implements ActionListener {
         
         UsuarioText.requestFocus();
     
+        cerrarVentanaCarga();
+        
     }
     @Override
     protected void confirmarCerrado(){
@@ -88,9 +89,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     }
     
     private void Check(){
-        /**
-         * Checa y permite ingresar a la interfaz principal
-         */
+       
         if(UsuarioText.getText().isEmpty() || UsuarioText.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Asegurese de haber ingresado\nun usuario y contraseña.", "Información faltane", JOptionPane.WARNING_MESSAGE);
             return;
@@ -106,8 +105,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
                             query.getInt("ID_USUARIO"), 
                             query.getString("NOMBRE_USUARIO"),
                             query.getString("CONTRASEÑA"),
-                            query.getInt("NIVEL_DE_ACCESO")));                    
-
+                            query.getInt("NIVEL_DE_ACCESO")));                                        
                     dispose();                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Contraseña incorrecta");

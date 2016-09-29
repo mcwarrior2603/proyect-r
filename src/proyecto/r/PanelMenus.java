@@ -39,6 +39,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
 
     private final JMenuItem cancelarVenta = new JMenuItem("Cancelar venta");
     private final JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
+    private final JMenuItem ajustes = new JMenuItem("Ajustes");
     private final JMenuItem salir = new JMenuItem("Salir");
     private final JMenuItem reporteVentas = new JMenuItem("Reporte por ventas");
     private final JMenuItem reporteProductos = new JMenuItem("Reporte por productos");
@@ -51,16 +52,14 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     private final JMenuItem modificarProducto = new JMenuItem("Modificar");
     private final JMenuItem eliminarProducto = new JMenuItem("Eliminar");
     private final JMenuItem generarEgreso = new JMenuItem("Nuevo Egreso");    
-    private final JMenuItem guardarAperturaDeCaja = new JMenuItem("Apertura de caja");
+    private final JMenuItem guardarAperturaDeCaja = new JMenuItem("Apertura de caja");    
     private final JMenuItem ayuda = new JMenuItem("Ayuda");
     private final JMenuItem acercaDe = new JMenuItem("Acerca de...");
     private final JMenuItem contacto = new JMenuItem("Contacto");           
     
     @Override
     public void configurar(VentanaMainGUI gui){
-        /**
-         * Se agrega los elementos a las barras del menu 
-         */
+        
         super.configurar(gui);                
         setLayout(new FlowLayout(FlowLayout.LEFT, 15, 2));
         
@@ -89,22 +88,23 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
     }
     
     private void configurarMenuArchivo(){
-        /**
-         * Se le añade el tamaño de letra
-         * se manda llamar a distintas partes del menu
-         */
+       
         menuArchivo.add(cancelarVenta);
         menuArchivo.add(cerrarSesion);
+        menuArchivo.addSeparator();
+        menuArchivo.add(ajustes);
         menuArchivo.addSeparator();
         menuArchivo.add(salir);
         
         menuArchivo.setFont(letraMenus);
         cancelarVenta.setFont(letraMenus); 
         cerrarSesion.setFont(letraMenus); 
+        ajustes.setFont(letraMenus);
         salir.setFont(letraMenus); 
         
         cancelarVenta.addActionListener(this);
         cerrarSesion.addActionListener(this);
+        ajustes.addActionListener(this);
         salir.addActionListener(this);
                 
     }
@@ -244,6 +244,12 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             }else{
                 new VentanaGuardarApertura(gui);
             }            
+        }else if(e.getSource() == ajustes){
+            if(gui.archivoConfiguracion.exists()){
+                new VentanaConfiguracion(gui, VentanaConfiguracion.CONFIGURACION_COMUN);
+            }else{
+                new VentanaConfiguracion(gui, VentanaConfiguracion.CONFIGURACION_INICIAL);
+            }
         }
     }
 }

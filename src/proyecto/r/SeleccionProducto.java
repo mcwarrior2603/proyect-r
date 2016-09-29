@@ -26,7 +26,7 @@ import javax.swing.border.Border;
  */
 public class SeleccionProducto extends JPanel implements MouseListener{
     
-    public static final Dimension maximoTamaxo = new Dimension(250, 250);    
+    public static final Dimension maximoTamaxo = new Dimension(250, 300);    
     private static final Border bordeDefault = BorderFactory.createRaisedBevelBorder();        
     
     private final JLabel botonDisminuir = new JLabel();
@@ -54,9 +54,9 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         }
         
         setLayout(new BorderLayout(5, 5));
-        setBorder(bordeDefault);
-        setBackground(new Color(0xFAD12E));
-        setMaximumSize(maximoTamaxo);                            
+        setBorder(bordeDefault);     
+        configurarColores(gui.colorBoton);
+        setPreferredSize(maximoTamaxo);                            
         setToolTipText(productoActivo.nombre);
         
         precio.setToolTipText("Holis");
@@ -90,14 +90,15 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         
         configurarImagenes();                        
     }
-     
 
     private void configurarLogo(){
-        /**
-         * Se agrega y asigna la imagen de la interfaz principal
-         */
+
         imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" ).getImage()
                 .getScaledInstance( 50, 50, Image.SCALE_DEFAULT)));    
+    }
+    
+    public void configurarColores(Color fondo){
+        setBackground(gui.colorBoton);
     }          
 
     private void configurarImagenes(){

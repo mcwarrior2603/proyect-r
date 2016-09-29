@@ -36,12 +36,13 @@ public class PanelProductos extends PanelInterfaz{
     private JPanel contenedorProductos = new JPanel();
     private JScrollPane scrollProductos;
     
-    private static int limiteProductos = 100;
+    private static int numeroProductos;
     private static int numeroFilas;
     private static int numeroColumnas;
     
     private static ArrayList <Producto> productosRegistrados = new ArrayList();
     private static ArrayList <SeleccionProducto> botonesProductos = new ArrayList();
+    
     @Override
     public void configurar(VentanaMainGUI gui){
         super.configurar(gui);
@@ -52,24 +53,42 @@ public class PanelProductos extends PanelInterfaz{
         cargarProductos();                                                           
     }
     
-    private void actualizarPanel(String buscar){
-        
-        /**
-         * Actualiza el panel de los productos
-         * Y los agrega todos los productos que ya estan agregados
-         */
+
+
+        @Override
+    public void configurarColores(Color fondo){
+        setBackground(fondo);
+        for (SeleccionProducto botonesProducto : botonesProductos) {
+            botonesProducto.configurarColores(gui.colorBoton);
+        }
+    }
+    
+    /**
+     * Actualiza los productos mostrados en el panel, mostrando
+     * solamente aquellos en cuyo nombre se encuentre la subcadena
+     * recibida.
+     * @param buscar subcadena que se buscará en los nombres de los productos
+     */
+    public void actualizarPanel(String buscar){
+
                 
         removeAll();
         
-        numeroColumnas = (int) (Math.floor((float)(gui.getWidth() * 0.70)/ (SeleccionProducto.maximoTamaxo.getWidth() + 40)));
-        numeroFilas = (int) (Math.ceil(100f / (float) numeroColumnas));        
+        numeroColumnas = Math.max(
+                (int) (Math.floor((float)(gui.getWidth() * 0.70)/ 
+                        (SeleccionProducto.maximoTamaxo.getWidth() + 40))),
+                1);
+        numeroFilas = Math.max(
+                (int) (Math.ceil(((float) numeroProductos) / 
+                        (float) numeroColumnas)),
+                1);
         
         contenedorProductos = new JPanel();
                 
         contenedorProductos.setLayout(new GridLayout(numeroFilas, numeroColumnas, 10, 10));
         contenedorProductos.setOpaque(false);               
         
-        for(int i = 0 ; i < limiteProductos ; i++){
+        for(int i = 0 ; i < numeroProductos ; i++){
             if(i < productosRegistrados.size()) 
                 if(botonesProductos.get(i).productoActivo.nombre.contains(buscar))
                     contenedorProductos.add(botonesProductos.get(i));
@@ -91,8 +110,15 @@ public class PanelProductos extends PanelInterfaz{
         add(scrollProductos);  
         updateUI();
     }
+
     /**
      * Actualiza el panel
+=======
+    
+    /**
+     * Método que manda llamar a su homónimo, pasando como parámetro 
+     * una cadena vacía lo cual hará que e muestren todos los productos
+>>>>>>> 87fd6b0bd0acbb1ab21511f1374f58f21b407ac5
      */
     public void actualizarPanel(){
         actualizarPanel("");
@@ -131,6 +157,8 @@ public class PanelProductos extends PanelInterfaz{
             botonesProductos.add(new SeleccionProducto(
                     productosRegistrados.get(i), gui));            
         }
+        
+        numeroProductos = Math.max(productosRegistrados.size(), 1);
         
         actualizarPanel();
     }

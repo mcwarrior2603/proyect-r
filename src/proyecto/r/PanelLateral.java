@@ -264,6 +264,9 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
          */
         if(e.getSource() == buttonDevolución)
             intercambiarVenta();
+        
+        if(e.getSource() == buttonBuscar)
+            gui.buscarProductos(textBuscar.getText());
     }
     
     @Override

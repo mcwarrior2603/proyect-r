@@ -49,9 +49,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     private JLabel labelTitulo = new JLabel("Control de usuarios");
     private JLabel labelNombre = new JLabel("Nombre de usuario");
     private JLabel labelContraseña = new JLabel("Contraseña");
-    private JLabel labelConfirmar = new JLabel("Confirme contraseña");
     private JLabel labelPermisos = new JLabel("Permisos");
-    private JLabel labelAutorizar = new JLabel("Contraseña general");
     
     private JTextField fieldNombre = new JTextField();
     private JPasswordField fieldContraseña = new JPasswordField();
@@ -89,13 +87,11 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         contenedorGeneral.add(labelTitulo);
         contenedorGeneral.add(labelNombre);
         contenedorGeneral.add(labelContraseña);
-        contenedorGeneral.add(labelConfirmar);
         contenedorGeneral.add(labelPermisos);
-        contenedorGeneral.add(labelAutorizar);
         contenedorGeneral.add(fieldNombre);
         contenedorGeneral.add(fieldContraseña);
         contenedorGeneral.add(fieldConfirmar);
-        contenedorGeneral.add(fieldAutorizar);
+        
         contenedorGeneral.add(buttonEliminar);
         contenedorGeneral.add(buttonGuardar);
         contenedorGeneral.add(buttonCancelar);
@@ -111,9 +107,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         labelTitulo.setBounds(35, 15, 200, 50);
         labelNombre.setBounds(15, 70, 200, 30);        
         labelContraseña.setBounds(15, 105, 200, 30);
-        labelConfirmar.setBounds(15, 140, 200, 30);
         labelPermisos.setBounds(15, 175, 200, 30);
-        labelAutorizar.setBounds(15, 210, 200, 30);
         fieldNombre.setBounds(170, 70, 200, 30);
         fieldContraseña.setBounds(170, 105, 200, 30);
         fieldConfirmar.setBounds(170, 140, 200, 30);
@@ -164,8 +158,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
                     return;
                 if(!checkContraseña())
                     return;                
-                if(!checkAutorizacion())
-                    return;
+                
                             
                 añadirUsuario();
             }else if(uso == MODIFICAR){
@@ -173,8 +166,8 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
                     return;
                 if(!checkContraseña())
                     return;
-                if(!checkAutorizacion())
-                    return;
+                
+           
                 
                 modificarUsuario();                
             }
@@ -186,9 +179,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
             }
         }else if(e.getSource() == buttonEliminar){
             if(!checkValido())
-                return;
-            if(!checkAutorizacion())
-                return;            
+                return;           
             eliminarUsuario();
         }        
     }
@@ -288,14 +279,14 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         valido = false;
     }
     
-    private boolean checkAutorizacion(){
-        if(!BCrypt.checkpw(fieldAutorizar.getText(), master)){
-            JOptionPane.showMessageDialog(null, "La contraseña de autorización no es correcta");
-            return false;
-        }
+   // private boolean checkAutorizacion(){
+     //   if(!BCrypt.checkpw(fieldAutorizar.getText(), master)){
+       //     JOptionPane.showMessageDialog(null, "La contraseña de autorización no es correcta");
+         //   return false;
+        //
         
-        return true;        
-    }
+       // return true;        
+    //}
     
     private boolean checkContraseña(){
         if(!fieldContraseña.getText().equals(fieldConfirmar.getText())){

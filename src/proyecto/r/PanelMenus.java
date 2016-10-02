@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -198,13 +199,21 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         }else if(e.getSource() == añadirUsuario){
             new VentanaUsuario(VentanaUsuario.AXADIR);            
         }else if(e.getSource() == modificarUsuario){
-            new VentanaUsuario(VentanaUsuario.MODIFICAR);
+            if(gui.usuarioActivo.nivelDeAcceso < 1){                
+                new VentanaUsuario(VentanaUsuario.MODIFICAR);
+                    }else if(gui.usuarioActivo.nivelDeAcceso > 1){ 
+                            JOptionPane.showMessageDialog(null, "No puedes acceder");                         
+                    }
         }else if(e.getSource() == eliminarUsuario){
             new VentanaUsuario(VentanaUsuario.ELIMINAR);
         }else if(e.getSource() == añadirProducto){
             new VentanaProducto(VentanaProducto.AXADIR, gui);
         }else if(e.getSource() == modificarProducto){
-            new VentanaProducto(VentanaProducto.MODIFICAR, gui);            
+            if(gui.usuarioActivo.nivelDeAcceso < 1){
+                new VentanaProducto(VentanaProducto.MODIFICAR, gui);
+                }else if(gui.usuarioActivo.nivelDeAcceso > 1){ 
+                            JOptionPane.showMessageDialog(null, "No puedes acceder");                         
+                    }            
         }else if(e.getSource() == eliminarProducto){
             new VentanaProducto(VentanaProducto.ELIMINAR, gui);
         }else if(e.getSource() == reporteVentas){
@@ -251,5 +260,9 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
                 new VentanaConfiguracion(gui, VentanaConfiguracion.CONFIGURACION_INICIAL);
             }
         }
+    }
+    private boolean check(){
+         ResultSet query = SQLConnection.buscar("SELECT NIVEL_DE_ACCESO FROM USUARIOS");
+         return true;
     }
 }

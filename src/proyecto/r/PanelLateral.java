@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -71,6 +72,8 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
                 
         labelTotal.addMouseListener(this);
         buttonDevolución.addActionListener(this);
+        buttonBuscar.addActionListener(this);
+        textBuscar.addActionListener(this);
         
         this.productos = productos;
         
@@ -88,7 +91,13 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     
     private void configurarLogo(){
         
-        labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/" + gui.logotipo).getImage()
+        File logo = new File("multimedia/" + gui.logotipo);
+        
+        if(logo.exists())
+            labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/" + gui.logotipo).getImage()
+                .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
+        else
+            labelLogo.setIcon(new ImageIcon(new ImageIcon("multimedia/" + Ventana.LOGO_DEV).getImage()
                 .getScaledInstance(gui.getWidth() / 4, gui.getHeight() / 5, Image.SCALE_DEFAULT)));    
         
     }
@@ -251,7 +260,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
                 JOptionPane.showMessageDialog(null, "No se ha podido guardar la devolución");
             }         
         }else{            
-            ventaActual = new VentanaCobrar(fTotal, gui);            
+            ventaActual = new VentanaCobrar(fTotal, gui);              
             gui.cobrando = true;
         }
         
@@ -259,6 +268,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     
     @Override
     public void actionPerformed(ActionEvent e) {
+
         /**
          * Hace el cambio de venta a devoluciòn
          */
@@ -267,6 +277,17 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         
         if(e.getSource() == buttonBuscar)
             gui.buscarProductos(textBuscar.getText());
+
+        if(e.getSource() == buttonDevolución){
+            intercambiarVenta();
+        }else if(e.getSource() == buttonBuscar){            
+            gui.buscarProductos(textBuscar.getText().trim());
+            textBuscar.requestFocus();
+        }else if(e.getSource() == textBuscar){
+            gui.buscarProductos(textBuscar.getText().trim());
+            textBuscar.requestFocus();
+        }
+
     }
     
     @Override

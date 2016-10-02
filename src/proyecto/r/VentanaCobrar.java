@@ -67,15 +67,23 @@ public class VentanaCobrar extends Ventana implements ActionListener{
     private boolean visible = true;
     
     public VentanaCobrar(float total, VentanaMainGUI gui){                
+        
         super(675, 340);
         /**
          * Se asigna las funciones a la ventana 
          * así como las isntrucciones que debe seguir
          */
 //        setUndecorated(true); 
+
+        super(675, 340, NOMBRE_SW + " - Cobro");                        
+
         
         this.total = total;
         this.gui = gui;                                        
+        
+        if(gui.ventCobrar != null)
+            gui.ventCobrar.cerrar();
+        gui.ventCobrar = this;
         
         panelPrincipal = (JPanel)getContentPane();
         panelPrincipal.setLayout(null);
@@ -133,18 +141,18 @@ public class VentanaCobrar extends Ventana implements ActionListener{
         buttonCancelar.setBounds(135, 160, 100, 30);
         buttonGuardar.setBounds(240, 160, 100, 30);
         
-        primero.setBounds(370, 20, 50, 50);
-        segundo.setBounds(440, 20, 50, 50);
-        tercero.setBounds(510, 20, 50, 50);
-        cuarto.setBounds(370, 90, 50, 50);
-        quinto.setBounds(440, 90, 50, 50);
-        sexto.setBounds(510, 90, 50, 50);
-        septimo.setBounds(370, 160, 50, 50);
-        octavo.setBounds(440, 160, 50, 50);
-        noveno.setBounds(510, 160, 50, 50);
-        cero.setBounds(370, 230, 50, 50);
-        borrar.setBounds(440, 230, 50, 50);
-        punto.setBounds(510, 230, 50, 50);
+        primero.setBounds(370, 20, 60, 60);
+        segundo.setBounds(440, 20, 60, 60);
+        tercero.setBounds(510, 20, 60, 60);
+        cuarto.setBounds(370, 90, 60, 60);
+        quinto.setBounds(440, 90, 60, 60);
+        sexto.setBounds(510, 90, 60, 60);
+        septimo.setBounds(370, 160, 60, 60);
+        octavo.setBounds(440, 160, 60, 60);
+        noveno.setBounds(510, 160, 60, 60);
+        cero.setBounds(370, 230, 60, 60);
+        borrar.setBounds(440, 230, 60, 60);
+        punto.setBounds(510, 230, 60, 60);
                 
         primero.setFont(texto);
         segundo.setFont(texto);
@@ -174,6 +182,12 @@ public class VentanaCobrar extends Ventana implements ActionListener{
         fieldCambio.setEditable(false);
     }
 
+    @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventCobrar = null;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         int valor = 0;
@@ -240,6 +254,7 @@ public class VentanaCobrar extends Ventana implements ActionListener{
         if(isVisible()){
             cerrar();
             gui.cobrando = false;
+            gui.ventCobrar = null;
         }                
     }
     

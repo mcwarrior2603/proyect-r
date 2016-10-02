@@ -41,8 +41,7 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
     private final JLabel labelMuestraPanel = new JLabel("Muestra");
     private final JLabel labelMuestraBoton = new JLabel("Muestra");
     private final JLabel labelLogotipo = new JLabel("Logotipo");
-    private final JLabel labelTiempo = new JLabel("Tiempo de recordatorio(min)");
-    
+    private final JLabel labelTiempo = new JLabel("Tiempo de recordatorio(min)");   
     private final JButton buttonCambiarFondo = new JButton("Cambiar");
     private final JButton buttonCambiarPanel = new JButton("Cambiar");
     private final JButton buttonCambiarBoton = new JButton("Cambiar");
@@ -60,9 +59,14 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
     private VentanaMainGUI gui;
     
     public VentanaConfiguracion(VentanaMainGUI gui, int uso){
-        super(500, 500);
+        super(500, 500, NOMBRE_SW + " - Configuración");
                 
         configurarComponentes(gui, uso);
+        
+        if(gui.ventConfiguracion != null){
+            gui.ventConfiguracion.cerrar();
+        }
+        gui.ventConfiguracion = this;
         
     }
     
@@ -178,6 +182,12 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
         } catch (IOException ex) {
             Logger.getLogger(VentanaConfiguracion.class.getName()).log(Level.SEVERE, null, ex);
         }        
+    }
+    
+    @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventConfiguracion = null;
     }
     
     @Override

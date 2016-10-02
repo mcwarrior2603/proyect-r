@@ -192,20 +192,21 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
         if(e.getSource() == cancelarVenta){
             gui.limpiarVenta();
         }else if(e.getSource() == cerrarSesion){
-            new VentanaLogin();
-            gui.cerrar();
+            gui.cerrarSesion();          
         }else if(e.getSource() == salir){
             gui.confirmarCerrado();
         }else if(e.getSource() == añadirUsuario){
-            new VentanaUsuario(VentanaUsuario.AXADIR);            
+            new VentanaUsuario(gui, VentanaUsuario.AXADIR);            
         }else if(e.getSource() == modificarUsuario){
             if(gui.usuarioActivo.nivelDeAcceso < 1){                
-                new VentanaUsuario(VentanaUsuario.MODIFICAR);
+                new VentanaUsuario(gui,VentanaUsuario.MODIFICAR);
                     }else if(gui.usuarioActivo.nivelDeAcceso > 1){ 
                             JOptionPane.showMessageDialog(null, "No puedes acceder");                         
                     }
+            new VentanaUsuario(gui, VentanaUsuario.MODIFICAR);
+
         }else if(e.getSource() == eliminarUsuario){
-            new VentanaUsuario(VentanaUsuario.ELIMINAR);
+            new VentanaUsuario(gui, VentanaUsuario.ELIMINAR);
         }else if(e.getSource() == añadirProducto){
             new VentanaProducto(VentanaProducto.AXADIR, gui);
         }else if(e.getSource() == modificarProducto){
@@ -221,25 +222,25 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new VentanaListaVentas();
+            new VentanaListaVentas(gui);
         }else if(e.getSource() == reporteProductos){
             if(gui.usuarioActivo.nivelDeAcceso > 1){                
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new VentanaListaProductos();
+            new VentanaListaProductos(gui);
         }else if(e.getSource() == reporteEgresos){
             if(gui.usuarioActivo.nivelDeAcceso > 1){
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new VentanaListaEgresos();
+            new VentanaListaEgresos(gui);
         }else if(e.getSource() == reporteCorteDeCaja){
             if(gui.usuarioActivo.nivelDeAcceso > 1){
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
-            new VentanaCorteDeCaja();
+            new VentanaCorteDeCaja(gui);
         }else if(e.getSource() == contacto){
             JOptionPane.showMessageDialog(null, "Para ayuda contactanos en mcwarrior.mendez@hotmail.com");
         }else if(e.getSource() == acercaDe){
@@ -250,7 +251,7 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             
             if(gui.checkAperturaDeCaja()){
                 JOptionPane.showMessageDialog(null, "Ya existe una apertura de caja registrada para hoy");
-            }else{
+            }else {                
                 new VentanaGuardarApertura(gui);
             }            
         }else if(e.getSource() == ajustes){

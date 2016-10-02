@@ -48,17 +48,26 @@ public class VentanaListaVentas extends Ventana implements ActionListener, Mouse
     
     private final JButton buttonBuscar = new JButton("Buscar");
     
-    public VentanaListaVentas(){
-        super(600, 450);
-        configurar("");
+    private VentanaMainGUI gui;
+    
+    public VentanaListaVentas(VentanaMainGUI gui){
+        super(600, 450, NOMBRE_SW + " - Ventas");
+        configurar(gui, "");
     }
     
-    public VentanaListaVentas(String fecha){        
-        super(600,430);        
-        configurar(fecha);        
+    public VentanaListaVentas(VentanaMainGUI gui, String fecha){        
+        super(600,430, NOMBRE_SW + " - Ventas");        
+        configurar(gui, fecha);        
     }
     
-    private void configurar(String fecha){
+    private void configurar(VentanaMainGUI gui, String fecha){        
+        
+        this.gui = gui;                
+        
+        if(gui.ventVentas != null)
+            gui.ventVentas.cerrar();
+        gui.ventVentas = this;
+        
         buttonBuscar.addActionListener(this);
         tableVentas.addMouseListener(this);
         
@@ -134,6 +143,22 @@ public class VentanaListaVentas extends Ventana implements ActionListener, Mouse
     }
     
     @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventVentas = null;
+    }
+    
+    @Override
+    protected boolean confirmarCerrado(){
+        System.out.println("Cerrando");
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == buttonBuscar){
             if(rbuttonHoy.isSelected()){
@@ -160,7 +185,11 @@ public class VentanaListaVentas extends Ventana implements ActionListener, Mouse
         if(e.getClickCount() != 2)
             return;
         
-        new VentanaTransaccion(((ModelVentas)tableVentas.getModel()).transacciones.get(tableVentas.rowAtPoint(e.getPoint())));
+        new VentanaTransaccion(
+                gui,
+                ((ModelVentas)tableVentas.getModel()).
+                        transacciones.get(
+                                tableVentas.rowAtPoint(e.getPoint())));
     }
     
     @Override

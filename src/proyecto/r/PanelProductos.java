@@ -83,21 +83,33 @@ public class PanelProductos extends PanelInterfaz{
                         (float) numeroColumnas)),
                 1);
         
-        contenedorProductos = new JPanel();
+        if(scrollProductos != null){
+            remove(scrollProductos);
+            scrollProductos = null;
+        }        
+        if(contenedorProductos != null){
+            contenedorProductos.removeAll();            
+        }            
                 
+        contenedorProductos = new JPanel();                
         contenedorProductos.setLayout(new GridLayout(numeroFilas, numeroColumnas, 10, 10));
-        contenedorProductos.setOpaque(false);               
+        contenedorProductos.setOpaque(false);                               
         
-        for(int i = 0 ; i < numeroProductos ; i++){
-            if(i < productosRegistrados.size()) 
-                if(botonesProductos.get(i).productoActivo.nombre.contains(buscar))
-                    contenedorProductos.add(botonesProductos.get(i));
-                else{
-                    contenedorProductos.add(new SeleccionProducto(null, null));                    
-                }
-            else
-                contenedorProductos.add(new SeleccionProducto(null, null));
-        }                                         
+        int productosAgregados = 0;
+        
+        for(int i = 0 ; i < numeroProductos ; i++){            
+            if(i < productosRegistrados.size()){                                                           
+                if(botonesProductos.get(i).productoActivo.nombre.
+                        toLowerCase().contains(buscar.toLowerCase())){
+                    contenedorProductos.add(botonesProductos.get(i));                                    
+                    productosAgregados++;
+                }                    
+            }
+        }                                
+        for(int i = productosAgregados ; i < (numeroColumnas * numeroFilas) ; i++){
+            contenedorProductos.add(new SeleccionProducto(null, null));
+        }
+        
         
         scrollProductos = new JScrollPane(contenedorProductos, 
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -106,6 +118,7 @@ public class PanelProductos extends PanelInterfaz{
         scrollProductos.setOpaque(false);
         scrollProductos.setBorder(new EmptyBorder(1, 1, 1, 1));
         scrollProductos.getVerticalScrollBar().setPreferredSize(new Dimension(50, 0));
+        scrollProductos.getVerticalScrollBar().setUnitIncrement(15);
         
         add(scrollProductos);  
         updateUI();

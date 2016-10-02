@@ -45,9 +45,16 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
     private float fEgresos;
     private float fCierre;
     
+    VentanaMainGUI gui;
     
-    public VentanaCorteDeCaja(){    
-        super(420, 500);                        
+    public VentanaCorteDeCaja(VentanaMainGUI gui){    
+        super(420, 500, NOMBRE_SW + " - Corte de caja");                        
+        
+        this.gui = gui;
+        
+        if(gui.ventCorte != null)
+            gui.ventCorte.cerrar();
+        gui.ventCorte = this;
         
         mainPanel = (JPanel) getContentPane();
                         
@@ -166,6 +173,12 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
     }        
 
     @Override
+    public void cerrar(){
+        super.cerrar();  
+        gui.ventCorte = null;
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
         if(!checkFecha(textFecha.getText().trim())){
             JOptionPane.showMessageDialog(null, "Fecha inválida.");
@@ -175,9 +188,9 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
         if(e.getSource() == buttonBuscar){                        
             buscar(textFecha.getText());            
         }else if(e.getSource() == buttonVentas){
-            new VentanaListaVentas(textFecha.getText().trim());
+            new VentanaListaVentas(gui, textFecha.getText().trim());
         }else if(e.getSource() == buttonEgresos){
-            new VentanaListaEgresos(textFecha.getText().trim());
+            new VentanaListaEgresos(gui, textFecha.getText().trim());
         }
     }
     

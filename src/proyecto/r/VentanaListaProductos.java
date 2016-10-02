@@ -33,15 +33,15 @@ import javax.swing.table.TableModel;
  */
 public class VentanaListaProductos extends Ventana{
         
-    private final JLabel titulo = new JLabel();
-    private final JLabel alcance = new JLabel();
+    private final JLabel titulo = new JLabel("Ventas por producto");
+    private final JLabel alcance = new JLabel("al");
     
     private final TextField fechaInicio = new TextField();
     private final TextField fechaTerminal = new TextField();
     
     private final JButton generador = new JButton();
-    private final JRadioButton diaActual = new JRadioButton();
-    private final JRadioButton diaPeriodo = new JRadioButton();
+    private final JRadioButton diaActual = new JRadioButton("Hoy");
+    private final JRadioButton diaPeriodo = new JRadioButton("Periodo");
     private final ButtonGroup bgPeriodo = new ButtonGroup();
     
     private final JTable datos = new JTable();
@@ -50,10 +50,16 @@ public class VentanaListaProductos extends Ventana{
     private JPanel Tabla = new JPanel();
     private JPanel todo = new JPanel();    
     
+    private VentanaMainGUI gui;    
     
-    
-    public VentanaListaProductos(){
-        super(700,500, true);
+    public VentanaListaProductos(VentanaMainGUI gui){
+        super(700,500, NOMBRE_SW + " - Ventas:Producto");
+        
+        this.gui = gui;
+        
+        if(gui.ventProductos != null)
+            gui.ventProductos.cerrar();
+        gui.ventProductos = this;
         
         generador.setEnabled(false);
         
@@ -66,13 +72,7 @@ public class VentanaListaProductos extends Ventana{
                           
         bgPeriodo.add(diaActual);
         bgPeriodo.add(diaPeriodo);
-        diaActual.setSelected(true);
-        
-        titulo.setText("Ventas");
-        alcance.setText("al");
-        generador.setText("Generar Repeorte");
-        diaActual.setText("Hoy");
-        diaPeriodo.setText("Periodo");        
+        diaActual.setSelected(true);                      
         
         fechaInicio.setBounds( 445, 50, 100, 30);
         fechaTerminal.setBounds(585, 50, 100, 30);
@@ -100,6 +100,23 @@ public class VentanaListaProductos extends Ventana{
         todo.updateUI();
     }
 
+    @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventProductos = null;
+        
+    
+    }   
+    
+    @Override
+    protected boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }            
+        return false;
+    }
+    
 }
 
 class ModelVentasProductos implements TableModel{

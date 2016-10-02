@@ -45,13 +45,19 @@ public class VentanaTransaccion extends Ventana{
     private JPanel panelPrincipal;
     
     private Transaccion transaccionActiva;
+    private VentanaMainGUI gui;
     
     private static final Color COLOR_COMPONENTES = new Color(0xD9D9D9);
     
-    public VentanaTransaccion(Transaccion ventaActiva){
-        super(500, 600, true);
+    public VentanaTransaccion(VentanaMainGUI gui, Transaccion ventaActiva){
+        super(500, 600, NOMBRE_SW + " - " + ventaActiva.concepto);
         
         this.transaccionActiva = ventaActiva;                        
+        this.gui = gui;
+        
+        if(gui.ventTransaccion != null)
+            gui.ventTransaccion.cerrar();
+        gui.ventTransaccion = this;
         
         panelPrincipal = (JPanel)getContentPane();        
         panelPrincipal.setBackground(Color.WHITE);
@@ -116,6 +122,21 @@ public class VentanaTransaccion extends Ventana{
         fieldCajero.setText(transaccionActiva.cajero);
         fieldHora.setText(transaccionActiva.hora);
         fieldTotal.setText(String.valueOf(transaccionActiva.total));
+    }
+    
+    @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventTransaccion = null;
+    }
+    
+    @Override
+    protected boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }
+        return false;
     }
     
     class ModelProductos implements TableModel{

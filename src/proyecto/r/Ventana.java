@@ -35,15 +35,17 @@ import javax.swing.JPanel;
  */
 public class Ventana extends JFrame implements WindowListener, KeyListener{
 
+    public static final String NOMBRE_SW = "Puffy PV";
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);
     public static final float DEFAULT_AFLOAT = -1.7932f;
     public static final int DEFAULT_AINTEGER = -17898;
+    public static final String LOGO_DEV = "anima_dev.png";
             
     protected Dimension dimensionVentana;        
                         
     private JDialog ventanaCarga;        
 
-    public Ventana(int width, int height, boolean visible){                                                
+    public Ventana(int width, int height, String title){                                                
         dimensionVentana = new Dimension(width, height);
                 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -54,8 +56,9 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         setPreferredSize(dimensionVentana);
         pack();        
         setLocationRelativeTo(null);
-        setVisible(visible);
+        setVisible(true);
         setResizable(false);
+        setTitle(title);
         
         addKeyListener(this);
         addWindowListener(this);
@@ -140,14 +143,14 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         }                                
     }
          
-    protected void confirmarCerrado(){
+    protected boolean confirmarCerrado(){
         if(JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar?", 
-                "Confirmación", JOptionPane.YES_NO_OPTION) == 0){
-            cerrar();
-        }
+                "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
+            return true;
+        return false;       
     }
 
-    public void cerrar(){
+    public void cerrar(){        
         setVisible(false);
         dispose();        
     }

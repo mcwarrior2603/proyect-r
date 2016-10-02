@@ -43,27 +43,31 @@ public class VentanaEgreso extends Ventana implements ActionListener{
     
     private JPanel mainPanel;
         
-    VentanaMainGUI gui;
+    private VentanaMainGUI gui;
     private Egreso eg;
     private int uso;
     
     public VentanaEgreso(int uso, VentanaMainGUI gui){        
-        super(400, 400, true);
-                       
-        this.gui = gui;
-        configurar(uso);
+        super(400, 400, NOMBRE_SW + " - Egresos");
+                               
+        configurar(uso, gui);
     }
     
-    public VentanaEgreso(int uso, Egreso eg){
-        super(400, 400, true);        
+    public VentanaEgreso(int uso, VentanaMainGUI gui, Egreso eg){
+        super(400, 400, NOMBRE_SW + " - Egresos");        
         
         this.eg = eg;                        
-        configurar(uso);
+        configurar(uso, gui);
     }
     
-    private void configurar(int uso){
+    private void configurar(int uso, VentanaMainGUI gui){
                 
+        this.gui = gui;
         this.uso = uso;
+        
+        if(gui.ventEgreso != null)
+            gui.ventEgreso.cerrar();
+        gui.ventEgreso = this;
         
         buttonEliminar.addActionListener(this);
         buttonGuardar.addActionListener(this);
@@ -134,6 +138,22 @@ public class VentanaEgreso extends Ventana implements ActionListener{
     }       
     
     @Override
+    protected boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }else{
+            return false;
+        }
+    }    
+    
+    @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventEgreso = null;
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == buttonEliminar){            
                         
@@ -144,9 +164,7 @@ public class VentanaEgreso extends Ventana implements ActionListener{
             confirmarCerrado();
         }
     }
-    
-    
-    
+            
     private boolean guardarEgreso(){
         float monto = aFloat(fieldMonto.getText(), "Monto");
         String sql;

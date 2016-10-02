@@ -28,11 +28,16 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
     private VentanaMainGUI gui;
     
     public VentanaGuardarApertura(VentanaMainGUI gui){
-        super(300, 160, true);                        
+        super(300, 160, NOMBRE_SW + " - Guardar apertura");                        
         
         this.gui = gui;
         
         configurarComponentes();
+                
+        if(gui.ventApertura != null)
+            gui.ventApertura.cerrar();            
+        gui.ventApertura = this;
+        
     }
     
     private void configurarComponentes(){
@@ -55,6 +60,12 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
         buttonGuardar.addActionListener(this);
     }
 
+    @Override
+    public void cerrar(){        
+        super.cerrar();
+        gui.ventApertura = null;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == buttonGuardar){

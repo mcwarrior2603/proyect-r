@@ -31,7 +31,7 @@ import static proyecto.r.Ventana.fontTitulo;
  */
 public class VentanaListaEgresos extends Ventana implements ActionListener, MouseListener{
 
-    private final JLabel labelTitulo = new JLabel("Ventas");
+    private final JLabel labelTitulo = new JLabel("Egresos");
     private final JLabel labelAl = new JLabel("al");
     private final JLabel labelTotal = new JLabel("Total:");
     
@@ -48,17 +48,26 @@ public class VentanaListaEgresos extends Ventana implements ActionListener, Mous
     
     private final JButton buttonBuscar = new JButton("Buscar");
     
-    public VentanaListaEgresos(){
-        super(600, 450, true);
-        configurar("");
+    private VentanaMainGUI gui;
+    
+    public VentanaListaEgresos(VentanaMainGUI gui){
+        super(600, 450, NOMBRE_SW + " - Egresos");
+        configurar(gui, "");
     }
     
-    public VentanaListaEgresos(String fecha){        
-        super(600, 500, true);        
-        configurar(fecha);        
+    public VentanaListaEgresos(VentanaMainGUI gui, String fecha){        
+        super(600, 500, NOMBRE_SW + " - Egresos");        
+        configurar(gui, fecha);        
     }
     
-    private void configurar(String fecha){
+    private void configurar(VentanaMainGUI gui, String fecha){                
+        
+        this.gui = gui;
+        
+        if(gui.ventEgresos != null)
+            gui.ventEgresos.cerrar();
+        gui.ventEgresos = this;
+        
         buttonBuscar.addActionListener(this);
         tableEgresos.addMouseListener(this);
         
@@ -126,6 +135,21 @@ public class VentanaListaEgresos extends Ventana implements ActionListener, Mous
     }
     
     @Override
+    protected boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public void cerrar(){
+        super.cerrar();
+        gui.ventEgresos = null;
+    }
+    
+    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == buttonBuscar){
             if(rbuttonHoy.isSelected()){
@@ -153,7 +177,8 @@ public class VentanaListaEgresos extends Ventana implements ActionListener, Mous
             return;
         
         new VentanaEgreso(
-                VentanaEgreso.VER,                
+                VentanaEgreso.VER, 
+                gui,                
                 ((ModelEgresos)tableEgresos.getModel())
                 .egresos.get(tableEgresos.rowAtPoint(e.getPoint())));
     }

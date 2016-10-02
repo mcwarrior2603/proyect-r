@@ -5,21 +5,13 @@
  */
 package proyecto.r;
 
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -64,11 +56,18 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     
     private JComboBox comboPermisos = new JComboBox();        
     
-    public VentanaUsuario(int uso){
-        super(420, 350, true);
+    private VentanaMainGUI gui;
+    
+    public VentanaUsuario(VentanaMainGUI gui, int uso){
+        super(420, 350, NOMBRE_SW + " - Usuario");
         
         this.master = Ventana.obtenerMaster();
         this.uso = uso;
+        this.gui = gui;
+        
+        if(gui.ventUsuario != null)
+            gui.ventUsuario.cerrar();
+        gui.ventUsuario = this;
                         
         contenedorGeneral = (JPanel) getContentPane();
         
@@ -141,19 +140,26 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     }        
     
     @Override
-    protected void confirmarCerrado(){
+    public void cerrar(){
+        super.cerrar();
+        gui.ventUsuario = null;
+    }
+    
+    @Override
+    protected boolean confirmarCerrado(){
         int opcion = JOptionPane.showConfirmDialog(null, "¿Desea guardar antes de cerrar?", "Confirmacíon",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         switch(opcion){
             case 0:
                 if(!añadirUsuario())
-                    return;
-                cerrar();
-                break;
+                    return false;
+                cerrar(); 
+                return true;                
             case 1:
                 cerrar();
-                break;                                                                
+                return true;                                                              
         }
+        return false;
     }
     
     @Override

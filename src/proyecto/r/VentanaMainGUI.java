@@ -5,12 +5,9 @@
  */
 package proyecto.r;
 
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,20 +18,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author MCwar
  */
 public class VentanaMainGUI extends Ventana{
-                        
+                            
+    public VentanaCobrar ventCobrar;
+    public VentanaConfiguracion ventConfiguracion;
+    public VentanaCorteDeCaja ventCorte;
+    public VentanaEgreso ventEgreso;
+    public VentanaGuardarApertura ventApertura;
+    public VentanaListaEgresos ventEgresos;
+    public VentanaListaProductos ventProductos;
+    public VentanaListaVentas ventVentas;
+    public VentanaProducto ventProducto;
+    public VentanaTransaccion ventTransaccion;    
+    public VentanaUsuario ventUsuario;
+    
     public static String version = "1.4.0";
     public static String fechaVersion = "20/09/2016";
     
@@ -60,7 +65,7 @@ public class VentanaMainGUI extends Ventana{
     public Timer timerRecordatorio = new Timer();;
     
     public VentanaMainGUI(Usuario usuarioActivo){                        
-        super(300, 300, false);                                                                     
+        super(300, 300, NOMBRE_SW);                                                                     
         
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.updateUI();                                          
@@ -162,11 +167,100 @@ public class VentanaMainGUI extends Ventana{
         panelProductos.configurarColores(colorPanel);
         panelPrincipal.updateUI();
     }
+        
+    /**
+     * Cierra las ventanas añadidas a la interfaz principal
+     * @return true En caso de que todo haya sido cerrado correctamente
+     * @return false En caso de que alguna ventana no haya podido ser cerrada
+     */
+    public boolean cerrarVentanasSecundarias(){
+        if(ventApertura != null){
+            ventApertura.cerrar();
+            if(ventApertura != null)
+                return false;
+        }
+        if(ventCobrar != null){
+            ventCobrar.cerrar();
+            if(ventCobrar != null)
+                return false;
+        }
+        if(ventConfiguracion != null){
+            ventConfiguracion.cerrar();
+            if(ventConfiguracion != null)
+                return false;
+        }
+        if(ventCorte != null){
+            ventCorte.cerrar();
+            if(ventCorte != null)
+                return false;
+        }
+        if(ventEgreso != null){
+            ventEgreso.toFront();
+            ventEgreso.confirmarCerrado();
+            if(ventEgreso != null)
+                return false;
+        }
+        if(ventEgresos != null){
+            ventEgresos.cerrar();            
+            if(ventEgresos != null)
+                return false;
+        }
+        if(ventProducto != null){
+            ventProducto.toFront();
+            ventProducto.confirmarCerrado();
+            if(ventProducto != null)
+                return false;
+        } 
+        if(ventProductos != null){
+            ventProductos.cerrar();
+            if(ventProductos != null)
+                return false;
+        }
+        if(ventTransaccion != null){
+            ventTransaccion.toFront();
+            ventTransaccion.confirmarCerrado();            
+            if(ventTransaccion != null)
+                return false;
+        }
+        if(ventVentas != null){
+            ventVentas.cerrar();
+            if(ventVentas != null)
+                return false;
+        }
+        if(ventUsuario != null){
+            ventUsuario.toFront();
+            ventUsuario.confirmarCerrado();
+            if(ventUsuario != null)
+                return false;
+        }
+        
+        
+        return true;
+    }
+        
+    public void cerrarSesion(){
+        if(!cerrarVentanasSecundarias()){
+            return;
+        }
+        
+        super.cerrar();        
+        new VentanaLogin();
+        
+    }
     
     @Override
-    public void confirmarCerrado(){
-        if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0)
-                System.exit(0);
+    public boolean confirmarCerrado(){
+        
+        if(!cerrarVentanasSecundarias()){
+            return false;
+        }
+        
+        if(JOptionPane.showConfirmDialog(null, "¿Confirmar cerrado?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0){
+            System.exit(0);
+            return true;
+        }
+        
+        return false;
     }        
     
     @Override
@@ -213,8 +307,7 @@ public class VentanaMainGUI extends Ventana{
         
         try {
             ultimoId.next();
-            id = ultimoId.getInt("ID_DEVOLUCION");
-            System.out.println(id);            
+            id = ultimoId.getInt("ID_DEVOLUCION");            
         } catch (SQLException ex) {
             reportarError(ex);
         }

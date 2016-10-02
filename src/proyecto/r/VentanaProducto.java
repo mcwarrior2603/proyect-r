@@ -61,7 +61,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     private final VentanaMainGUI gui;
     
     public VentanaProducto(int uso, VentanaMainGUI gui){                        
-        super(370, 320, true);
+        super(370, 320, NOMBRE_SW + " - Producto");
         
         this.gui = gui;
         this.uso = uso;
@@ -71,6 +71,10 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
             cerrar();
             return;
         }
+        
+        if(gui.ventProducto != null)
+            gui.ventProducto.cerrar();
+        gui.ventProducto = this;
         
         rbuttonProducto.setSelected(true);
         rbuttonCategoria.setEnabled(false);
@@ -242,9 +246,19 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     @Override
+    protected boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
     public void cerrar(){
         setVisible(false);
         dispose();
+        gui.ventProducto = null;
         gui.cargarProductos();
     }
     

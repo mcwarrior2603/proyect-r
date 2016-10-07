@@ -14,7 +14,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -74,8 +73,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         labelTotal.addMouseListener(this);
         buttonDevolución.addActionListener(this);
         buttonBuscar.addActionListener(this);
-        textBuscar.addActionListener(this);
-        textBuscar.addKeyListener(gui);
+        textBuscar.addActionListener(this);        
         
         this.productos = productos;
         

@@ -88,9 +88,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
                 
     }
     
-    /**
-     * Se instancía el metodo para colocar el logo en la ventana
-     */
+    
     private void configurarLogo(){
         
         File logo = new File("multimedia/" + gui.logotipo);
@@ -110,10 +108,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         configurarLogo();
     }
     
-    /**
-     * Se configura la posicion de los componentes
-     * y se añaden al panel
-     */
+  
     private void configurarPosiciones(){               
         
         configurarComponentes();  
@@ -203,9 +198,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         listaProductos.setPreferredSize(new Dimension((int)(gui.getWidth() / 8), 0));
     }
     
-    /**
-     * Actualiza y suma los precios de la tabla
-     */
+  
     public void actualizar(){
         
         float sumaTotal = 0;
@@ -219,9 +212,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
                 
     }        
     
-    /**
-     * Limpia la ventana y la vuelve a cero
-     */
+  
     public void limpiarVenta(){        
         productos.clear();
         actualizar();
@@ -241,16 +232,17 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
             buttonDevolución.setText("Venta");
     }
     
-    /**
-     * Si se encuentra una interfaz de cobro activa se cierra y se abre una nueva 
-     */
+    
     public void disposeVentaGUI(){
         if(ventaActual != null){
             ventaActual.cerrar();
             ventaActual = null;
         }            
     }
-    
+    /**
+     * Notifica si se ha guardado la venta o la devoluciòn
+     * @param e 
+     */
     @Override
     public void mouseClicked(MouseEvent e) {          
         
@@ -276,6 +268,16 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        /**
+         * Hace el cambio de venta a devoluciòn
+         */
+        if(e.getSource() == buttonDevolución)
+            intercambiarVenta();
+        
+        if(e.getSource() == buttonBuscar)
+            gui.buscarProductos(textBuscar.getText());
+
         if(e.getSource() == buttonDevolución){
             intercambiarVenta();
         }else if(e.getSource() == buttonBuscar){            
@@ -297,6 +299,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     public void mouseExited(MouseEvent e) {}       
     
     class ModelProductos implements TableModel{
+      
 
         ArrayList <Producto> productos;        
         

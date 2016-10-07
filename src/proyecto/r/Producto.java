@@ -12,7 +12,9 @@ import javax.swing.ImageIcon;
  * @author MCwar
  */
 public class Producto {
-    
+    /**
+     * Obtienes y declaras las caracteristicas del produtco
+     */
     public int idProducto;
     public String nombre;
     public float precio;

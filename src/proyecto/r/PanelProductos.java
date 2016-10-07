@@ -53,7 +53,9 @@ public class PanelProductos extends PanelInterfaz{
         cargarProductos();                                                           
     }
     
-    @Override
+
+
+        @Override
     public void configurarColores(Color fondo){
         setBackground(fondo);
         for (SeleccionProducto botonesProducto : botonesProductos) {
@@ -68,7 +70,10 @@ public class PanelProductos extends PanelInterfaz{
      * @param buscar subcadena que se buscará en los nombres de los productos
      */
     public void actualizarPanel(String buscar){
-                                
+
+                
+        removeAll();
+        
         numeroColumnas = Math.max(
                 (int) (Math.floor((float)(gui.getWidth() * 0.70)/ 
                         (SeleccionProducto.maximoTamaxo.getWidth() + 40))),
@@ -118,16 +123,25 @@ public class PanelProductos extends PanelInterfaz{
         add(scrollProductos);  
         updateUI();
     }
+
+    /**
+     * Actualiza el panel
+=======
     
     /**
      * Método que manda llamar a su homónimo, pasando como parámetro 
      * una cadena vacía lo cual hará que e muestren todos los productos
+>>>>>>> 87fd6b0bd0acbb1ab21511f1374f58f21b407ac5
      */
     public void actualizarPanel(){
         actualizarPanel("");
     }
     
     public void cargarProductos(){
+        /**
+         * Genera todos los productos al iniciar la ventana
+         */
+        
         ResultSet query = SQLConnection.buscar("SELECT * FROM PRODUCTOS ORDER BY NOMBRE");
                 
         for(int i = 0 ; i < productosRegistrados.size() ; i++){

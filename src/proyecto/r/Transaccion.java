@@ -12,6 +12,9 @@ import java.util.ArrayList;
  * @author MCwar
  */
 public class Transaccion{
+    /**
+     * Se obtiene las caracteristicas de la ventana transacción
+     */
     public static final String VENTA = "Venta";
     public static final String DEVOLUCION = "Devolucion";
     

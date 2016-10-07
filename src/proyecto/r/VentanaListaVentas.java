@@ -116,6 +116,9 @@ public class VentanaListaVentas extends Ventana implements ActionListener, Mouse
     }   
 
     private void buscar(){
+        /**
+         * Se nabda llamar al metodo para que dia tomar
+         */
         buscar(hoy(), hoy());
     }
     

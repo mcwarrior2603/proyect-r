@@ -132,7 +132,8 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
                         
     }
     
-    private void configurarUso(){                
+    private void configurarUso(){    
+        
         if(uso == AXADIR){
             buttonEliminar.setEnabled(false);
             labelTitulo.setText(labelTitulo.getText() + " - Añadir");
@@ -163,6 +164,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private boolean confirmarModificacion(){
+     
         if(gui.cobrando){
             JOptionPane.showMessageDialog(null, "Hay una venta realizandose,\n"
                     + "termínela para poder continuar.");
@@ -178,6 +180,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private void eliminar(){
+        
         if(!valido)
             return;
         
@@ -197,6 +200,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
     }
     
     private void actualizar(){
+     
         float precio = aFloat(fieldPrecio.getText(), "precio");
         
         if(!valido)
@@ -220,7 +224,8 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
         }
     }
     
-    private void añadir(){                                
+    private void añadir(){   
+     
         float precio = aFloat(fieldPrecio.getText(), "precio");
         
         if(!valido)        

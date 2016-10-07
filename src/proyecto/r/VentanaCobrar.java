@@ -66,8 +66,9 @@ public class VentanaCobrar extends Ventana implements ActionListener{
     
     private boolean visible = true;
     
-    public VentanaCobrar(float total, VentanaMainGUI gui){                
+    public VentanaCobrar(float total, VentanaMainGUI gui){                        
         super(675, 340, NOMBRE_SW + " - Cobro");                        
+
         
         this.total = total;
         this.gui = gui;                                        

@@ -37,6 +37,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     private final Label labelContraseña = new Label();
     private final JPasswordField fieldPassword = new JPasswordField();
     private final TextField UsuarioText = new TextField();    
+    //private final TextField PasswordText = new TextField();
     private final JButton BotonCerrar = new JButton();
     private final JButton BotonEntrar = new JButton();
     private final JLabel labelLogo = new JLabel();
@@ -81,6 +82,8 @@ public class VentanaLogin extends Ventana implements ActionListener {
         
         UsuarioText.requestFocus();            
         
+        cerrarVentanaCarga();
+        
     }
     @Override
     protected boolean confirmarCerrado(){
@@ -102,6 +105,7 @@ public class VentanaLogin extends Ventana implements ActionListener {
     }
     
     private void Check(){
+       
         if(UsuarioText.getText().isEmpty() || UsuarioText.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Asegurese de haber ingresado\nun usuario y contraseña.", "Información faltane", JOptionPane.WARNING_MESSAGE);
             return;

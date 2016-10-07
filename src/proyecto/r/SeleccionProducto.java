@@ -90,12 +90,21 @@ public class SeleccionProducto extends JPanel implements MouseListener{
         
         configurarImagenes();                        
     }
+
+    private void configurarLogo(){
+
+        imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" ).getImage()
+                .getScaledInstance( 50, 50, Image.SCALE_DEFAULT)));    
+    }
     
     public void configurarColores(Color fondo){
         setBackground(gui.colorBoton);
     }          
 
     private void configurarImagenes(){
+        /**
+         * Se le da la dirección y asognación de las imagenes de los productos
+         */
         imagen.setIcon(new ImageIcon(new ImageIcon("Productos/" + productoActivo.imagen).getImage()
                 .getScaledInstance( 250, 250, Image.SCALE_DEFAULT))); 
         botonEliminar.setIcon(new ImageIcon(new ImageIcon("multimedia/cancel.png").getImage().

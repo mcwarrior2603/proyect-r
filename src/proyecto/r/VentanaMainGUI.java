@@ -38,10 +38,7 @@ public class VentanaMainGUI extends Ventana{
     public VentanaListaVentas ventVentas;
     public VentanaProducto ventProducto;
     public VentanaTransaccion ventTransaccion;    
-    public VentanaUsuario ventUsuario;
-    
-    public static String version = "1.4.0";
-    public static String fechaVersion = "20/09/2016";
+    public VentanaUsuario ventUsuario;        
     
     private JLabel logo = new JLabel();
     

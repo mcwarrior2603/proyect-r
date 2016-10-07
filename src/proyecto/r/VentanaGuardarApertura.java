@@ -61,6 +61,15 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
     }
 
     @Override
+    protected boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }            
+        return false;
+    }
+    
+    @Override
     public void cerrar(){        
         super.cerrar();
         gui.ventApertura = null;

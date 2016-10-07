@@ -180,8 +180,10 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
             cerrar();
             
         } catch (IOException ex) {
-            Logger.getLogger(VentanaConfiguracion.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+            reportarError(ex);
+        } catch(NullPointerException ex){
+            JOptionPane.showMessageDialog(null, "Configuración no válida, verifique.");
+        }
     }
     
     @Override
@@ -210,5 +212,6 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
             confirmarCerrado();
         }
     }        
+    
     
 }

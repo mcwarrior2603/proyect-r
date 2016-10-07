@@ -14,6 +14,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -74,6 +76,14 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         buttonDevolución.addActionListener(this);
         buttonBuscar.addActionListener(this);
         textBuscar.addActionListener(this);        
+        textBuscar.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                gui.buscarProductos(textBuscar.getText().trim());
+            }
+            
+        });
         
         this.productos = productos;
         
@@ -87,8 +97,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         add(puntoDeVenta, "Center");
                 
     }
-    
-    
+        
     private void configurarLogo(){
         
         File logo = new File("multimedia/" + gui.logotipo);
@@ -107,8 +116,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         super.configurarColores(fondo);
         configurarLogo();
     }
-    
-  
+      
     private void configurarPosiciones(){               
         
         configurarComponentes();  
@@ -197,8 +205,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         listaProductos.setBackground(Color.WHITE);   
         listaProductos.setPreferredSize(new Dimension((int)(gui.getWidth() / 8), 0));
     }
-    
-  
+      
     public void actualizar(){
         
         float sumaTotal = 0;
@@ -211,8 +218,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         updateUI();
                 
     }        
-    
-  
+      
     public void limpiarVenta(){        
         productos.clear();
         actualizar();
@@ -231,8 +237,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         else 
             buttonDevolución.setText("Venta");
     }
-    
-    
+        
     public void disposeVentaGUI(){
         if(ventaActual != null){
             ventaActual.cerrar();

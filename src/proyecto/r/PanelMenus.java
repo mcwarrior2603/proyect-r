@@ -195,52 +195,77 @@ public class PanelMenus extends PanelInterfaz implements ActionListener{
             gui.cerrarSesion();          
         }else if(e.getSource() == salir){
             gui.confirmarCerrado();
-        }else if(e.getSource() == añadirUsuario){
+        }else if(e.getSource() == añadirUsuario){            
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }            
             new VentanaUsuario(gui, VentanaUsuario.AXADIR);            
-        }else if(e.getSource() == modificarUsuario){
-            if(gui.usuarioActivo.nivelDeAcceso < 1){                
-                new VentanaUsuario(gui,VentanaUsuario.MODIFICAR);
-                    }else if(gui.usuarioActivo.nivelDeAcceso > 1){ 
-                            JOptionPane.showMessageDialog(null, "No puedes acceder");                         
-                    }
+            
+        }else if(e.getSource() == modificarUsuario){            
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
             new VentanaUsuario(gui, VentanaUsuario.MODIFICAR);
-
-        }else if(e.getSource() == eliminarUsuario){
+            
+        }else if(e.getSource() == eliminarUsuario){            
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
             new VentanaUsuario(gui, VentanaUsuario.ELIMINAR);
+            
         }else if(e.getSource() == añadirProducto){
+            
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
             new VentanaProducto(VentanaProducto.AXADIR, gui);
+            
         }else if(e.getSource() == modificarProducto){
-            if(gui.usuarioActivo.nivelDeAcceso < 1){
-                new VentanaProducto(VentanaProducto.MODIFICAR, gui);
-                }else if(gui.usuarioActivo.nivelDeAcceso > 1){ 
-                            JOptionPane.showMessageDialog(null, "No puedes acceder");                         
-                    }            
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
+            new VentanaProducto(VentanaProducto.MODIFICAR, gui);
+            
         }else if(e.getSource() == eliminarProducto){
+            if(gui.usuarioActivo.nivelDeAcceso > 1){                
+                JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
+                return;
+            }
             new VentanaProducto(VentanaProducto.ELIMINAR, gui);
+            
         }else if(e.getSource() == reporteVentas){
             if(gui.usuarioActivo.nivelDeAcceso > 1){                
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
             new VentanaListaVentas(gui);
+            
         }else if(e.getSource() == reporteProductos){
             if(gui.usuarioActivo.nivelDeAcceso > 1){                
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
             new VentanaListaProductos(gui);
+            
         }else if(e.getSource() == reporteEgresos){
             if(gui.usuarioActivo.nivelDeAcceso > 1){
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
             new VentanaListaEgresos(gui);
+            
         }else if(e.getSource() == reporteCorteDeCaja){
             if(gui.usuarioActivo.nivelDeAcceso > 1){
                 JOptionPane.showMessageDialog(null, "No tiene privilegios suficientes.");
                 return;
             }
             new VentanaCorteDeCaja(gui);
+            
         }else if(e.getSource() == contacto){
             JOptionPane.showMessageDialog(null, "Para ayuda contactanos en mcwarrior.mendez@hotmail.com");
         }else if(e.getSource() == acercaDe){

@@ -176,6 +176,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
             return false;
         }
         
+        gui.limpiarVenta();
         return true;
     }
     

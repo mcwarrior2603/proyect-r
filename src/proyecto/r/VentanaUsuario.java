@@ -49,6 +49,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     private JLabel labelTitulo = new JLabel("Control de usuarios");
     private JLabel labelNombre = new JLabel("Nombre de usuario");
     private JLabel labelContraseña = new JLabel("Contraseña");
+    private JLabel labelConfirmar = new JLabel("Confirme");
     private JLabel labelPermisos = new JLabel("Permisos");
     
     private JTextField fieldNombre = new JTextField();
@@ -65,7 +66,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
     private VentanaMainGUI gui;
     
     public VentanaUsuario(VentanaMainGUI gui, int uso){
-        super(420, 350, NOMBRE_SW + " - Usuario");
+        super(420, 320, NOMBRE_SW + " - Usuario");
         
         this.master = Ventana.obtenerMaster();
         this.uso = uso;
@@ -94,6 +95,7 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         contenedorGeneral.add(labelTitulo);
         contenedorGeneral.add(labelNombre);
         contenedorGeneral.add(labelContraseña);
+        contenedorGeneral.add(labelConfirmar);
         contenedorGeneral.add(labelPermisos);
         contenedorGeneral.add(fieldNombre);
         contenedorGeneral.add(fieldContraseña);
@@ -114,15 +116,16 @@ public class VentanaUsuario extends Ventana implements ActionListener, FocusList
         labelTitulo.setBounds(35, 15, 200, 50);
         labelNombre.setBounds(15, 70, 200, 30);        
         labelContraseña.setBounds(15, 105, 200, 30);
+        labelConfirmar.setBounds(15, 140, 200, 30);
         labelPermisos.setBounds(15, 175, 200, 30);
         fieldNombre.setBounds(170, 70, 200, 30);
         fieldContraseña.setBounds(170, 105, 200, 30);
         fieldConfirmar.setBounds(170, 140, 200, 30);
         comboPermisos.setBounds(170, 175, 200, 30);
         fieldAutorizar.setBounds(170, 210, 200, 30);
-        buttonEliminar.setBounds(25, 255, 100, 30);
-        buttonGuardar.setBounds(175, 255, 100, 30);
-        buttonCancelar.setBounds(280, 255, 100, 30);        
+        buttonEliminar.setBounds(25, 225, 100, 30);
+        buttonGuardar.setBounds(175, 225, 100, 30);
+        buttonCancelar.setBounds(280, 225, 100, 30);        
         labelCheck.setBounds(375, 70, 30, 30);
     }
 

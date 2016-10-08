@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/VentanaMainGUI.java</file>
-            <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/PanelMenus.java</file>
             <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/Ventana.java</file>
-            <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/VentanaGuardarApertura.java</file>
+            <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/VentanaUsuario.java</file>
+            <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/VentanaProducto.java</file>
             <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/VentanaConfiguracion.java</file>
-=======
-            <file>file:/C:/Users/jesus_000/Desktop/proyecto/proyect-r/src/proyecto/r/ProyectoR.java</file>
-            <file>file:/C:/Users/jesus_000/Desktop/proyecto/proyect-r/src/proyecto/r/VentanaConfiguracion.java</file>
->>>>>>> 3471fe1d6e390e46c8b050033de9e9d9b300e05d
+            <file>file:/C:/Users/MCwar/Documents/Programación/Proyecto%20R/src/proyecto/r/PanelLateral.java</file>
         </group>
     </open-files>
 </project-private>

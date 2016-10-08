@@ -179,7 +179,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     }
     
     private void configurarBarraBusqueda(){
-        //Barra de búsqueda
+        //Barra de búsqueda        
         textBuscar.setFont(letraTabla);
         textBuscar.setPreferredSize(new Dimension(0,40));              
     }
@@ -235,7 +235,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         if(devolucion)
             buttonDevolución.setText("Devolucion");
         else 
-            buttonDevolución.setText("Venta");
+            buttonDevolución.setText("Venta");                
     }
         
     public void disposeVentaGUI(){
@@ -277,14 +277,11 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         /**
          * Hace el cambio de venta a devoluciòn
          */
-        if(e.getSource() == buttonDevolución)
-            intercambiarVenta();
-        
-        if(e.getSource() == buttonBuscar)
-            gui.buscarProductos(textBuscar.getText());
-
         if(e.getSource() == buttonDevolución){
-            intercambiarVenta();
+            intercambiarVenta();            
+        }else if(e.getSource() == buttonBuscar){
+            gui.buscarProductos(textBuscar.getText());
+        
         }else if(e.getSource() == buttonBuscar){            
             gui.buscarProductos(textBuscar.getText().trim());
             textBuscar.requestFocus();

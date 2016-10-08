@@ -224,6 +224,7 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
                 return;
             gui.cargarConfiguracion();
             gui.repaint();
+            cerrar();
         }else if(e.getSource() == buttonCancelar){
             confirmarCerrado();
         }

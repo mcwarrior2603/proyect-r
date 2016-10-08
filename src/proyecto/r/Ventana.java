@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 public class Ventana extends JFrame implements WindowListener, KeyListener{
     
     public static final String NOMBRE_SW = "Puffy PV";
-    public static final String version = "1.5.2";
+    public static final String version = "1.5.3";
     public static final String fechaVersion = "07/10/2016";
     
     protected static Font fontTitulo = new Font("Arial", Font.BOLD, 20);

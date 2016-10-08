@@ -2,10 +2,10 @@
 153
 153
 0
-153
-153
+204
+204
 0
-153
-153
-logotipo_super.png
+204
+204
+logo_super.jpg
 5

@@ -57,7 +57,7 @@ public class VentanaMainGUI extends Ventana{
     public Color colorPanel = new Color(0xFFFFFF);
     public Color colorBoton = new Color(0xFFFFFF);
     public String logotipo;
-    public int minutosRecordatorio;
+    public int minutosRecordatorio = 0;
     
     public Timer timerRecordatorio = new Timer();;
     
@@ -102,13 +102,16 @@ public class VentanaMainGUI extends Ventana{
         
     }                    
     
-    private void activarRecordatorio(){                       
+    private void activarRecordatorio(){ 
+        if(minutosRecordatorio == 0)
+            minutosRecordatorio = 5;
+        
         timerRecordatorio.schedule(new TimerTask() {
             @Override
             public void run() {
                 recordatorioApertura();
             }
-        }, 60000 * minutosRecordatorio);
+        }, 60000 * minutosRecordatorio);        
     }
              
     public void cargarConfiguracion(){
@@ -145,9 +148,9 @@ public class VentanaMainGUI extends Ventana{
             
             configurarColores();
             
-        } catch(FileNotFoundException ex){
+        } catch(FileNotFoundException|NumberFormatException ex){
             JOptionPane.showMessageDialog(null, 
-                    "No existe un archivo de configuración.\n"
+                    "No existe un archivo de configuración válido.\n"
                             + "Por favor configure el programa");
             new VentanaConfiguracion(this, VentanaConfiguracion.CONFIGURACION_INICIAL);
         } catch (IOException ex) { 

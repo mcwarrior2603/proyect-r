@@ -140,7 +140,12 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
                 
     }
 
-    private void guardarConfiguracion(){
+    /**
+     * Almacena en el archivo configuración los valores almacenados
+     * @return true, si la configuración se guardó correctamente
+     * @return false, si la configuración no se pudo almacenar
+     */    
+    private boolean guardarConfiguracion(){
             
         PrintWriter writer;
         
@@ -175,21 +180,31 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
             
             writer.println(gui.minutosRecordatorio);
             
-            writer.close();
-            gui.cargarConfiguracion();
-            cerrar();
+            writer.close();            
             
         } catch (IOException ex) {
-            reportarError(ex);
+            reportarError(ex);            
+            return false;
         } catch(NullPointerException ex){
-            JOptionPane.showMessageDialog(null, "Configuración no válida, verifique.");
-        }
+            JOptionPane.showMessageDialog(null, "Configuración no válida, verifique.");                        
+            return false;
+        }       
+        return true;
     }
     
     @Override
     public void cerrar(){
         super.cerrar();
         gui.ventConfiguracion = null;
+    }
+    
+    @Override
+    public boolean confirmarCerrado(){
+        if(super.confirmarCerrado()){
+            cerrar();
+            return true;
+        }
+        return false;
     }
     
     @Override
@@ -205,7 +220,8 @@ public class VentanaConfiguracion extends Ventana implements ActionListener{
             gui.colorBoton = JColorChooser.showDialog(null, "Color para botones", gui.colorBoton);
             labelMuestraBoton.setBackground(gui.colorBoton);
         }else if(e.getSource() == buttonGuardar){
-            guardarConfiguracion();
+            if(!guardarConfiguracion())
+                return;
             gui.cargarConfiguracion();
             gui.repaint();
         }else if(e.getSource() == buttonCancelar){

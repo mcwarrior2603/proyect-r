@@ -7,6 +7,8 @@ package proyecto.r;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -83,6 +85,34 @@ public class VentanaMainGUI extends Ventana{
         panelPrincipal.add(panelProductos, BorderLayout.CENTER);
         panelPrincipal.add(panelLateral, BorderLayout.WEST);
         panelPrincipal.add(panelMenus, BorderLayout.NORTH);                                        
+        
+        KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                .addKeyEventDispatcher(new KeyEventDispatcher() {
+
+            boolean recovered = false;
+                    
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {                                                 
+                if(e.getKeyCode() == KeyEvent.VK_F5){
+                    panelProductos.actualizarPanel();            
+                }else if(e.getKeyCode() == KeyEvent.VK_F12){                    
+                    if(e.getID() == KeyEvent.KEY_PRESSED)
+                        panelLateral.savePedido();
+                }else if(e.getKeyCode() == KeyEvent.VK_F11){                    
+                    if(e.getID() == KeyEvent.KEY_PRESSED && !recovered){
+                        panelLateral.recoverPedido();
+                        recovered = true;
+                    }else if(e.getID() == KeyEvent.KEY_RELEASED){
+                        recovered = false;
+                    }
+                }else if(e.getKeyCode() == KeyEvent.VK_F2 
+                        && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0) 
+                        && e.getID() == KeyEvent.KEY_RELEASED){
+                    limpiarVenta();
+                } 
+                return false;
+            }                        
+        });
         
         panelLateral.actualizar();        
         cargarConfiguracion();
@@ -261,15 +291,7 @@ public class VentanaMainGUI extends Ventana{
         }
         
         return false;
-    }        
-    
-    @Override
-    public void keyPressed(KeyEvent e) {    
-        super.keyPressed(e);
-        if(e.getKeyCode() == KeyEvent.VK_F5){
-            panelProductos.actualizarPanel();            
-        }
-    }        
+    }                     
         
     /**
      * Recibe una cadena la cual se usará para pasar como parámetro
@@ -280,8 +302,7 @@ public class VentanaMainGUI extends Ventana{
     public void buscarProductos(String aBuscar){
         panelProductos.actualizarPanel(aBuscar);
     }
-    
-    
+        
     /**
      * Carga los porductos existentes en la base de datos
      */
@@ -365,6 +386,9 @@ public class VentanaMainGUI extends Ventana{
         return true;
     }
     
+    /**
+     * Elimina los productos de la venta mostrada actualmente
+     */
     public void limpiarVenta(){
         panelLateral.limpiarVenta();
     }

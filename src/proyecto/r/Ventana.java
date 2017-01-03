@@ -242,14 +242,16 @@ public class Ventana extends JFrame implements WindowListener, KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_F4){
             System.out.println("F4"); 
         }else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-            confirmarCerrado();
+            if(confirmarCerrado())
+                cerrar();            
         }
     }
     
     @Override
     public void windowClosing(WindowEvent e) {
         if(isVisible())
-            confirmarCerrado();        
+            if(confirmarCerrado())
+                cerrar();
     }
     
     @Override

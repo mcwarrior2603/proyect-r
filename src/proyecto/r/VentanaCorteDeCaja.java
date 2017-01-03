@@ -7,6 +7,7 @@ package proyecto.r;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JButton;
@@ -19,7 +20,7 @@ import javax.swing.JTextField;
  *
  * @author MCwar
  */
-public class VentanaCorteDeCaja extends Ventana implements ActionListener{                   
+public class VentanaCorteDeCaja extends Ventana implements ActionListener, WindowListener{                   
     private final JTextField textApertura = new JTextField();
     private final JTextField textCierre = new JTextField();
     private final JTextField textFecha = new JTextField();
@@ -54,7 +55,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
         
         if(gui.ventCorte != null)
             gui.ventCorte.cerrar();
-        gui.ventCorte = this;
+        gui.ventCorte = this;                
         
         mainPanel = (JPanel) getContentPane();
                         
@@ -105,7 +106,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener{
         
         buttonBuscar.addActionListener(this);
         buttonVentas.addActionListener(this);
-        buttonEgresos.addActionListener(this);
+        buttonEgresos.addActionListener(this);        
     }
     
     private void buscar(String fecha){   

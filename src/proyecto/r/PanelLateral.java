@@ -60,6 +60,8 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     private ArrayList <Producto> productos;
     private boolean devolucion = true;
     
+    private ArrayList <ArrayList> colaPedidos = new ArrayList();
+    
     private static final Font letraTabla = new Font("Arial", Font.PLAIN, 20);
         
     /**
@@ -206,6 +208,29 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
         listaProductos.setPreferredSize(new Dimension((int)(gui.getWidth() / 8), 0));
     }
       
+    public void savePedido(){
+        if(!colaPedidos.contains(productos)){            
+            colaPedidos.add(productos);        
+            gui.productosVenta = new ArrayList<>();
+            productos = gui.productosVenta;
+            productos.clear();
+            tablaVenta.setModel(new ModelProductos(productos));    
+            limpiarVenta();               
+        }            
+    }        
+    
+    public void recoverPedido(){
+        if(!productos.isEmpty())
+            savePedido();
+        if(!colaPedidos.isEmpty()){            
+            gui.productosVenta = colaPedidos.get(0);
+            productos = gui.productosVenta;
+            colaPedidos.remove(0);
+            tablaVenta.setModel(new ModelProductos(productos));   
+            actualizar();
+        }                
+    }
+    
     public void actualizar(){
         
         float sumaTotal = 0;
@@ -219,6 +244,9 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
                 
     }        
       
+    /**
+     * Elimina los productos de la venta mostrada actualmente
+     */
     public void limpiarVenta(){        
         productos.clear();
         actualizar();

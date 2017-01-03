@@ -313,12 +313,13 @@ public class VentanaMainGUI extends Ventana{
     
     public boolean guardarDevolucion(float total){
         int id = -1;
-        String sql = "INSERT INTO DEVOLUCIONES(FECHA, ID_USUARIO, HORA, TOTAL) "
+        String sql = "INSERT INTO DEVOLUCIONES(FECHA, ID_USUARIO, HORA, TOTAL, TURNO) "
                 + "VALUES(" 
                 + "'" + hoy() + "', "
                 + usuarioActivo.id + ", "
                 + "'" + horaNow() + "', "
-                + " " + total 
+                + " " + total + ", "
+                + turnoActual
                 + ")";
         
         if(!SQLConnection.actualizar(sql))
@@ -353,12 +354,13 @@ public class VentanaMainGUI extends Ventana{
     public boolean guardarVenta(float total){                                                
         int id;
         
-        String sql = "INSERT INTO VENTAS(ID_USUARIO, FECHA, HORA, TOTAL)"
+        String sql = "INSERT INTO VENTAS(ID_USUARIO, FECHA, HORA, TOTAL, TURNO)"
                 + "VALUES("
                 + usuarioActivo.id + ","
                 + "'" + hoy() + "', "
                 + "'" + horaNow() + "',"
-                + total 
+                + total + ","
+                + turnoActual
                 + ")";
         
         if(!SQLConnection.actualizar(sql))

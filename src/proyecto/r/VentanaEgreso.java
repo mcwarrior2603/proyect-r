@@ -174,12 +174,13 @@ public class VentanaEgreso extends Ventana implements ActionListener{
         
         if(uso == AÑADIR){        
             sql = "INSERT INTO EGRESOS "
-                    + "(FECHA, MONTO, CONCEPTO, ID_USUARIO) "
+                    + "(FECHA, MONTO, CONCEPTO, ID_USUARIO, TURNO) "
                     + " VALUES("
                     + "'" + fieldFecha.getText() + "', "
                     + monto + ", "
                     + "'" + fieldConcepto.getText() + "', "
-                    + gui.usuarioActivo.id + ")";
+                    + gui.usuarioActivo.id + ","
+                    + gui.turnoActual + ")";
             
             if(!SQLConnection.actualizar(sql)){
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error :(");

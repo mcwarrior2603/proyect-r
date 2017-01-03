@@ -53,6 +53,7 @@ public class VentanaMainGUI extends Ventana{
     
     public boolean cobrando = false;
     public Usuario usuarioActivo;
+    public int turnoActual = 1;
     
     public File archivoConfiguracion = new File("archivos/configuracion.txt");
     public Color colorFondo = new Color(0xFFFFFF);

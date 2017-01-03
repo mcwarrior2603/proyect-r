@@ -91,10 +91,11 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
         if(monto == DEFAULT_AFLOAT)
             return;
         
-        String sql = "INSERT INTO CORTES_CAJA(FECHA, APERTURA) "
+        String sql = "INSERT INTO CORTES_CAJA(FECHA, APERTURA, TURNO) "
                 + "VALUES("
                 + "'" + hoy() + "', "
-                + monto + ")";
+                + monto + ","
+                + gui.turnoActual + ")";
         
         if(SQLConnection.actualizar(sql)){
             JOptionPane.showMessageDialog(null, "Apertura guardada correctamente");

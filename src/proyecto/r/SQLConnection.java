@@ -22,12 +22,12 @@ public class SQLConnection {
     private volatile static String pass = "fenixoftPresto";
     
     public synchronized static boolean abrirConexion(){
-        if(conexion == null){
+       if(conexion == null){
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conexion = DriverManager.getConnection("jdbc:mysql://" + server + "/" + dbName + 
                         "?user=" + user + "&password=" + pass);
-                System.out.println("Conexión correcta");
+                System.out.println("Conexión correcta"); 
                 return true;
             } catch (ClassNotFoundException ex) {
                 Ventana.reportarError(ex);
@@ -36,9 +36,9 @@ public class SQLConnection {
             }            
             System.out.println("Conexion incorrecta");
             return false;
-        }
+       }
                 
-        return true;
+       return true;
     }
     
     public synchronized static void cerrarConexion(){

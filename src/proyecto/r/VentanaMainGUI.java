@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JPanel;
@@ -59,10 +61,14 @@ public class VentanaMainGUI extends Ventana{
     public Color colorFondo = new Color(0xFFFFFF);
     public Color colorPanel = new Color(0xFFFFFF);
     public Color colorBoton = new Color(0xFFFFFF);
-    public String logotipo;
+    public String logotipo;    
     public int minutosRecordatorio = 0;
+    public int numTurnos = 1;
+    public int horaInicioTurno[] = new int[3];
+    public int minutoInicioTurno[] = new int[3];
     
-    public Timer timerRecordatorio = new Timer();;
+    public Timer timerRecordatorio = new Timer();
+    public Timer timerCorte[] = new Timer[3];
     
     public VentanaMainGUI(Usuario usuarioActivo){                        
         super(300, 300, NOMBRE_SW);                                                                     
@@ -70,11 +76,11 @@ public class VentanaMainGUI extends Ventana{
         panelPrincipal = (JPanel) getContentPane();
         panelPrincipal.updateUI();                                          
         
-        this.usuarioActivo = usuarioActivo;                                
+        this.usuarioActivo = usuarioActivo;
         
         setResizable(true);
         setVisible(true);
-        setExtendedState(MAXIMIZED_BOTH);                                                
+        setExtendedState(MAXIMIZED_BOTH);
                 
         panelPrincipal.setLayout(new BorderLayout(15, 15));
         panelPrincipal.setBackground(colorFondo);  
@@ -85,7 +91,7 @@ public class VentanaMainGUI extends Ventana{
         
         panelPrincipal.add(panelProductos, BorderLayout.CENTER);
         panelPrincipal.add(panelLateral, BorderLayout.WEST);
-        panelPrincipal.add(panelMenus, BorderLayout.NORTH);                                        
+        panelPrincipal.add(panelMenus, BorderLayout.NORTH);
         
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -110,33 +116,43 @@ public class VentanaMainGUI extends Ventana{
                         && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0) 
                         && e.getID() == KeyEvent.KEY_RELEASED){
                     limpiarVenta();
-                } 
+                }else if(e.getKeyCode() == KeyEvent.VK_ENTER
+                        && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)
+                        && e.getID() == KeyEvent.KEY_RELEASED){
+                    panelLateral.realizarTransaccion();
+                }
                 return false;
             }                        
         });
         
         panelLateral.actualizar();        
-        cargarConfiguracion();
-                
-        panelPrincipal.updateUI();                        
-        
-        if(!checkAperturaDeCaja()){
-            if(JOptionPane.showConfirmDialog(null, "¿Registrar corte de caja?\n"
-                    + "Usted lo puede hacer manualmente después o\n"
-                    + "le recordaremos de nuevo en unos minutos.", 
-                    "Corte de caja", JOptionPane.YES_NO_OPTION) == 0){
-                new VentanaGuardarApertura(this);
-            }else{    
-                activarRecordatorio();
-            }   
-        }                              
-        
+        cargarConfiguracion();                        
+        panelPrincipal.updateUI();                                                                                      
     }                    
+    
+    private void activarCambioDeTurno(){
+        Calendar turno[] = new Calendar[numTurnos];
+        
+        for(int i = 0 ; i < numTurnos ; i++){
+            turno[i] = Calendar.getInstance();
+            
+            turno[i].set(Calendar.HOUR_OF_DAY, horaInicioTurno[i]);
+            turno[i].set(Calendar.MINUTE, minutoInicioTurno[i]);                       
+                        
+            timerCorte[i] = new Timer(true);                        
+            System.out.println(turno[i].getTime().toString());
+            
+            timerCorte[i].schedule(
+                    new TimerTurnos(i + 1)
+                    , turno[i].getTime());
+        }                
+    }
     
     private void activarRecordatorio(){ 
         if(minutosRecordatorio == 0)
             minutosRecordatorio = 5;
         
+        timerRecordatorio = new Timer();
         timerRecordatorio.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -177,6 +193,14 @@ public class VentanaMainGUI extends Ventana{
             //Minutos entre cada recordatorio
             minutosRecordatorio = Integer.parseInt(reader.readLine());
             
+            numTurnos = Integer.parseInt(reader.readLine());
+            
+            for(int i = 0 ; i < numTurnos ; i++){
+                horaInicioTurno[i] = Integer.parseInt(reader.readLine());
+                minutoInicioTurno[i] = Integer.parseInt(reader.readLine());
+            }            
+            turnoActual =  getTurno();
+            activarCambioDeTurno();
             configurarColores();
             
         } catch(FileNotFoundException|NumberFormatException ex){
@@ -188,6 +212,22 @@ public class VentanaMainGUI extends Ventana{
             System.out.println("Error");
         }
     }   
+        public int getTurno(){
+        Calendar actual = Calendar.getInstance();
+        Date actualHora = actual.getTime();
+        
+        Calendar tempInicioTurno = Calendar.getInstance();
+        
+        for(int i = numTurnos - 1; i >= 0 ; i--){            
+            tempInicioTurno.set(Calendar.HOUR_OF_DAY, horaInicioTurno[i]);
+            tempInicioTurno.set(Calendar.MINUTE, minutoInicioTurno[i]);            
+            
+            if(actual.compareTo(tempInicioTurno) >= 0){
+                return i + 1;                
+            }
+        }
+        return numTurnos;        
+    }
     
     public void configurarColores(){
         panelPrincipal = (JPanel) getContentPane();
@@ -459,21 +499,24 @@ public class VentanaMainGUI extends Ventana{
      */
     public boolean checkAperturaDeCaja(){
         
-        String sql = "SELECT * FROM CORTES_CAJA WHERE FECHA = '" + hoy() + "'";
+        String sql = "SELECT * FROM CORTES_CAJA "
+                + "WHERE FECHA = '" + hoy() + "' "
+                + "ORDER BY TURNO DESC";
         
         ResultSet query = SQLConnection.buscar(sql);
         
         try {
             if(query.next()){
-                return true;
-            }else{
+                int turno = query.getInt("TURNO");                
+                if(turno == turnoActual) 
+                    return true;
                 return false;
             }
+            return false;
         } catch (SQLException ex) {
             reportarError(ex);
             return false;            
-        }
-        
+        }        
     }
     
     private void recordatorioApertura(){
@@ -482,13 +525,14 @@ public class VentanaMainGUI extends Ventana{
         
         switch(JOptionPane.showConfirmDialog(
                 null, 
-                "Aún no registra la apertura de caja\n"
+                "No existe apertura de caja para el Turno " + getTurno() + "\n"
                 + "¿Quiere hacerlo en este momento?\n"
                 + "Presione cancelar para no\n"
                 + "volver a mostrar este mensaje.", 
                 "Recordatorio", 
                 JOptionPane.YES_NO_CANCEL_OPTION)){
             case 0:
+                turnoActual = getTurno();
                 new VentanaGuardarApertura(this);
                 break;
             case 1:
@@ -496,5 +540,26 @@ public class VentanaMainGUI extends Ventana{
                 break;                        
         }
     }        
-    
+ 
+    private class TimerTurnos extends TimerTask{
+                
+        int turno;                                                                                                          
+     
+        public TimerTurnos(int turno){
+            this.turno = turno;
+        }
+        
+        @Override
+        public void run() {                                
+            
+            if(getTurno() == turno){
+                try{                                   
+                    if(timerRecordatorio != null)
+                        timerRecordatorio.cancel();
+                }catch(IllegalStateException ex){}
+                                
+                recordatorioApertura();
+            }
+        }
+    }    
 }

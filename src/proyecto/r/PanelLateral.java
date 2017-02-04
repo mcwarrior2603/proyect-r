@@ -257,8 +257,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
     /**
      * Intercambia entre venta y devolución
      */
-    public void intercambiarVenta(){
-        
+    public void intercambiarVenta(){        
         devolucion = !devolucion;
         if(devolucion)
             buttonDevolución.setText("Devolucion");
@@ -278,7 +277,10 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
      */
     @Override
     public void mouseClicked(MouseEvent e) {          
-        
+        realizarTransaccion();
+    }   
+    
+    public void realizarTransaccion(){
         disposeVentaGUI();
             
         float fTotal = Ventana.aFloat(labelTotal.getText().substring(1), "Total");                                    
@@ -296,8 +298,7 @@ public class PanelLateral extends PanelInterfaz implements MouseListener, Action
             ventaActual = new VentanaCobrar(fTotal, gui);              
             gui.cobrando = true;
         }
-        
-    }        
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {

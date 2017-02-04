@@ -7,20 +7,21 @@ package proyecto.r;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 /**
  *
  * @author MCwar
  */
-public class VentanaCorteDeCaja extends Ventana implements ActionListener, WindowListener{                   
+public class VentanaCorteDeCaja extends Ventana implements ActionListener{                   
     private final JTextField textApertura = new JTextField();
     private final JTextField textCierre = new JTextField();
     private final JTextField textFecha = new JTextField();
@@ -38,8 +39,13 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
     private final JButton buttonBuscar = new JButton("Buscar");
     private final JButton buttonVentas = new JButton ("Ventas/Devouciones");
     private final JButton buttonEgresos = new JButton("Egresos");
+    private final JRadioButton turno1 = new JRadioButton("TURNO 1");
+    private final JRadioButton turno2 = new JRadioButton("TURNO 2");
+    private final JRadioButton turno3 = new JRadioButton("TURNO 3");
+    private final JRadioButton resDiario = new JRadioButton("RESUMEN DIARIO");
+    private final ButtonGroup groupTurnos = new ButtonGroup();
     private JPanel mainPanel;
-              
+    
     private float fApertura;
     private float fVentas;
     private float fDevoluciones;
@@ -49,16 +55,21 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
     VentanaMainGUI gui;
     
     public VentanaCorteDeCaja(VentanaMainGUI gui){    
-        super(420, 500, NOMBRE_SW + " - Corte de caja");                        
+        super(450, 520, NOMBRE_SW + " - Corte de caja");                        
         
         this.gui = gui;
         
         if(gui.ventCorte != null)
             gui.ventCorte.cerrar();
-        gui.ventCorte = this;                
+        gui.ventCorte = this;
         
         mainPanel = (JPanel) getContentPane();
-                        
+        
+        
+        mainPanel.add(turno1);
+        mainPanel.add(turno2);
+        mainPanel.add(turno3);
+        mainPanel.add(resDiario);
         mainPanel.add(textApertura);
         mainPanel.add(textCierre);
         mainPanel.add(textFecha);
@@ -76,6 +87,12 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
         mainPanel.add(buttonEgresos);
         mainPanel.add(labelTitulo);
         
+        groupTurnos.add(turno1);
+        groupTurnos.add(turno2);
+        groupTurnos.add(turno3);
+        groupTurnos.add(resDiario);
+        resDiario.setSelected(true);
+        
         textApertura.setEditable(false);
         textVentas.setEditable(false);
         textDevoluciones.setEditable(false);
@@ -84,38 +101,58 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
         labelTitulo.setFont(fontTitulo);
         textFecha.setText("AAAA/MM/DD");
         
+        
         labelTitulo.setBounds( 15, 30, 185, 30);
         textFecha.setBounds( 190, 30, 100, 30);
         buttonBuscar.setBounds( 295, 30, 100, 30);
         
-        labelapertura.setBounds( 25, 100, 100, 30);
-        textApertura.setBounds( 170, 100, 200, 30);        
-        labelVentas.setBounds( 25, 150, 100, 30);
-        textVentas.setBounds( 170, 150, 200, 30);        
-        labelDevoluciones.setBounds( 25, 200, 175, 30);
-        textDevoluciones.setBounds( 170, 200, 200, 30);        
-        labelEgresos.setBounds( 25, 250, 100, 30);
-        textEgresos.setBounds( 170, 250, 200, 30);        
-        labelCierre.setBounds( 25, 300, 100, 30);
-        textCierre.setBounds( 170, 300, 200, 30);
+        turno1.setBounds( 15, 90, 100, 30);
+        turno2.setBounds( 130, 90, 100, 30);
+        turno3.setBounds(245, 90, 100, 30);
+        resDiario.setBounds( 130, 110, 180, 30);
         
-        linea.setBounds(160, 270, 220, 30);
+        labelapertura.setBounds( 25, 160, 100, 30);
+        textApertura.setBounds( 170, 160, 200, 30);        
+        labelVentas.setBounds( 25, 210, 100, 30);
+        textVentas.setBounds( 170, 210, 200, 30);        
+        labelDevoluciones.setBounds( 25, 260, 175, 30);
+        textDevoluciones.setBounds( 170, 260, 200, 30);        
+        labelEgresos.setBounds( 25, 310, 100, 30);
+        textEgresos.setBounds( 170, 310, 200, 30);        
+        labelCierre.setBounds( 25, 370, 100, 30);
+        textCierre.setBounds( 170, 370, 200, 30);
         
-        buttonVentas.setBounds( 85, 400, 150, 30);        
-        buttonEgresos.setBounds( 240, 400, 100, 30);
+        linea.setBounds(160, 330, 220, 30);
+        
+        buttonVentas.setBounds( 85, 420, 150, 30);        
+        buttonEgresos.setBounds( 240, 420, 100, 30);
         
         buttonBuscar.addActionListener(this);
         buttonVentas.addActionListener(this);
-        buttonEgresos.addActionListener(this);        
+        buttonEgresos.addActionListener(this);
     }
     
     private void buscar(String fecha){   
         /**
          * Busca la fecha de acuerdo al corte de caja que se desea ver
          */
-        try {
-            String sql = "SELECT * FROM CORTES_CAJA WHERE FECHA = '" + fecha + "'";
         
+        String sqlTurno = "";
+        
+        if(resDiario.isSelected()){
+            sqlTurno = "";
+        }else if(turno1.isSelected()){
+            sqlTurno = " AND TURNO = 1";
+        }else if(turno2.isSelected()){
+            sqlTurno = " AND TURNO = 2";
+        }else if(turno3.isSelected()){
+            sqlTurno = " AND TURNO = 3";
+        }
+        
+        try {
+            String sql = "SELECT * FROM CORTES_CAJA WHERE FECHA = '" + fecha + "'";                    
+            sql += sqlTurno;
+            
             ResultSet query = SQLConnection.buscar(sql);
             if(!query.next()){                
                 JOptionPane.showMessageDialog(null, "No existe corte "
@@ -127,6 +164,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
             }
             
             sql = "SELECT  SUM(TOTAL) AS TOTAL FROM VENTAS WHERE FECHA = '" + fecha +"'";
+            sql += sqlTurno;
             
             query = SQLConnection.buscar(sql);
             
@@ -140,6 +178,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
             
             sql = "SELECT SUM(TOTAL) AS TOTAL FROM DEVOLUCIONES WHERE "
                     + "FECHA = '"+ fecha + "'";
+            sql += sqlTurno;
             
             query = SQLConnection.buscar(sql);
             
@@ -153,6 +192,7 @@ public class VentanaCorteDeCaja extends Ventana implements ActionListener, Windo
             
             sql = "SELECT SUM(MONTO) AS TOTAL FROM EGRESOS WHERE FECHA = '"
                     + fecha + "'";
+            sql += sqlTurno;
             
             query = SQLConnection.buscar(sql);
             

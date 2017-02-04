@@ -7,6 +7,8 @@ package proyecto.r;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,16 +21,16 @@ import javax.swing.JTextField;
  */
 public class VentanaGuardarApertura extends Ventana implements ActionListener{
     
-    private final JLabel labelTitulo = new JLabel("Apertura de caja");
+    private final JLabel labelTitulo = new JLabel();
     private final JLabel labelMonto = new JLabel("Monto de apertura:");
     private final JTextField fieldMonto = new JTextField();
     private final JButton buttonGuardar = new JButton("Guardar");
     
     private JPanel mainPanel;
     private VentanaMainGUI gui;
-    
+            
     public VentanaGuardarApertura(VentanaMainGUI gui){
-        super(300, 160, NOMBRE_SW + " - Guardar apertura");                        
+        super(350, 160, NOMBRE_SW + " - Guardar apertura");                        
         
         this.gui = gui;
         
@@ -41,15 +43,18 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
     }
     
     private void configurarComponentes(){
+        String titulo = "Apertura de caja :: Turno " + gui.turnoActual;
+        labelTitulo.setText(titulo);        
+        
         setAlwaysOnTop(true);
         setLocation((int)(gui.getWidth() / 2) + 100, (int) (gui.getHeight() / 2) - 100);
         mainPanel = (JPanel)getContentPane();
         
         labelTitulo.setFont(fontTitulo);
         
-        labelTitulo.setBounds(25, 5, 250, 40);
-        labelMonto.setBounds(15, 55, 100, 30);
-        fieldMonto.setBounds(120, 55, 100, 30);
+        labelTitulo.setBounds(25, 5, 300, 40);
+        labelMonto.setBounds(15, 55, 150, 30);
+        fieldMonto.setBounds(170, 55, 100, 30);
         buttonGuardar.setBounds(150, 90, 100, 30);
         
         mainPanel.add(labelTitulo);
@@ -58,8 +63,8 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
         mainPanel.add(buttonGuardar);
         
         buttonGuardar.addActionListener(this);
-    }
-
+    }   
+    
     @Override
     protected boolean confirmarCerrado(){
         if(super.confirmarCerrado()){
@@ -91,11 +96,14 @@ public class VentanaGuardarApertura extends Ventana implements ActionListener{
         if(monto == DEFAULT_AFLOAT)
             return;
         
-        String sql = "INSERT INTO CORTES_CAJA(FECHA, APERTURA, TURNO) "
+        Calendar hora = Calendar.getInstance();
+        
+        String sql = "INSERT INTO CORTES_CAJA(FECHA, APERTURA, TURNO, HORA) "
                 + "VALUES("
                 + "'" + hoy() + "', "
                 + monto + ","
-                + gui.turnoActual + ")";
+                + gui.turnoActual + ", "
+                + "'" + horaNow() + "')";
         
         if(SQLConnection.actualizar(sql)){
             JOptionPane.showMessageDialog(null, "Apertura guardada correctamente");

@@ -56,7 +56,7 @@ public class VentanaProducto extends Ventana implements ActionListener, FocusLis
  
     private ButtonGroup groupOpciones = new ButtonGroup();
     private JRadioButton rbuttonProducto = new JRadioButton("Producto");
-    private JRadioButton rbuttonCategoria = new JRadioButton("Categoria");
+    private JRadioButton rbuttonCategoria = new JRadioButton("Categoria");        
     
     private final VentanaMainGUI gui;
     

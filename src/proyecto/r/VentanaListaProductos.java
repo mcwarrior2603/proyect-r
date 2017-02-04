@@ -8,6 +8,8 @@ package proyecto.r;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
@@ -31,7 +33,7 @@ import javax.swing.table.TableModel;
  *
  * @author USUARIO FINAL
  */
-public class VentanaListaProductos extends Ventana{
+public class VentanaListaProductos extends Ventana implements ActionListener{
         
     private final JLabel titulo = new JLabel("Ventas por producto");
     private final JLabel alcance = new JLabel("al");
@@ -39,7 +41,7 @@ public class VentanaListaProductos extends Ventana{
     private final TextField fechaInicio = new TextField();
     private final TextField fechaTerminal = new TextField();
     
-    private final JButton generador = new JButton();
+    private final JButton buttonBuscar = new JButton();
     private final JRadioButton diaActual = new JRadioButton("Hoy");
     private final JRadioButton diaPeriodo = new JRadioButton("Periodo");
     private final ButtonGroup bgPeriodo = new ButtonGroup();
@@ -48,7 +50,13 @@ public class VentanaListaProductos extends Ventana{
     private JScrollPane scTabla = new JScrollPane();
     
     private JPanel Tabla = new JPanel();
-    private JPanel todo = new JPanel();    
+    private JPanel todo = new JPanel();   
+    
+    private JRadioButton turno1 = new JRadioButton();
+    private JRadioButton turno2 = new JRadioButton();
+    private JRadioButton turno3 = new JRadioButton();
+    private JRadioButton reporteDiario = new JRadioButton();
+    private ButtonGroup groupTurnos = new ButtonGroup();
     
     private VentanaMainGUI gui;    
     
@@ -60,12 +68,10 @@ public class VentanaListaProductos extends Ventana{
         if(gui.ventProductos != null)
             gui.ventProductos.cerrar();
         gui.ventProductos = this;
-        
-        generador.setEnabled(false);
-        
+                        
         todo = (JPanel) getContentPane();                                 
         
-        datos.setModel(new ModelVentasProductos(hoy(), hoy()));
+        datos.setModel(new ModelVentasProductos(hoy(), hoy(), 0));
         scTabla.setViewportView(datos);
         
         datos.getColumnModel().getColumn(1).setMaxWidth(100);
@@ -76,34 +82,52 @@ public class VentanaListaProductos extends Ventana{
         
         titulo.setText("Ventas");
         alcance.setText("al");
-        generador.setText("Generar Repeorte");
+        buttonBuscar.setText("Buscar");
         diaActual.setText("Hoy");
         diaPeriodo.setText("Periodo");        
         
-        fechaInicio.setBounds( 445, 50, 100, 30);
-        fechaTerminal.setBounds(585, 50, 100, 30);
+        turno1.setText("Turno 1");
+        turno2.setText("Turno 2");
+        turno3.setText("Turno 3");
+        reporteDiario.setText("Reporte diario");
         
+        groupTurnos.add(turno1);
+        groupTurnos.add(turno2);
+        groupTurnos.add(turno3);
+        groupTurnos.add(reporteDiario);
+        reporteDiario.setSelected(true);
+        
+        fechaInicio.setBounds(235, 50, 100, 30);
+        fechaTerminal.setBounds(375, 50, 100, 30);        
         diaActual.setBounds( 35, 50, 100, 30);
-        diaPeriodo.setBounds( 140, 50, 100, 30);
-        
-        alcance.setBounds(560, 50, 100, 30);
-        generador.setBounds(30, 420, 150, 30);
-        titulo.setBounds(20, 10, 100, 30);                        
-        
-        scTabla.setBounds(15, 85, 670, 300);
+        diaPeriodo.setBounds( 140, 50, 100, 30);        
+        alcance.setBounds(350, 50, 100, 30);
+        buttonBuscar.setBounds(530, 50, 100, 30);
+        titulo.setBounds(20, 10, 100, 30);                                
+        turno1.setBounds(35, 85, 100, 30);
+        turno2.setBounds(140, 85, 100, 30);
+        turno3.setBounds(245, 85, 100, 30);    
+        reporteDiario.setBounds(350, 85, 150, 30);
+        scTabla.setBounds(15, 135, 670, 300);
         
         titulo.setFont(fontTitulo);
         
         todo.add(titulo);
-        todo.add(generador);
+        todo.add(buttonBuscar);
         todo.add(fechaInicio);
         todo.add(fechaTerminal);
         todo.add(alcance);
         todo.add(diaActual);
         todo.add(diaPeriodo);
         todo.add(scTabla);        
-             
+        todo.add(turno1);
+        todo.add(turno2);
+        todo.add(turno3);
+        todo.add(reporteDiario);
+        
         todo.updateUI();
+        
+        buttonBuscar.addActionListener(this);
     }
 
     @Override
@@ -122,6 +146,25 @@ public class VentanaListaProductos extends Ventana{
         }            
         return false;
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int turno = 0;
+        if(turno1.isSelected())
+            turno = 1;
+        else if(turno2.isSelected())
+            turno = 2;
+        else if(turno3.isSelected())
+            turno = 3;                       
+        
+        if(diaActual.isSelected())            
+            datos.setModel(new ModelVentasProductos(hoy(), hoy(), turno));
+        else
+            datos.setModel(new ModelVentasProductos(
+                    fechaInicio.getText().trim(), 
+                    fechaTerminal.getText().trim(),
+                    turno));
+    }
     
 }
 
@@ -130,27 +173,43 @@ class ModelVentasProductos implements TableModel{
     /**
     *Se implementa las listas con las que se manejara el producto y su cantidad 
     */    
-    ArrayList <String> productos = new ArrayList();
+    ArrayList <Producto> listaProductos = new ArrayList();
     
-    ArrayList <Integer> cantidad = new ArrayList();
-    
-    public ModelVentasProductos(String fechaInicio, String fechaFin){
+    public ModelVentasProductos(String fechaInicio, String fechaFin, int turno){
         /**
          * Se da la setencia SQL para encontrar dichos productos
          * Y la fecha en que se desea ver
          */
-        String sql = "SELECT PRODUCTOS.NOMBRE, SUM(CANTIDAD) AS CANTIDAD FROM PRODUCTOS_VENTAS "
-                + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_VENTAS.ID_PRODUCTO "
-                + "INNER JOIN VENTAS ON VENTAS.ID_VENTA = PRODUCTOS_VENTAS.ID_VENTA "                
-                + "WHERE VENTAS.FECHA >= '"  + fechaInicio + "' AND VENTAS.FECHA <= '" + fechaFin + "'"
-                + "GROUP BY PRODUCTOS.ID_PRODUCTO " ;
-        
-        ResultSet query = SQLConnection.buscar(sql);
-        
         try {
+            String sql = "SELECT PRODUCTOS.ID_PRODUCTO, PRODUCTOS.NOMBRE, SUM(CANTIDAD) AS CANTIDAD FROM PRODUCTOS_VENTAS "
+                    + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_VENTAS.ID_PRODUCTO "
+                    + "INNER JOIN VENTAS ON VENTAS.ID_VENTA = PRODUCTOS_VENTAS.ID_VENTA "                
+                    + "WHERE VENTAS.FECHA >= '"  + fechaInicio + "' AND VENTAS.FECHA <= '" + fechaFin + "' ";
+            if(turno >= 1 && turno <= 3)
+                sql += "AND TURNO=" + turno + " ";
+        
+            sql+= "GROUP BY PRODUCTOS.ID_PRODUCTO " ;                                                                
+            ResultSet query = SQLConnection.buscar(sql);
             while(query.next()){
-                productos.add(query.getString("NOMBRE"));
-                cantidad.add(query.getInt("CANTIDAD"));
+                incrementoProductos(
+                        query.getInt("ID_PRODUCTO"), 
+                        query.getString("NOMBRE"),
+                        query.getInt("CANTIDAD"));
+            }
+            
+            sql = "SELECT PRODUCTOS.ID_PRODUCTO, PRODUCTOS.NOMBRE, SUM(CANTIDAD) AS CANTIDAD FROM PRODUCTOS_DEVOLUCIONES "
+                    + "INNER JOIN PRODUCTOS ON PRODUCTOS.ID_PRODUCTO = PRODUCTOS_DEVOLUCIONES.ID_PRODUCTO "
+                    + "INNER JOIN DEVOLUCIONES ON DEVOLUCIONES.ID_DEVOLUCION = PRODUCTOS_DEVOLUCIONES.ID_DEVOLUCION "                
+                    + "WHERE DEVOLUCIONES.FECHA >= '"  + fechaInicio + "' AND DEVOLUCIONES.FECHA <= '" + fechaFin + "' ";            
+            if(turno >= 1 && turno <= 3)
+                sql += "AND TURNO=" + turno + " ";                   
+            sql+= "GROUP BY PRODUCTOS.ID_PRODUCTO " ;
+            query = SQLConnection.buscar(sql);
+            while(query.next()){
+                incrementoProductos(
+                        query.getInt("ID_PRODUCTO"), 
+                        query.getString("NOMBRE"),
+                        (query.getInt("CANTIDAD") * -1));
             }
         } catch (SQLException ex) {
             Ventana.reportarError(ex);
@@ -158,10 +217,24 @@ class ModelVentasProductos implements TableModel{
         
     }
     
+    private void incrementoProductos(int id, String nombre, int incremento){
+        boolean existente = false;
+        for(int i = 0 ; (!existente) && (i < listaProductos.size()) ; i++){
+            Producto tempActual = listaProductos.get(i);
+            if(tempActual.idProducto == id){
+                tempActual.cantidad += incremento;
+                existente = true;
+            }
+        }
+        if(!existente){
+            listaProductos.add(new Producto(id, nombre, incremento));
+        }
+    }
+    
     @Override
     public int getRowCount() {
         
-        return productos.size();
+        return listaProductos.size();
         
     }
 
@@ -200,9 +273,9 @@ class ModelVentasProductos implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
          if(columnIndex == 0){
-            return productos.get(rowIndex);
+            return listaProductos.get(rowIndex).nombre;
         } if(columnIndex == 1){
-            return cantidad.get(rowIndex);
+            return listaProductos.get(rowIndex).cantidad;
         }
         return "";
     }

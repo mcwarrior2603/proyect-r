@@ -50,4 +50,10 @@ public class Producto {
         this.imagen = copia.imagen;
         this.cantidad = 0;
     }
+    
+    public Producto(int id, String nombre, int cantidad){
+        this.idProducto = id;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
 }
